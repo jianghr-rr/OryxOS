@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1320" viewBox="0 0 1440 1320" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">OryxOS 单机运行时目标架构</title>
+  <desc id="description">CLI、REST API 和定时任务统一进入 AgentService。Agent 目录提供 Profile 和上下文，自实现 ReAct 循环调度 Provider、Memory 和工具执行器，分别连接模型服务、长期记忆后端及外部工具和通知渠道。SQLite 保存会话、审计与调度记录，工作区保存 Agent 定义与用户上下文。图示为规划架构，分布式与 A2A 属于后续阶段。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9 Z" fill="#64748B"/>
+    </marker>
+    <marker id="orange-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9 Z" fill="#EA580C"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif; }
+      .title { font-size: 38px; font-weight: 750; fill: #0F172A; }
+      .subtitle { font-size: 19px; fill: #64748B; }
+      .heading { font-size: 22px; font-weight: 650; fill: #0F172A; }
+      .body { font-size: 17px; fill: #475569; }
+      .small { font-size: 15px; fill: #64748B; }
+      .label { font-size: 14px; font-weight: 650; letter-spacing: 1.5px; fill: #64748B; }
+      .mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; font-size: 16px; fill: #334155; }
+      .wire { stroke: #64748B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1320" rx="24" fill="#FFFFFF"/>
+  <rect x="64" y="48" width="7" height="48" rx="3.5" fill="#F97316"/>
+  <text x="88" y="82" class="title">OryxOS Architecture</text>
+  <text x="88" y="116" class="subtitle">配置定义 Agent，共享运行底座 · Java 原生 AI Agent Harness OS</text>
+  <rect x="1148" y="55" width="228" height="36" rx="18" fill="#FFF7ED" stroke="#FED7AA"/>
+  <text x="1262" y="79" text-anchor="middle" font-size="15" font-weight="600" fill="#C2410C">设计目标 / 单机阶段</text>
+
+  <!-- Agent definition: separate from execution and tools. -->
+  <rect x="64" y="154" width="300" height="702" rx="20" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="88" y="191" class="label">AGENT DEFINITION</text>
+  <text x="88" y="228" class="heading">一个目录，一个 Agent</text>
+  <text x="88" y="260" class="mono">.oryxos/agents/&lt;name&gt;/</text>
+
+  <rect x="88" y="288" width="252" height="128" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="108" y="320" class="heading">AGENT.md</text>
+  <text x="108" y="353" class="body">Frontmatter → Profile</text>
+  <text x="108" y="383" class="body">正文 → 任务指令</text>
+
+  <text x="88" y="462" class="heading">Bootstrap</text>
+  <text x="88" y="493" class="mono">AGENTS.md · SOUL.md</text>
+  <text x="88" y="521" class="mono">USER.md</text>
+  <text x="88" y="551" class="small">工作区引导文件 · 按次读取</text>
+
+  <line x1="88" y1="582" x2="340" y2="582" stroke="#E2E8F0"/>
+  <text x="88" y="620" class="heading">可选资源 · 按需取用</text>
+  <text x="88" y="657" class="mono">skills/ · REFERENCE.md</text>
+  <text x="88" y="687" class="body">read_file 读取子指令与资料</text>
+  <text x="88" y="729" class="mono">scripts/</text>
+  <text x="88" y="759" class="body">shell 执行，结果进入上下文</text>
+  <rect x="88" y="789" width="252" height="40" rx="8" fill="#E2E8F0"/>
+  <text x="214" y="815" text-anchor="middle" font-size="15" fill="#475569">指令提供上下文，工具执行操作</text>
+
+  <!-- Three triggers converge on a single entry point. -->
+  <g>
+    <rect x="444" y="154" width="280" height="78" rx="14" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="584" y="187" text-anchor="middle" class="heading">CLI 交互</text>
+    <text x="584" y="214" text-anchor="middle" class="small">本地对话与调试</text>
+    <rect x="750" y="154" width="280" height="78" rx="14" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="890" y="187" text-anchor="middle" class="heading">REST API</text>
+    <text x="890" y="214" text-anchor="middle" class="small">业务系统 HTTP 接入</text>
+    <rect x="1056" y="154" width="280" height="78" rx="14" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="1196" y="187" text-anchor="middle" class="heading">定时任务</text>
+    <text x="1196" y="214" text-anchor="middle" class="small">AgentScheduler · cron / 时区</text>
+  </g>
+  <path d="M584 232 V252 H1196 V232 M890 232 V310" class="wire" marker-end="url(#arrow)"/>
+
+  <!-- Shared runtime. Wires are drawn before cards. -->
+  <rect x="404" y="280" width="972" height="576" rx="20" fill="#FFFCF9" stroke="#FED7AA" stroke-width="2"/>
+  <path d="M890 280 V310" class="wire" marker-end="url(#arrow)"/>
+  <path d="M890 384 V410" class="wire" marker-end="url(#arrow)"/>
+  <path d="M890 480 V510" class="wire" marker-end="url(#arrow)"/>
+  <path d="M364 445 H444" stroke="#EA580C" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#orange-arrow)"/>
+  <path d="M890 624 V654 M584 690 V654 H1196 V690 M890 654 V690" class="wire"/>
+  <path d="M584 675 V690" class="wire" marker-end="url(#arrow)"/>
+  <path d="M890 675 V690" class="wire" marker-end="url(#arrow)"/>
+  <path d="M1196 675 V690" class="wire" marker-end="url(#arrow)"/>
+
+  <rect x="444" y="310" width="892" height="74" rx="12" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="890" y="342" text-anchor="middle" class="heading">AgentService · 统一执行入口</text>
+  <text x="890" y="368" text-anchor="middle" class="small">统一调用链 · 请求上下文 · 会话保存</text>
+
+  <rect x="444" y="410" width="892" height="70" rx="12" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="890" y="439" text-anchor="middle" class="heading">Profile / ContextLoader / PromptBuilder</text>
+  <text x="890" y="465" text-anchor="middle" class="small">Agent 指令 + Bootstrap + 当前时间 + 记忆与历史 + 工具 Schema</text>
+
+  <rect x="444" y="510" width="892" height="114" rx="16" fill="#FFF0E2" stroke="#FB923C" stroke-width="2"/>
+  <text x="890" y="549" text-anchor="middle" font-size="27" font-weight="700" fill="#9A3412">ReAct Loop</text>
+  <text x="890" y="581" text-anchor="middle" font-size="20" fill="#C2410C">Reason → Act → Observe → 下一轮 / 最终响应</text>
+  <text x="890" y="608" text-anchor="middle" font-size="15" fill="#9A3412">自实现循环 · 迭代上限 · 消息累积 · 禁用框架自动执行工具</text>
+
+  <rect x="444" y="690" width="280" height="120" rx="14" fill="#EFF6FF" stroke="#BFDBFE"/>
+  <text x="584" y="725" text-anchor="middle" class="heading">Provider</text>
+  <text x="584" y="757" text-anchor="middle" class="body">显式模型映射 · 协议适配</text>
+  <text x="584" y="785" text-anchor="middle" class="small">Spring AI / Spring AI Alibaba</text>
+
+  <rect x="750" y="690" width="280" height="120" rx="14" fill="#F0FDFA" stroke="#99F6E4"/>
+  <text x="890" y="725" text-anchor="middle" class="heading">Memory</text>
+  <text x="890" y="757" text-anchor="middle" class="body">会话记忆 + 长期记忆</text>
+  <text x="890" y="785" text-anchor="middle" class="small">统一门面 · 可替换存储后端</text>
+
+  <rect x="1056" y="690" width="280" height="120" rx="14" fill="#F5F3FF" stroke="#DDD6FE"/>
+  <text x="1196" y="725" text-anchor="middle" class="heading">ToolExecutor / Tools</text>
+  <text x="1196" y="757" text-anchor="middle" class="body">内置工具 · Java · MCP Client</text>
+  <text x="1196" y="785" text-anchor="middle" class="small">内置 IO 白名单 · 统一调用审计</text>
+
+  <!-- Capability dependencies; these arrows do not imply all stores are remote. -->
+  <path d="M584 810 V914 M890 810 V914 M1196 810 V914" class="wire"/>
+  <path d="M584 898 V914" class="wire" marker-end="url(#arrow)"/>
+  <path d="M890 898 V914" class="wire" marker-end="url(#arrow)"/>
+  <path d="M1196 898 V914" class="wire" marker-end="url(#arrow)"/>
+  <text x="64" y="939" class="label">ADAPTERS &amp; BACKENDS</text>
+  <text x="64" y="972" class="body">按需连接模型、存储与业务能力</text>
+  <text x="64" y="999" class="small">外部依赖由部署方选择</text>
+
+  <rect x="444" y="914" width="280" height="98" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/>
+  <text x="584" y="951" text-anchor="middle" class="heading">模型服务</text>
+  <text x="584" y="983" text-anchor="middle" class="body">厂商 API / 本地推理</text>
+  <rect x="750" y="914" width="280" height="98" rx="14" fill="#FFFFFF" stroke="#99F6E4"/>
+  <text x="890" y="951" text-anchor="middle" class="heading">长期记忆后端</text>
+  <text x="890" y="983" text-anchor="middle" class="body">Markdown / SQLite / Mem0</text>
+  <rect x="1056" y="914" width="280" height="98" rx="14" fill="#FFFFFF" stroke="#DDD6FE"/>
+  <text x="1196" y="951" text-anchor="middle" class="heading">工具与通知目标</text>
+  <text x="1196" y="983" text-anchor="middle" class="body">MCP Server / 业务 API / IM</text>
+
+  <!-- Persistence is shared infrastructure, not an additional execution step. -->
+  <rect x="64" y="1056" width="1312" height="176" rx="20" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="88" y="1090" class="label">SHARED PERSISTENCE</text>
+  <text x="1352" y="1090" text-anchor="end" class="small">贯穿运行链路 · 会话与审计持久化</text>
+  <rect x="88" y="1110" width="608" height="96" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="112" y="1145" class="heading">SQLite</text>
+  <text x="112" y="1178" class="body">Session · 模型调用 · 工具调用 · 调度状态与执行历史</text>
+  <rect x="720" y="1110" width="632" height="96" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="744" y="1145" class="heading">工作区文件</text>
+  <text x="744" y="1178" class="body">Agent 定义 · Bootstrap · MCP 配置 · Markdown 记忆</text>
+
+  <path d="M64 1273 H102" class="wire" marker-end="url(#arrow)"/>
+  <text x="114" y="1279" class="small">调用 / 依赖</text>
+  <path d="M240 1273 H278" stroke="#EA580C" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#orange-arrow)"/>
+  <text x="290" y="1279" class="small">配置 / 上下文输入</text>
+  <text x="1376" y="1279" text-anchor="end" class="small">后续演进：状态外置 → 多副本部署 → 跨节点 A2A 协作</text>
+</svg>

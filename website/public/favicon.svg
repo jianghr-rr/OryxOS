@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">OryxOS</title>
+  <desc id="logo-description">OryxOS 标志：橙色羚羊双角与开放的运行循环，搭配几何字标。</desc>
+  <style>
+    .wordmark { fill: #172033; }
+
+  </style>
+
+  <!-- An open O frames the agent; the horns extend beyond its boundary. -->
+  <path d="M66 77 A88 88 0 1 0 190 77"
+        stroke="#F97316" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Long swept horns, characteristic of the oryx. -->
+  <path d="M109 108 C95 78 84 44 86 18 C102 45 115 74 121 101 Z" fill="#F97316"/>
+  <path d="M147 108 C161 78 172 44 170 18 C154 45 141 74 135 101 Z" fill="#F97316"/>
+
+  <!-- Ears and face. Negative-space facets keep the mark legible at small sizes. -->
+  <path fill-rule="evenodd" clip-rule="evenodd" fill="#F97316"
+        d="M101 103 L128 91 L155 103 L194 99 L168 126 L155 155
+           L139 181 Q128 195 117 181 L101 155 L88 126 L62 99 Z
+           M101 121 L119 134 L109 140 Z
+           M155 121 L137 134 L147 140 Z
+           M128 109 L119 150 L128 168 L137 150 Z"/>
+
+
+</svg>

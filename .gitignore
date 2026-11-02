@@ -1,0 +1,24 @@
+# Maven build output
+target/
+
+# Local IDE and OS files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+
+# Runtime state and local secrets
+.oryxos/
+*.db
+*.db-shm
+*.db-wal
+*.log
+.env
+.env.local
+
+# Website dependencies and generated files
+node_modules/
+website/.vitepress/cache/
+website/.vitepress/dist/
