@@ -22,3 +22,6 @@ target/
 node_modules/
 website/.vitepress/cache/
 website/.vitepress/dist/
+
+# Project-local Spec Kit Python environment
+.venv-speckit/

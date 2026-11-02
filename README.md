@@ -158,6 +158,8 @@ GitHub Pages 发布目标为 [jianghr-rr.github.io/OryxOS](https://jianghr-rr.gi
 
 ### 设计文档
 
+课程使用的 Spec Kit 已按项目配置，固定版本 1.2.5，使用 Claude Code 集成。安装、启动和命令说明见 [Spec Kit 使用指南](tools/spec-kit/README.md)。
+
 建议从以下材料开始：
 
 1. 阅读 [项目介绍](docs/oryxos.md)，了解定位与范围。

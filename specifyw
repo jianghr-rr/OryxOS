@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Use only the Spec Kit installation belonging to this checkout.
+set -eu
+project_root=$(CDPATH= cd -P "$(dirname "$0")" && pwd)
+specify_bin="$project_root/.venv-speckit/bin/specify"
+if [ ! -x "$specify_bin" ]; then
+  echo "Project-local Spec Kit is missing. Follow tools/spec-kit/README.md to install it." >&2
+  exit 1
+fi
+export PATH="$project_root/.venv-speckit/bin:$PATH"
+cd "$project_root"
+exec "$specify_bin" "$@"

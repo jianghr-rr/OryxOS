@@ -4,7 +4,7 @@
 
 ## 仓库现状与文档使用
 
-仓库已建立九模块 Maven 工程，包含父/子 POM、Maven Wrapper、各模块 Java 包、最小 Spring Boot 启动入口和应用启动测试。父 POM 固定 Spring Boot 3.5.16，Wrapper 固定 Maven 3.9.16，Java 编译目标为 21。boot 启动 HTTP 应用骨架；cli 有独立 `OryxOsCli.main` 和可执行 JAR，打印 Maven 注入的版本后退出、不启动 Spring。尚无 Agent 业务能力、CLI 子命令、业务 API、管理台或 Spec-Kit 工作区。后续工作先检查实际目录和 Git 状态；文档里的“已交付”、课程编号、运行耗时及历史分支描述不能证明当前检出包含相应实现。
+仓库已建立九模块 Maven 工程，包含父/子 POM、Maven Wrapper、各模块 Java 包、最小 Spring Boot 启动入口和应用启动测试。父 POM 固定 Spring Boot 3.5.16，Wrapper 固定 Maven 3.9.16，Java 编译目标为 21。boot 启动 HTTP 应用骨架；cli 有独立 `OryxOsCli.main` 和可执行 JAR，打印 Maven 注入的版本后退出、不启动 Spring。尚无 Agent 业务能力、CLI 子命令、业务 API 或管理台。Spec Kit 工作区已初始化，宪章仍为未填写模板，尚无功能 spec/plan/tasks。后续工作先检查实际目录和 Git 状态；文档里的“已交付”、课程编号、运行耗时及历史分支描述不能证明当前检出包含相应实现。
 
 按任务阅读以下文档，不必每次加载全部历史：
 
@@ -126,6 +126,8 @@ OryxOS 是 Java 原生、可私有部署的 **分布式 AI Agent Harness OS**。
 历史文档中指向 `docs/class/`、旧网站页面、发布脚本和图片的引用仍可能缺失。当前任务未要求恢复时不创建占位实现；引用其设计前先确认文件存在。
 
 ## 开发流程与验证
+
+Spec Kit 固定为 1.2.5，安装仅位于本项目 `.venv-speckit/`；执行 CLI 时使用根目录 `./specifyw`，或先激活该虚拟环境，不要调用全局另一版本的 `specify`。Claude Code 的项目 skills 位于 `.claude/skills/`，命令使用 `/speckit-constitution`、`/speckit-specify` 等连字符形式。安装与启动方式见 [tools/spec-kit/README.md](tools/spec-kit/README.md)。初始化模板不代表项目宪章已经获确认，不能据其中的示例原则替代课程与现有设计约束。
 
 主体开发按 [AI 编程指南](docs/AiProgrammingGuide.md) 使用 Spec-Kit：constitution → specify → clarify（需要时）→ plan → tasks → implement → analyze。仅在工具已安装、工作区已初始化且任务要求对应流程时执行，不假装命令存在或分析已通过。已有宪章不可由 AI 擅自修改，主体 plan 按指南经过人工 review 后锁定；普通小增量直接修改并验证，不强制重跑全流程。
 

@@ -1,0 +1,2 @@
+# Keep the course workflow on a fixed official release.
+specify-cli==1.2.5
