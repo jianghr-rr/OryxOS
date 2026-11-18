@@ -65,6 +65,7 @@ jobs:
           java -Djarmode=tools \
             -jar oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar \
             extract --destination /tmp/oryxos-release
+          mv /tmp/oryxos-release/oryxos-boot-*.jar /tmp/oryxos-release/oryxos-boot.jar
           (cd /tmp/oryxos-release && sha256sum oryxos-boot.jar > oryxos-boot.jar.sha256)
           ls -lh /tmp/oryxos-release/oryxos-boot.jar
           du -sh /tmp/oryxos-release/lib
