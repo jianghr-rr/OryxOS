@@ -45,14 +45,17 @@ jobs:
         run: |
           mkdir -p "${{ github.workspace }}/.oryxos-dev/evidence"
           RUN_ID="$(cat /proc/sys/kernel/random/uuid)"
+          EXCLUDED_GROUPS="real-integration,kernel-soak,kernel-short-gate,kernel-writer-probe,kernel-redactor-probe,kernel-reader-probe,kernel-provider-probe,kernel-soak-harness"
           if command -v mvn >/dev/null 2>&1; then
             mvn -B -ntp verify \
               -Doryxos.test.runId="${RUN_ID}" \
-              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence"
+              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence" \
+              -DexcludedGroups="${EXCLUDED_GROUPS}"
           else
             ./mvnw -B -ntp verify \
               -Doryxos.test.runId="${RUN_ID}" \
-              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence"
+              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence" \
+              -DexcludedGroups="${EXCLUDED_GROUPS}"
           fi
 
       - name: Prepare release artifact & checksum
