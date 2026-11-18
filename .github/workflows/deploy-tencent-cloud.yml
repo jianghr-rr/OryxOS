@@ -28,7 +28,7 @@ jobs:
   build-and-deploy:
     name: Build, Verify & Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -110,15 +110,21 @@ jobs:
           VERSION="${{ steps.artifact.outputs.version }}"
           REMOTE_RELEASE_DIR="/opt/oryxos/releases/${VERSION}"
 
+          ls -lh /tmp/oryxos-release/oryxos-boot.jar
+          echo "[deploy] Creating remote release dir ${REMOTE_RELEASE_DIR}..."
           ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}'"
-          scp /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 "tencent:${REMOTE_RELEASE_DIR}/"
-          scp deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
+
+          echo "[deploy] Uploading JAR and checksum via legacy SCP (-O -C)..."
+          scp -O -C /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 "tencent:${REMOTE_RELEASE_DIR}/"
+          scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
 
           if [ -f /tmp/oryxos-release/secrets.local.yaml ]; then
-            scp /tmp/oryxos-release/secrets.local.yaml "tencent:/tmp/secrets.local.yaml.incoming"
+            echo "[deploy] Uploading secrets.local.yaml..."
+            scp -O -C /tmp/oryxos-release/secrets.local.yaml "tencent:/tmp/secrets.local.yaml.incoming"
             ssh tencent "sudo mv /tmp/secrets.local.yaml.incoming /var/lib/oryxos/workspace/secrets.local.yaml && sudo chown oryxos:oryxos /var/lib/oryxos/workspace/secrets.local.yaml && sudo chmod 0600 /var/lib/oryxos/workspace/secrets.local.yaml"
           fi
 
+          echo "[deploy] Switching release and running health check..."
           ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
 
       - name: Cleanup runner secrets and staging files
