@@ -1,0 +1,15 @@
+# Template only. Supply a reviewed news MCP server; no public service has been validated here.
+schema_version: 1
+servers:
+  news:
+    transport: stdio
+    command: /ABSOLUTE/PATH/TO/REVIEWED/NEWS/SERVER
+    args: []
+    env: {}
+    # Add only secrets explicitly needed by that server, for example:
+    # env: {NEWS_API_KEY: '${NEWS_API_KEY}'}
+    initialization_timeout_seconds: 10
+    request_timeout_seconds: 10
+# Required remote tool: search({query: string, date: YYYY-MM-DD}).
+# Text result JSON: {date: YYYY-MM-DD, items: [{title, url, published_at, summary?}]}.
+# Configure the source and credentials according to YOUR server; adapt AGENT.md if its schema differs.

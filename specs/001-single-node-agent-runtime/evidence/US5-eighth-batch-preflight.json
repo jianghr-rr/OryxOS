@@ -1,0 +1,194 @@
+{
+  "batch": "US5 eighth",
+  "date": "2026-11-13",
+  "scope": "T098-T100 prerequisites only; no scenario execution",
+  "result": "PREREQUISITES_MISSING",
+  "maintainerStatement": "我暂时还没有",
+  "maintainerStatementContext": "Real acceptance configuration has not been prepared",
+  "seventhBatch": {
+    "runId": "2c53a7bf-7814-4cf3-a40b-87ecfdda03ee",
+    "tests": 185,
+    "sourceHashesRechecked": true,
+    "jarSha256": "a21dbfa552c75e094a49230c81e850a556d66da090667b9c7a2ff32d0db8032d",
+    "rerunThisBatch": false
+  },
+  "inventory": {
+    "scope": "Personal checkout only; filenames/boolean metadata; no secret values read",
+    "environmentNamesPresent": [],
+    "candidates": [
+      {
+        "path": "tools/dev/examples/real-provider",
+        "runtime": true,
+        "workspace": false,
+        "secretsFilePresent": false,
+        "mcpFilePresent": false
+      },
+      {
+        "path": "tools/dev/examples/real-provider-tools",
+        "runtime": true,
+        "workspace": false,
+        "secretsFilePresent": false,
+        "mcpFilePresent": false
+      },
+      {
+        "path": "oryxos-cli/src/main/resources/templates",
+        "runtime": true,
+        "workspace": false,
+        "secretsFilePresent": false,
+        "mcpFilePresent": false
+      }
+    ],
+    "temporaryOrTestCandidateCount": 31,
+    "seventhBatchSourceHashesMatch": true,
+    "seventhBatchJarMatches": true
+  },
+  "prerequisiteTestRuns": [
+    {
+      "groups": [
+        "real-provider"
+      ],
+      "exitCode": 1,
+      "reports": [
+        {
+          "tests": 2,
+          "failures": 2,
+          "errors": 0,
+          "skipped": 0,
+          "runId": "271e27b1-92c5-445c-8d7e-1cd8753decb6",
+          "cases": [
+            {
+              "name": "deepseekOrdinaryRequest",
+              "failure": "Missing -Doryxos.real.workspace=/absolute/private/workspace (see tools/dev/examples/real-provider) ==> expected: <true> but was: <false>"
+            },
+            {
+              "name": "kimiOrdinaryRequest",
+              "failure": "Missing -Doryxos.real.workspace=/absolute/private/workspace (see tools/dev/examples/real-provider) ==> expected: <true> but was: <false>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groups": [
+        "real-provider-tools",
+        "real-notify",
+        "real-mcp"
+      ],
+      "exitCode": 1,
+      "reports": [
+        {
+          "class": "RealProviderToolLoopIT",
+          "tests": 2,
+          "failures": 2,
+          "errors": 0,
+          "skipped": 0,
+          "runId": "f9193416-dea2-408b-8df8-8151ecdc9c20",
+          "cases": [
+            {
+              "name": "kimiToolResultRoundTrip",
+              "failure": "Missing -Doryxos.real.workspace=/absolute/private/workspace; see tools/dev/examples/real-provider-tools ==> expected: <true> but was: <false>"
+            },
+            {
+              "name": "deepseekToolResultRoundTrip",
+              "failure": "Missing -Doryxos.real.workspace=/absolute/private/workspace; see tools/dev/examples/real-provider-tools ==> expected: <true> but was: <false>"
+            }
+          ]
+        },
+        {
+          "class": "RealNotificationIT",
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "runId": "f9193416-dea2-408b-8df8-8151ecdc9c20",
+          "cases": [
+            {
+              "name": "configuredWebhookAcknowledgesOneIdentifiableMessage",
+              "failure": "Missing -Doryxos.real.notify.target; see US4 real integration prerequisites ==> expected: <true> but was: <false>"
+            }
+          ]
+        },
+        {
+          "class": "ConfiguredMcpIT",
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "runId": "f9193416-dea2-408b-8df8-8151ecdc9c20",
+          "cases": [
+            {
+              "name": "pinnedConfiguredServerDiscoversCallsOnceAndCloses",
+              "failure": "Missing -Doryxos.real.mcp.server; see US4 real integration prerequisites ==> expected: <true> but was: <false>"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 6,
+    "failuresDueToMissingPrerequisites": 6,
+    "errors": 0,
+    "skipped": 0
+  },
+  "externalBusinessActions": {
+    "realModelRequests": 0,
+    "weatherOrNewsOrGithubFetches": 0,
+    "configuredMcpStarts": 0,
+    "realNotificationRequests": 0,
+    "reason": "Failures occur at required-configuration assertions before client creation or process launch; not a packet-capture claim"
+  },
+  "scenarios": {
+    "T098": {
+      "status": "NOT_EXECUTED_PREREQUISITES_MISSING",
+      "manualSuccesses": 0,
+      "automaticSuccesses": 0,
+      "failureDemonstration": "NOT_EXECUTED",
+      "executionIds": [],
+      "receiverEvidence": []
+    },
+    "T099": {
+      "status": "NOT_EXECUTED_PREREQUISITES_MISSING",
+      "manualSuccesses": 0,
+      "automaticSuccesses": 0,
+      "failureDemonstration": "NOT_EXECUTED",
+      "executionIds": [],
+      "receiverEvidence": []
+    },
+    "T100": {
+      "status": "NOT_EXECUTED_PREREQUISITES_MISSING",
+      "manualSuccesses": 0,
+      "automaticSuccesses": 0,
+      "failureDemonstration": "NOT_EXECUTED",
+      "executionIds": [],
+      "receiverEvidence": []
+    }
+  },
+  "taskState": {
+    "complete": 87,
+    "incomplete": 17,
+    "newlyCompleted": [],
+    "preservedIncomplete": [
+      "T027",
+      "T028",
+      "T042",
+      "T044",
+      "T051",
+      "T057",
+      "T058",
+      "T070",
+      "T071",
+      "T072",
+      "T098",
+      "T099",
+      "T100",
+      "T101",
+      "T102",
+      "T103",
+      "T104"
+    ]
+  },
+  "rawArchive": ".oryxos-dev/evidence/us5-batch8-preflight/",
+  "realSecretValuesPublished": false,
+  "secretsLocalYamlOpened": false
+}

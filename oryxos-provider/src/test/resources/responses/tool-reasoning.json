@@ -1,0 +1,11 @@
+{
+  "id": "fixture-tool-reasoning",
+  "object": "chat.completion",
+  "model": "kimi-actual",
+  "choices": [{"index": 0, "finish_reason": "tool_calls", "message": {
+    "role": "assistant", "content": null,
+    "reasoning_content": "private reasoning fixture",
+    "tool_calls": [{"id": "call-weather-1", "type": "function", "function": {"name": "weather", "arguments": "{\"city\":\"北京\"}"}}]
+  }}],
+  "usage": {"prompt_tokens": 12, "completion_tokens": 8, "total_tokens": 20}
+}

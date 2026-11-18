@@ -1,0 +1,5 @@
+{
+  "cases": ["direct", "two_tools_in_order", "invalid_arguments_then_correction", "unknown_tool", "iteration_limit", "unknown_side_effect_then_model_wants_retry"],
+  "weather": {"user": "weather", "toolResult": "sunny", "final": "sunny and warm"},
+  "unknown": {"first": "write1", "unsentRetry": "write2", "remaining": "next", "expectedModelCalls": 1, "expectedSideEffects": 1}
+}

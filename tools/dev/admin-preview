@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Local-only fixture: never add it to the production distribution.
+source "$(dirname -- "$0")/common.sh"
+exec python3 "$oryx_repo/tools/dev/admin_preview.py" "$oryx_java" "$oryx_repo" "$@"

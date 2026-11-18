@@ -2,7 +2,8 @@
   "version": "1.2.5",
   "integration_state_schema": 1,
   "installed_integrations": [
-    "claude"
+    "claude",
+    "codex"
   ],
   "integration_settings": {
     "claude": {
@@ -12,8 +13,16 @@
         "events": "false"
       },
       "invoke_separator": "-"
+    },
+    "codex": {
+      "script": "sh",
+      "raw_options": "--events false",
+      "parsed_options": {
+        "events": "false"
+      },
+      "invoke_separator": "-"
     }
   },
-  "integration": "claude",
-  "default_integration": "claude"
+  "integration": "codex",
+  "default_integration": "codex"
 }

@@ -1,0 +1,1206 @@
+[
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "EXECUTION_TIMEOUT",
+        "message": "Inspect execution before retrying",
+        "data": {
+          "id": "c946c2ad-f91e-4b3c-aff6-dcf10a0fe799",
+          "sessionId": "6539e2ea-469d-4047-b076-53f3d3ae030f",
+          "identity": {
+            "channel": "cli",
+            "userId": "cli-review",
+            "agentName": "local"
+          },
+          "scheduleId": null,
+          "status": "TIMED_OUT",
+          "stopReason": "DEADLINE",
+          "recordingStatus": "UNKNOWN",
+          "inFlightCount": 3,
+          "content": "执行已到截止时间；在途动作可能仍在收尾，请先核查。",
+          "hasToolErrors": false,
+          "hasUnresolvedToolErrors": false,
+          "startedAt": "2026-11-13T11:43:59.869929Z",
+          "deadlineAt": "2026-11-13T11:44:59.869929Z",
+          "finishedAt": "2026-11-13T11:44:59.870748Z",
+          "timezone": "Asia/Shanghai",
+          "error": {
+            "code": "DEADLINE",
+            "message": "Execution ended: TIMED_OUT",
+            "executionId": "c946c2ad-f91e-4b3c-aff6-dcf10a0fe799",
+            "recordingStatus": "UNKNOWN"
+          }
+        },
+        "timestamp": "2026-11-13T11:44:59.883970Z",
+        "traceId": "359f8e9d-a9f9-4b1f-8c69-edc06209b486"
+      },
+      "args": [
+        "chat",
+        "--profile",
+        "local",
+        "--user",
+        "cli-review"
+      ],
+      "exit": 6
+    }
+  },
+  {
+    "scenario": "cli-real-deadline",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "elapsedMs": 62595,
+      "executionId": "c946c2ad-f91e-4b3c-aff6-dcf10a0fe799"
+    }
+  },
+  {
+    "scenario": "cli-no-late-effect",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "models": 1,
+      "effects": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "workspaceRoot": "/Users/jianghaoran/github/OryxOS/.oryxos-dev/tmp/junit-4062277223665970690",
+          "workspaceId": "3dc95160-02da-4ea9-a1e3-afbfc028274b",
+          "databaseCreated": false
+        },
+        "timestamp": "2026-11-13T11:45:01.054547Z",
+        "traceId": "bae82529-e3e7-45b1-b6e1-6964274791cb"
+      },
+      "args": [
+        "init"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "workspaceRoot": "/Users/jianghaoran/github/OryxOS/.oryxos-dev/tmp/junit-4062277223665970690",
+          "workspaceId": "3dc95160-02da-4ea9-a1e3-afbfc028274b",
+          "databaseCreated": false
+        },
+        "timestamp": "2026-11-13T11:45:01.373742Z",
+        "traceId": "a07431ce-c839-4a8a-af82-72c4fe2af97b"
+      },
+      "args": [
+        "init"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "workspaceRoot": "/Users/jianghaoran/github/OryxOS/.oryxos-dev/tmp/junit-4062277223665970690",
+          "backend": "md",
+          "timezone": "Asia/Shanghai",
+          "process": "NOT_RUNNING",
+          "fault": "NONE_OBSERVED",
+          "unavailableProviders": [],
+          "agents": [
+            {
+              "name": "default",
+              "configured": false,
+              "code": "AGENT_UNAVAILABLE",
+              "safeMessage": "Invalid or missing configuration: agent.provider.name (not configured)",
+              "notifyChannels": []
+            },
+            {
+              "name": "local",
+              "configured": true,
+              "code": "CONFIGURED",
+              "safeMessage": "Configuration valid; external services not probed",
+              "notifyChannels": []
+            }
+          ],
+          "databaseHealth": "NOT_CHECKED",
+          "executionReadiness": "NOT_CHECKED",
+          "api": "HTTP_API_IMPLEMENTED",
+          "admin": "IMPLEMENTED"
+        },
+        "timestamp": "2026-11-13T11:45:01.712035Z",
+        "traceId": "0c3069c9-bc00-4a51-ac6e-358d553b5aef"
+      },
+      "args": [
+        "status"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "source": "CURRENT_FILES",
+          "items": [
+            {
+              "name": "default",
+              "configured": false,
+              "code": "AGENT_UNAVAILABLE",
+              "safeMessage": "Invalid or missing configuration: agent.provider.name (not configured)",
+              "notifyChannels": []
+            },
+            {
+              "name": "local",
+              "configured": true,
+              "code": "CONFIGURED",
+              "safeMessage": "Configuration valid; external services not probed",
+              "notifyChannels": []
+            }
+          ]
+        },
+        "timestamp": "2026-11-13T11:45:02.058019Z",
+        "traceId": "2c6c2945-7cb2-47f2-a5c4-8755691720b2"
+      },
+      "args": [
+        "profile",
+        "list"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "name": "draft",
+          "created": true,
+          "restartRequired": true
+        },
+        "timestamp": "2026-11-13T11:45:02.399511Z",
+        "traceId": "34f35a4a-81eb-48f4-b25f-5e2d25c3823d"
+      },
+      "args": [
+        "profile",
+        "create",
+        "draft"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "name": "local",
+          "currentFile": {
+            "configuration": {
+              "schema_version": 1,
+              "name": "local",
+              "provider": {
+                "name": "local",
+                "model": "requested-model"
+              },
+              "tools": [
+                "http_post"
+              ],
+              "bootstrap": []
+            },
+            "body": "Use the configured tools only.\n",
+            "configured": true
+          },
+          "loadedSnapshot": null,
+          "snapshotComparison": "NOT_RUNNING",
+          "note": "Configuration uses the startup snapshot; restart to load changes. Body/bootstrap are read at the next task. No external service was probed."
+        },
+        "timestamp": "2026-11-13T11:45:02.736758Z",
+        "traceId": "135cb4ff-80c7-4403-a3e9-40d96de46b1a"
+      },
+      "args": [
+        "profile",
+        "show",
+        "local"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "source": "CURRENT_FILES",
+          "items": [
+            {
+              "name": "local",
+              "protocol": "openai_chat_completions",
+              "configured": true,
+              "connectivity": "NOT_PROBED",
+              "safeError": null
+            }
+          ]
+        },
+        "timestamp": "2026-11-13T11:45:03.077189Z",
+        "traceId": "2bb9de29-25b8-4896-bda2-3e0ed45b1a6c"
+      },
+      "args": [
+        "provider",
+        "list"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "source": "OFFLINE_STATIC",
+          "mcpDiscovery": "NOT_DISCOVERED",
+          "items": [
+            {
+              "name": "echo",
+              "description": "Return the supplied text as a minimal native extension example",
+              "source": "NATIVE",
+              "available": false,
+              "inputSchema": {
+                "$schema": "[REDACTED_URL]",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": true
+            },
+            {
+              "name": "http_get",
+              "description": "Read an explicitly allowed HTTP URL",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": true
+            },
+            {
+              "name": "http_post",
+              "description": "POST JSON to an allowed URL; non-idempotent and never retried",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "jsonBody": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "url",
+                  "jsonBody"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            },
+            {
+              "name": "list_dir",
+              "description": "List at most 1000 direct entries in an allowed directory",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": true
+            },
+            {
+              "name": "notify",
+              "description": "Send content to a notification target declared by this Agent",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "targetName": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "content"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            },
+            {
+              "name": "read_file",
+              "description": "Read an allowed data file, at most 64 KiB",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": true
+            },
+            {
+              "name": "recall_memory",
+              "description": "Search ARCHIVAL memory only; results may be empty",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": true
+            },
+            {
+              "name": "save_memory",
+              "description": "Explicitly save a fact to workspace-shared memory; default ARCHIVAL",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "CORE",
+                      "ARCHIVAL"
+                    ]
+                  }
+                },
+                "required": [
+                  "content"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            },
+            {
+              "name": "shell",
+              "description": "Execute an explicitly allowed command and trusted script as argv; no OS/network sandbox",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "args": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "workingDirectory": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            },
+            {
+              "name": "write_file",
+              "description": "Atomically replace an allowed output file",
+              "source": "BUILTIN",
+              "available": false,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            }
+          ],
+          "note": "Static descriptors only; runtime availability and MCP not discovered"
+        },
+        "timestamp": "2026-11-13T11:45:03.489356Z",
+        "traceId": "3935916e-bd62-4378-89d5-fba9d1c2bbe1"
+      },
+      "args": [
+        "tool",
+        "list"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "STORAGE_UNAVAILABLE",
+        "message": "Stored data cannot be read; database was not created or repaired",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:03.828121Z",
+        "traceId": "dca35988-9ab3-4db5-827c-b0104d637b51"
+      },
+      "args": [
+        "session",
+        "list"
+      ],
+      "exit": 3
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Execution completed",
+        "data": {
+          "id": "80a32531-53d2-4091-9270-0418b15bc87c",
+          "sessionId": "87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+          "identity": {
+            "channel": "cli",
+            "userId": "cli-review",
+            "agentName": "local"
+          },
+          "scheduleId": null,
+          "status": "SUCCEEDED",
+          "stopReason": "FINAL_REPLY",
+          "recordingStatus": "COMPLETE",
+          "inFlightCount": 0,
+          "content": "reply-1",
+          "hasToolErrors": false,
+          "hasUnresolvedToolErrors": false,
+          "startedAt": "2026-11-13T11:45:05.950556Z",
+          "deadlineAt": "2026-11-13T11:46:05.950556Z",
+          "finishedAt": "2026-11-13T11:45:06.159078Z",
+          "timezone": "Asia/Shanghai"
+        },
+        "timestamp": "2026-11-13T11:45:06.167989Z",
+        "traceId": "d74799a2-dc6c-4f5d-a18f-5242eea07503"
+      },
+      "args": [
+        "chat",
+        "--profile",
+        "local",
+        "--user",
+        "cli-review"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "HTTP",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "path": "/runtime/state",
+      "status": 200,
+      "method": "GET",
+      "pid": 97619,
+      "response": {
+        "code": "OK",
+        "message": "OK",
+        "data": {
+          "workspaceId": "3dc95160-02da-4ea9-a1e3-afbfc028274b",
+          "state": "READY",
+          "storageWritable": true,
+          "incidentId": null,
+          "safeReason": null,
+          "inFlightCount": 0,
+          "recoveryRequired": false
+        },
+        "timestamp": "2026-11-13T11:45:09.273020Z",
+        "traceId": "967e5631-0413-4a44-bf38-45ad6bbe8ff0"
+      }
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "source": "RUNNING_REGISTRY_SNAPSHOT",
+          "mcpDiscovery": "STARTUP_DISCOVERY",
+          "items": [
+            {
+              "name": "http_post",
+              "description": "POST JSON to an allowed URL; non-idempotent and never retried",
+              "source": "BUILTIN",
+              "available": true,
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "jsonBody": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "url",
+                  "jsonBody"
+                ],
+                "additionalProperties": false
+              },
+              "safeToRetry": false
+            }
+          ],
+          "note": "Actual registered tools at this process startup; no live connectivity probe"
+        },
+        "timestamp": "2026-11-13T11:45:09.643060Z",
+        "traceId": "0ab27b92-ab66-4e0a-aadc-c59de4d10d41"
+      },
+      "args": [
+        "tool",
+        "list",
+        "--profile",
+        "local"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "name": "local",
+          "currentFile": {
+            "configuration": {
+              "schema_version": 1,
+              "name": "local",
+              "provider": {
+                "name": "local",
+                "model": "requested-model"
+              },
+              "tools": [
+                "http_post"
+              ],
+              "bootstrap": []
+            },
+            "body": "Use the configured tools only.\n",
+            "configured": true
+          },
+          "loadedSnapshot": {
+            "configRevision": "6cee24d02fa29ac90c9a4a47c81f7f93c130fb4752fcbaf6bfe24283e41f364b",
+            "bodyRevision": "b232c4f940e19ae429552d36445e289c68b99d204a2393eb9322c26f927e5af5",
+            "tools": [
+              "http_post"
+            ],
+            "available": true
+          },
+          "snapshotComparison": "MATCH",
+          "note": "Configuration uses the startup snapshot; restart to load changes. Body/bootstrap are read at the next task. No external service was probed."
+        },
+        "timestamp": "2026-11-13T11:45:10.009399Z",
+        "traceId": "16c315f2-7b59-4b97-bf7d-4ed98760d9a9"
+      },
+      "args": [
+        "profile",
+        "show",
+        "local"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "WORKSPACE_BUSY",
+        "message": "Workspace already running; use its HTTP API. Remote CLI chat is not supported",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:10.311354Z",
+        "traceId": "5780fdc9-7dc3-4307-a836-cfc1a4ec0d7a"
+      },
+      "args": [
+        "chat",
+        "--profile",
+        "local",
+        "--user",
+        "cli-review"
+      ],
+      "exit": 4
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "WORKSPACE_BUSY",
+        "message": "Workspace already running; use its HTTP API; remote CLI chat is not supported",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:10.650861Z",
+        "traceId": "ce8605ea-31f2-42ad-b10b-563ae8b653e3"
+      },
+      "args": [
+        "profile",
+        "delete",
+        "local"
+      ],
+      "exit": 4
+    }
+  },
+  {
+    "scenario": "HTTP",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "path": "/agents/local/invoke",
+      "status": 200,
+      "method": "POST",
+      "pid": 97619,
+      "response": {
+        "code": "OK",
+        "message": "OK",
+        "data": {
+          "id": "ca7ae170-c028-48a6-8ca2-8c636bed991b",
+          "sessionId": "efca47fe-c8b3-4ca7-8c6b-0b63a91b14a1",
+          "identity": {
+            "channel": "http",
+            "userId": "reviewer",
+            "agentName": "local"
+          },
+          "scheduleId": null,
+          "status": "SUCCEEDED",
+          "stopReason": "FINAL_REPLY",
+          "recordingStatus": "COMPLETE",
+          "inFlightCount": 0,
+          "content": "reply-2",
+          "hasToolErrors": false,
+          "startedAt": "2026-11-13T11:45:10.677881Z",
+          "deadlineAt": "2026-11-13T11:46:10.677881Z",
+          "finishedAt": "2026-11-13T11:45:10.852140Z",
+          "hasUnresolvedToolErrors": false,
+          "timezone": "Asia/Shanghai"
+        },
+        "timestamp": "2026-11-13T11:45:10.862385Z",
+        "traceId": "54e73df7-3ad6-494f-b3b4-38d61708c683"
+      }
+    }
+  },
+  {
+    "scenario": "HTTP",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "path": "/sessions/87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+      "status": 200,
+      "method": "GET",
+      "pid": 97619,
+      "response": {
+        "code": "OK",
+        "message": "OK",
+        "data": {
+          "session": {
+            "id": "87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+            "identity": {
+              "channel": "cli",
+              "userId": "cli-review",
+              "agentName": "local"
+            },
+            "kind": "CONVERSATION",
+            "status": "ACTIVE",
+            "providerName": "local",
+            "model": "requested-model",
+            "createdAt": "2026-11-13T11:45:05.952635Z",
+            "archivedAt": null
+          },
+          "messages": [
+            {
+              "id": "41189844-457f-4f18-886a-45f0b3e99b74",
+              "seq": 1,
+              "executionId": "80a32531-53d2-4091-9270-0418b15bc87c",
+              "turnId": "51cd8a93-c3f5-409c-83e7-d895a41f3400",
+              "role": "USER",
+              "content": "hello",
+              "toolCalls": [],
+              "toolCallId": null,
+              "toolOutcome": null,
+              "createdAt": "2026-11-13T11:45:05.953470Z"
+            },
+            {
+              "id": "98c26cf3-437a-483b-912a-91d772111b11",
+              "seq": 2,
+              "executionId": "80a32531-53d2-4091-9270-0418b15bc87c",
+              "turnId": "51cd8a93-c3f5-409c-83e7-d895a41f3400",
+              "role": "ASSISTANT",
+              "content": "reply-1",
+              "toolCalls": [],
+              "toolCallId": null,
+              "toolOutcome": null,
+              "createdAt": "2026-11-13T11:45:06.158248Z"
+            }
+          ],
+          "nextBeforeSeq": null
+        },
+        "timestamp": "2026-11-13T11:45:10.873969Z",
+        "traceId": "7d2e8c9b-3811-4a92-b62f-8293bb097d3b"
+      }
+    }
+  },
+  {
+    "scenario": "serve",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "chatBusy": true,
+      "httpUsable": true,
+      "pid": 97619
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "name": "local",
+          "archivedTo": "agent-archive/local-1794570311555-70420d4e-4680-425b-83ab-3882a4de0cc6",
+          "historyRetained": true
+        },
+        "timestamp": "2026-11-13T11:45:11.626001Z",
+        "traceId": "d53fbf39-865e-492c-ae43-7343e14c8a03"
+      },
+      "args": [
+        "profile",
+        "delete",
+        "local"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "OK",
+        "message": "Operation completed",
+        "data": {
+          "items": [
+            {
+              "id": "87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+              "identity": {
+                "channel": "cli",
+                "userId": "cli-review",
+                "agentName": "local"
+              },
+              "kind": "CONVERSATION",
+              "status": "ACTIVE",
+              "providerName": "local",
+              "model": "requested-model",
+              "createdAt": "2026-11-13T11:45:05.952635Z",
+              "archivedAt": null
+            },
+            {
+              "id": "efca47fe-c8b3-4ca7-8c6b-0b63a91b14a1",
+              "identity": {
+                "channel": "http",
+                "userId": "reviewer",
+                "agentName": "local"
+              },
+              "kind": "ONE_SHOT",
+              "status": "ARCHIVED",
+              "providerName": "local",
+              "model": "requested-model",
+              "createdAt": "2026-11-13T11:45:10.693916Z",
+              "archivedAt": "2026-11-13T11:45:10.861450Z"
+            }
+          ],
+          "nextCursor": null
+        },
+        "timestamp": "2026-11-13T11:45:12.157241Z",
+        "traceId": "444a60ea-b93f-4b70-b4d5-bf4c308eb3ce"
+      },
+      "args": [
+        "session",
+        "list",
+        "--profile",
+        "local"
+      ],
+      "exit": 0
+    }
+  },
+  {
+    "scenario": "HTTP",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "path": "/executions/80a32531-53d2-4091-9270-0418b15bc87c",
+      "status": 200,
+      "method": "GET",
+      "pid": 97636,
+      "response": {
+        "code": "OK",
+        "message": "OK",
+        "data": {
+          "id": "80a32531-53d2-4091-9270-0418b15bc87c",
+          "sessionId": "87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+          "identity": {
+            "channel": "cli",
+            "userId": "cli-review",
+            "agentName": "local"
+          },
+          "scheduleId": null,
+          "status": "SUCCEEDED",
+          "stopReason": "FINAL_REPLY",
+          "recordingStatus": "COMPLETE",
+          "inFlightCount": 0,
+          "content": "reply-1",
+          "hasToolErrors": false,
+          "startedAt": "2026-11-13T11:45:05.950556Z",
+          "deadlineAt": "2026-11-13T11:46:05.950556Z",
+          "finishedAt": "2026-11-13T11:45:06.159078Z",
+          "llmCalls": [
+            {
+              "attemptId": "9e35296f-331d-4ccd-984f-b44cf3366806",
+              "iteration": 1,
+              "providerName": "local",
+              "model": "actual-fixture-model",
+              "status": "SUCCESS",
+              "durationMs": 174,
+              "inputTokens": null,
+              "outputTokens": null,
+              "errorCode": null
+            }
+          ],
+          "toolAttempts": [],
+          "hasUnresolvedToolErrors": false,
+          "timezone": "Asia/Shanghai"
+        },
+        "timestamp": "2026-11-13T11:45:14.581066Z",
+        "traceId": "4a55faa3-1ed0-4de6-8d14-4e58c1b10d83"
+      }
+    }
+  },
+  {
+    "scenario": "HTTP",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "path": "/sessions/87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+      "status": 200,
+      "method": "GET",
+      "pid": 97636,
+      "response": {
+        "code": "OK",
+        "message": "OK",
+        "data": {
+          "session": {
+            "id": "87d2a8c0-decf-46d0-ab4e-f2f48b7a853c",
+            "identity": {
+              "channel": "cli",
+              "userId": "cli-review",
+              "agentName": "local"
+            },
+            "kind": "CONVERSATION",
+            "status": "ACTIVE",
+            "providerName": "local",
+            "model": "requested-model",
+            "createdAt": "2026-11-13T11:45:05.952635Z",
+            "archivedAt": null
+          },
+          "messages": [
+            {
+              "id": "41189844-457f-4f18-886a-45f0b3e99b74",
+              "seq": 1,
+              "executionId": "80a32531-53d2-4091-9270-0418b15bc87c",
+              "turnId": "51cd8a93-c3f5-409c-83e7-d895a41f3400",
+              "role": "USER",
+              "content": "hello",
+              "toolCalls": [],
+              "toolCallId": null,
+              "toolOutcome": null,
+              "createdAt": "2026-11-13T11:45:05.953470Z"
+            },
+            {
+              "id": "98c26cf3-437a-483b-912a-91d772111b11",
+              "seq": 2,
+              "executionId": "80a32531-53d2-4091-9270-0418b15bc87c",
+              "turnId": "51cd8a93-c3f5-409c-83e7-d895a41f3400",
+              "role": "ASSISTANT",
+              "content": "reply-1",
+              "toolCalls": [],
+              "toolCallId": null,
+              "toolOutcome": null,
+              "createdAt": "2026-11-13T11:45:06.158248Z"
+            }
+          ],
+          "nextBeforeSeq": null
+        },
+        "timestamp": "2026-11-13T11:45:14.602134Z",
+        "traceId": "15610f94-dcd7-4604-a941-0675cc7bb71f"
+      }
+    }
+  },
+  {
+    "scenario": "gateway",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "historyAfterArchive": true,
+      "pid": 97636
+    }
+  },
+  {
+    "scenario": "twelve-cli-operations",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "operationCount": 12,
+      "rows": {
+        "sessions": 2,
+        "messages": 4,
+        "executions": 2,
+        "llm_calls": 2,
+        "tool_invocations": 0
+      },
+      "models": 2,
+      "effects": 0
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "INVALID_INPUT",
+        "message": "Limit must be between 1 and 200",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:14.925906Z",
+        "traceId": "67bef720-2327-4694-8fc0-57a7eb94ba1d"
+      },
+      "args": [
+        "session",
+        "list",
+        "--limit",
+        "0"
+      ],
+      "exit": 2
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "PROFILE_NOT_FOUND",
+        "message": "Profile definition does not exist",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:15.249390Z",
+        "traceId": "45c8b396-6888-415a-a33a-f24b32db8359"
+      },
+      "args": [
+        "profile",
+        "show",
+        "missing"
+      ],
+      "exit": 3
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "PROVIDER_UNAVAILABLE",
+        "message": "Inspect execution before retrying",
+        "data": {
+          "id": "14e05774-ea28-485b-92ac-9547d067732f",
+          "sessionId": "7767e7a0-1f11-45bb-b68a-7d14a10dae98",
+          "identity": {
+            "channel": "cli",
+            "userId": "cli-review",
+            "agentName": "local"
+          },
+          "scheduleId": null,
+          "status": "FAILED",
+          "stopReason": "PROVIDER_UNAVAILABLE",
+          "recordingStatus": "COMPLETE",
+          "inFlightCount": 0,
+          "content": "Provider service failed; no fallback was attempted",
+          "hasToolErrors": false,
+          "hasUnresolvedToolErrors": false,
+          "startedAt": "2026-11-13T11:45:17.336813Z",
+          "deadlineAt": "2026-11-13T11:46:17.336813Z",
+          "finishedAt": "2026-11-13T11:45:17.524333Z",
+          "timezone": "Asia/Shanghai",
+          "error": {
+            "code": "PROVIDER_UNAVAILABLE",
+            "message": "Execution ended: FAILED",
+            "executionId": "14e05774-ea28-485b-92ac-9547d067732f",
+            "recordingStatus": "COMPLETE"
+          }
+        },
+        "timestamp": "2026-11-13T11:45:17.533363Z",
+        "traceId": "7b741e20-0383-40e8-bbd3-c24cd93b41f4"
+      },
+      "args": [
+        "chat",
+        "--profile",
+        "local",
+        "--user",
+        "cli-review"
+      ],
+      "exit": 5
+    }
+  },
+  {
+    "scenario": "CLI",
+    "localOnly": true,
+    "runtime": "/Users/jianghaoran/github/OryxOS/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar",
+    "data": {
+      "response": {
+        "code": "EXECUTION_PAUSED",
+        "message": "Workspace recording is paused; inspect the incident and complete manual recovery before chatting",
+        "data": null,
+        "timestamp": "2026-11-13T11:45:20.053554Z",
+        "traceId": "a50ede37-3ebf-40de-a541-5ab57854c68c"
+      },
+      "args": [
+        "chat",
+        "--profile",
+        "local",
+        "--user",
+        "cli-review"
+      ],
+      "exit": 7
+    }
+  }
+]

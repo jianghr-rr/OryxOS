@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>OryxOS · 运行控制台</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+<aside class="sidebar">
+  <a class="brand" href="#agents"><span class="brand-mark" aria-hidden="true">O<span> /</span></span><span>OryxOS<small>运行控制台</small></span></a>
+  <p class="nav-caption">工作区 / WORKSPACE</p>
+  <nav aria-label="管理台导航">
+    <a href="#agents" data-view="agents"><span aria-hidden="true">01</span>Agent</a>
+    <a href="#sessions" data-view="sessions"><span aria-hidden="true">02</span>会话历史</a>
+    <a href="#memory" data-view="memory"><span aria-hidden="true">03</span>共享记忆</a>
+    <a href="#schedules" data-view="schedules"><span aria-hidden="true">04</span>定时任务</a>
+    <a href="#executions" data-view="executions"><span aria-hidden="true">05</span>执行记录</a>
+    <a href="#runtime" data-view="runtime"><span aria-hidden="true">06</span>故障与恢复</a>
+  </nav>
+  <div class="sidebar-foot"><span class="tiny-label">SINGLE NODE RUNTIME</span><p>每次执行，都有迹可查。</p><small id="version">正在读取版本…</small></div>
+</aside>
+<div class="workspace">
+  <header class="topbar">
+    <div><span class="tiny-label">当前工作区</span><code id="workspace-id">等待连接</code></div>
+    <form id="identity-form" class="identity-form">
+      <label for="user-id">用户标识 <span>· 非登录</span></label>
+      <input id="user-id" name="userId" autocomplete="off" placeholder="例如 operator" maxlength="128" pattern="[ -~]{1,128}" required aria-describedby="identity-help">
+      <button type="submit" class="small">保存</button>
+      <small id="identity-help">保存在此浏览器；使用可见 ASCII 标识。</small>
+    </form>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="page-heading"><div><p class="eyebrow">OBSERVE / OPERATE</p><h1 id="page-title">Agent</h1><p id="page-description">查看已加载配置，发起一次有记录的任务。</p></div><button id="refresh" class="secondary">刷新查询 <span aria-hidden="true">↻</span></button></div>
+    <section class="runtime-strip" aria-label="工作区概况">
+      <div><span>执行许可</span><strong id="runtime-status">正在连接</strong></div>
+      <div><span>业务时区</span><strong id="timezone">未知</strong></div>
+      <div><span>共享记忆后端</span><strong id="backend">未知</strong></div>
+    </section>
+    <div id="runtime-notice" class="notice" role="status" aria-live="polite"></div>
+    <div id="action-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="content" aria-label="当前视图"></section>
+    <section id="detail" class="detail" aria-label="记录详情" tabindex="-1" hidden></section>
+    <footer class="page-foot">配置来自工作区文件 · 此页面提供查询与运行控制，不编辑运行配置。</footer>
+  </main>
+</div>
+<dialog id="run-dialog" aria-labelledby="run-title">
+  <form id="run-form">
+    <div class="dialog-heading"><div><p class="eyebrow">MANUAL EXECUTION</p><h2 id="run-title">运行 Agent</h2></div><button id="close-run" type="button" class="quiet" aria-label="关闭运行窗口">关闭</button></div>
+    <p id="run-identity" class="muted"></p>
+    <label for="run-content">任务内容</label>
+    <textarea id="run-content" name="content" rows="7" required placeholder="描述这次希望完成的任务…" aria-describedby="run-help"></textarea>
+    <p id="run-help" class="muted">单次任务最多等待 60 秒，内容不超过 32768 UTF-8 字节。关闭页面不会撤销已发出的动作。</p>
+    <button id="submit-run" type="submit" class="primary" data-execute>提交一次任务</button>
+  </form>
+</dialog>
+<noscript>请启用 JavaScript 以查询同源后端和使用运行控制。</noscript>
+</body>
+</html>

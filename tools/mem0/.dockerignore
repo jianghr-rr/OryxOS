@@ -1,0 +1,10 @@
+**
+!Dockerfile
+!requirements.lock
+!LICENSE.mem0
+!server/
+!server/**
+server/**/__pycache__/
+server/**/*.pyc
+server/.env*
+server/**/*.log

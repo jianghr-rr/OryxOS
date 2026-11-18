@@ -1,0 +1,521 @@
+{
+  "status": "PASS",
+  "localOnly": true,
+  "checks": [
+    {
+      "name": "没有用户标识时禁运行；本地夹具标记可见",
+      "result": "PASS"
+    },
+    {
+      "name": "用户标识可保存且发往后端",
+      "result": "PASS"
+    },
+    {
+      "name": "共享CORE/ARCHIVAL记忆来自实际落库且HTML作为文本",
+      "result": "PASS"
+    },
+    {
+      "name": "会话分页、筛选、历史更早页无丢失",
+      "result": "PASS"
+    },
+    {
+      "name": "空数据与错误分开，跳至主内容不切换视图",
+      "result": "PASS"
+    },
+    {
+      "name": "手动执行只发一次POST，实际JSON/落库与页面一致",
+      "result": "PASS"
+    },
+    {
+      "name": "刷新及重新打开只GET，不重复写入",
+      "result": "PASS"
+    },
+    {
+      "name": "已纠正成功仍保留原始失败和纠正关联",
+      "result": "PASS"
+    },
+    {
+      "name": "UNKNOWN不显示全部成功且不重发",
+      "result": "PASS"
+    },
+    {
+      "name": "定时启停以实际结果为准，停用任务可手动运行并查历史",
+      "result": "PASS"
+    },
+    {
+      "name": "加载/失败/重新查询与离开视图竞态",
+      "result": "PASS"
+    },
+    {
+      "name": "真实记录故障暂停、资料不完整、明确确认恢复且不重放",
+      "result": "PASS"
+    },
+    {
+      "name": "调度写入与恢复落库失败均不显示成功，确认消耗后必须重新核对",
+      "result": "PASS"
+    }
+  ],
+  "evidence": {
+    "requests": [
+      {
+        "query": "",
+        "path": "/api/v1/info",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/memory",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/memory",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20&cursor=W3Nlc3Npb25zLCBudWxsLCBudWxsLCBudWxsLCBudWxsXQpjMjZkMDcxZS1lYjAwLTRmMDUtYjBkNS01MGQwY2YwMTA2OTM",
+        "path": "/api/v1/sessions",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=100",
+        "path": "/api/v1/sessions",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "userId=browser-review&limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "userId=browser-review&limit=100",
+        "path": "/api/v1/sessions",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=100",
+        "path": "/api/v1/sessions/0c55c9e6-35fb-4215-9e73-897e44adc0b4",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=100",
+        "path": "/api/v1/sessions/f5b8766a-b175-44dd-b796-85a512483209",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=100",
+        "path": "/api/v1/sessions/fd646cd8-a205-4e41-b997-292e1681baa1",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/sessions/f5b8766a-b175-44dd-b796-85a512483209",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20&beforeSeq=5",
+        "path": "/api/v1/sessions/f5b8766a-b175-44dd-b796-85a512483209",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "userId=no-such-user&limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/executions/1fd356d9-41b2-41a0-afa3-b686e5bc1dfc",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=100",
+        "path": "/api/v1/executions",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/info",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/executions/423ee348-8a10-4606-97d4-aa000f8ae0b4",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/enabled",
+        "user": "browser-review",
+        "method": "PUT"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/enabled",
+        "user": "browser-review",
+        "method": "PUT"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/run",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules/local%3Adaily/executions",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/recover",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/enabled",
+        "user": "browser-review",
+        "method": "PUT"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/schedules",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/recover",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/recover",
+        "user": "browser-review",
+        "method": "POST"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review",
+        "method": "GET"
+      },
+      {
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "",
+        "method": "GET"
+      }
+    ],
+    "label": "LOCAL TEST ONLY — not real provider/notification acceptance",
+    "effects": 3,
+    "models": 23
+  }
+}

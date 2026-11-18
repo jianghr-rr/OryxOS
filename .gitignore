@@ -25,3 +25,11 @@ website/.vitepress/dist/
 
 # Project-local Spec Kit Python environment
 .venv-speckit/
+
+# Personal build home, caches, logs and temporary verification artifacts
+.oryxos-dev/
+__pycache__/
+*.pyc
+.env.*
+*.tmp
+*.swp

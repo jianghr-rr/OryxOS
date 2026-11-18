@@ -1,50 +1,195 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report（供本次审阅使用；正式提交前移除此临时报告）
+- 版本变化：未填写模板（无已批准版本） → 1.0.0（首次制定，确认效力按 spec AS-01）。
+- 原则变化：模板占位原则替换为以下七条项目原则；模板示例从未作为项目规则生效。
+  I. 单机内核优先，范围明确
+  II. ReAct 与工具执行由 OryxOS 统一掌控
+  III. 能力职责分离，依赖通过契约连接
+  IV. 工具操作受控，凭证与数据边界明确
+  V. 分阶段落实审计，持久化结果可恢复
+  VI. 每个用户故事都可演示、可检查
+  VII. 规格、方案、任务与实现保持一致
+- 新增章节：当前阶段的范围与技术基线；开发流程与验收门禁；项目治理规则。
+- 移除内容：未填写占位符及 Library-First、Test-First 等未获确认的模板示例。
+- 本次仅修改本文件；共享模板、skills、应用源码和来源文档均未改动。
+- 与来源文档的差异：审计落库安排在 US-5；长期记忆在工作区内共享；
+  首版包含管理台但仅提供查看与运行控制；运行配置由文件维护、重启加载；
+  数据库跟随工作区；允许按配置调用外部服务；九模块不构成永久数量限制。
+- 后续文档同步：CLAUDE.md、DemandAnalysis.md、TechnicalSolution.md、
+  AiProgrammingGuide.md、CliGuide.md 的冲突段落仍需在后续文档维护时同步；
+  生成规格时须显式采用本次确认结论，不得回落到旧描述。
+- 延后事项：首次批准日期未登记——须有明确依据后填写，
+  不将本次生成日期冒充批准日期。没有其他未解释占位符。
+-->
+
+# OryxOS Constitution
+
+状态：**v1.0.0 已按维护者指示确认（见 spec AS-01）；首次批准日期未登记。**
+本文记录项目原则和当前阶段约束；它描述必须达到的目标，不证明现有代码已经符合。
+文中的“必须”“不得”是验收约束；涉及范围与原则的调整按 Governance 执行。
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. 单机内核优先，范围明确
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- 当前交付范围必须聚焦单机 Agent 运行内核，支持多个配置定义的 Agent 共用底座。
+  Provider、ReAct、Memory、Tool、Web Service 五大核心能力均须纳入核心阶段验收。
+- CLI、REST、定时任务必须复用同一条 Agent 执行链路。天气、日报等业务必须由
+  Agent 指令和工具组合表达，不得写死在通用引擎中。
+- 首版必须包含 Web 管理台，用于查看 Agent、会话、记忆、定时任务，以及手动触发
+  Agent、查看执行历史、启停定时任务。页面必须通过后端服务执行这些操作。
+- 分布式协调、多租户与 SSO、容器级强隔离、复杂工作流编排不属于当前核心验收。
+  将它们纳入范围必须有明确需求和维护者决策，不得从产品远景推导出当前实现任务。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+理由：先交付能完整运行、能够验证的内核，防止平台远景吞没当前学习与开发范围。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. ReAct 与工具执行由 OryxOS 统一掌控
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+- ReAct 循环必须自行实现；Spring AI / Spring AI Alibaba 仅用于模型协议适配、
+  Provider 接入与工具 JSON Schema 生成，必须关闭其自动工具执行机制。
+- 模型提出工具调用，OryxOS 决定如何校验、执行和回填结果。所有 Agent 工具调用必须
+  经过统一执行入口，不得同时由框架与自研循环调度，导致同一调用重复执行。
+- 循环必须有可验证的终止条件和迭代上限。当前阶段同轮工具调用顺序执行；重试规则、
+  次数和副作用处理必须在对应规格或方案中明确，不得通过隐式重试重复产生副作用。
+- 必须保留结构化模型响应、工具结果和 tool-call ID 配对。上下文裁剪不得破坏调用与
+  结果的协议完整性，也不得被当作删除已持久化会话历史的操作。
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+理由：保持引擎行为可控，避免工具重复执行、消息错配和无界循环。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. 能力职责分离，依赖通过契约连接
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Provider 层负责模型选择、调用与协议转换，必须按 Provider 名称显式映射模型实例，
+  不得仅依赖相同 Bean 类型猜测归属，也不得代替 ReAct 执行工具。
+- ReAct 负责循环决策与流程控制；工具执行层负责统一校验、调度和结果回填；具体工具
+  负责实际文件、Shell、HTTP、通知或 MCP 操作。内置、Java 扩展与 MCP 工具必须使用
+  统一工具契约，接入层不得复制模型调用或工具调度逻辑。
+- Session 负责连续对话及其身份和生命周期；Memory 门面负责记忆访问，分别委托会话
+  管理与长期记忆后端。Prompt 组装必须明确每类上下文的来源，会话历史只能注入一次。
+- 持久化实现负责存取、查询和表结构迁移。引擎必须通过契约访问状态，不得直接绑定
+  JPA 实体、具体数据库或记忆文件实现；模块依赖不得形成循环。
+- 一个 Agent 由一个目录及其 `AGENT.md` 定义，运行配置从 frontmatter 派生，正文提供
+  指令。Agent 指令和 Bootstrap 文件属于上下文，不得注册成可执行工具。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+理由：让模型适配、工具能力、记忆后端和接入方式能分别演进，避免修改一处牵动整个引擎。
+
+### IV. 工具操作受控，凭证与数据边界明确
+
+- 工具执行必须先校验参数与适用权限，再进行实际 IO。文件路径、Shell 命令和执行超时、
+  HTTP 与通知目标必须受规则约束；拒绝操作不得产生被拒绝的文件、进程或网络副作用。
+- 当前沙箱采用应用层白名单，必须验证路径越界等风险，不得宣称具有进程或网络强隔离。
+  允许脚本执行不代表其网络访问受内置 HTTP 工具白名单覆盖；脚本来源信任须明确。
+- 密钥必须经环境变量或受控本地配置注入，并校验缺失值。不得把真实密钥提交到仓库、
+  拼入模型提示词、回显到页面，或写入普通日志与审计记录；敏感参数必须脱敏。
+- 本地部署和存储允许按维护者配置调用外部模型、MCP 与通知服务。外发内容必须限于
+  任务所需数据，不得增加未经配置启用的数据收集或上报，也不得承诺所有数据绝不出域。
+
+理由：工具具有真实副作用，必须同时约束可操作的资源、凭证暴露和实际数据流向。
+
+### V. 分阶段落实审计，持久化结果可恢复
+
+- US-1 至 US-4 允许先用结构化日志验证调用链，记录模型与工具的调用结果、失败原因和
+  耗时；不得将这一阶段的日志能力描述成已经具备数据库审计。
+- US-5 必须补齐 `llm_calls` 和 `tool_invocations` 持久化，作为核心阶段验收硬条件。
+  此时每次模型调用、工具成功、失败和权限拒绝均必须留下可关联的记录。
+- 模型记录必须包含 Provider、模型、可取得的 token 用量、耗时及结果；工具记录必须
+  包含工具名称、经脱敏的必要参数与结果信息、耗时及失败或拒绝原因。
+  数据不足时必须标明未知，不得伪造用量或成功状态。
+- 核心阶段验收必须证明 Session、已写入的长期记忆、审计记录及定时任务状态和执行历史
+  跨重启可恢复。具体写入时点、写入失败的处理方式及关联字段由方案明确。
+- 数据库结构演进必须有可追踪的建表或迁移脚本，不得依赖隐式自动更新完成后续迁移。
+
+理由：允许先跑通链路，再于明确里程碑补齐审计；同时保证“完成”有可追溯、可恢复的数据证据。
+
+### VI. 每个用户故事都可演示、可检查
+
+- 每个用户故事必须在规格中定义验收场景，并在任务中安排可重复的验证方式，说明
+  前置配置、输入、预期响应、状态变化和副作用。不能只以“代码已生成”或“能编译”验收。
+- 尚无 CLI 或页面入口的底层能力，可以用可执行集成测试或最小验证程序演示；整合验收
+  必须从 CLI 或实际 HTTP 请求进入。管理台操作必须验证其后端结果，不能只展示静态页面。
+- 测试必须覆盖本故事涉及的风险：模型选择、循环终止、工具重复调度、消息配对、
+  沙箱拒绝无副作用、记忆写后可读、身份边界、重启恢复及调度防重叠等。
+- 必须区分可控假 Provider、本地集成和真实模型／MCP／通知联调结果，报告验证命令、
+  结果与未验证项。性能目标必须经过测量，文档估算和历史运行记录不得作为实测结论。
+- 三个整合 Demo 为每日天气、科技日报、GitHub 日报，均须验证定时与手动触发复用
+  执行链路。它们不替代每个用户故事的独立验收，也不限定用户故事只能有三个。
+
+理由：用可观察行为证明进展，让维护者能够判断功能是否正确，以及验证覆盖到哪里。
+
+### VII. 规格、方案、任务与实现保持一致
+
+- spec 定义行为与验收，plan 定义技术方案与责任边界，tasks 定义可执行工作与依赖。
+  实现和验证证据必须能追溯到相应要求；涉及需求、范围或公共契约变化时，必须先澄清
+  并更新相关约定，不得为迁就现有代码悄悄改写目标行为。
+- 现有 Maven 模块、Boot 启动入口和 CLI 版本入口必须作为待审查工程基础保留，
+  不得为重新初始化而删除或覆盖。后续 plan 必须核对其职责、依赖和打包方式，
+  并可在审查通过后安排必要调整；已有代码不因曾由 prompt 生成、存在历史提交或
+  文档声称“已交付”而自动合格。
+- 生成 tasks 后、实施前必须检查 spec／plan／tasks 一致性；每个用户故事结束后必须
+  结合文档检查、代码审查和行为验证检查实现是否符合约定。
+  `$speckit-analyze` 的文档检查不能单独证明实现正确或测试通过。
+- 冲突、遗漏和未决事项必须显式记录并在依赖它们的实现前解决。旧课程记录和官方实验
+  项目只提供参考，不得据此覆盖本项目已经确认的决定或增加未授权范围。
+
+理由：让开发依据可审查、可追溯，避免“代码已经这样写了”反过来决定需求。
+
+## 当前阶段的范围与技术基线
+
+当前技术基线为 JDK 21、Spring Boot 3.x、Maven 多模块、Spring MVC 与同步阻塞执行，
+利用虚拟线程承载并发；模型接入复用 Spring AI，状态以本地存储为起点。
+具体依赖版本须在方案与构建文件中核实兼容性并锁定，补丁版本不属于永久不变的原则。
+
+现有九模块是工程起点。按职责新增、合并或调整模块必须在 plan 中说明收益、影响与
+依赖方向，并通过方案审查；不得以“必须始终九个模块”阻止有依据的演进。
+
+以下是本阶段已确认的约束，修改它们须经维护者明确决定：
+
+| 事项 | 当前约定 |
+| --- | --- |
+| 长期记忆 | 在同一工作区内共享，不按 Agent 隔离；不承诺不同用户之间的长期记忆隔离 |
+| 会话身份 | 按入口／渠道、用户、Agent 区分；共享长期记忆不等于合并对话历史 |
+| 运行配置 | Provider、白名单与通知渠道使用文件配置，修改后重启加载；具体字段与覆盖规则由 plan 明确 |
+| Agent 生命周期 | 新增 Agent 或修改运行配置后重启加载；正文按次读取、下一次组装上下文时生效 |
+| 管理台边界 | 查看与运行控制；不包含页面创建、编辑、删除 Agent 及动态重注册 |
+| 调度控制 | 启停与立即执行属于运行控制；通过页面修改 cron 等定义不在本阶段范围 |
+| 数据库位置 | 随工作区根目录定位，默认 `.oryxos/oryxos.db`；所有入口必须使用同一定位规则 |
+
+Memory 后端的具体配置、检索差异与迁移方式、REST 字段、重试参数、发布产物组织等细节，
+必须在相应 spec／plan 中收敛；尚未确认的描述不得升级为宪章强制要求。
+声明不同用户的 Session 分开，不代表当前系统已具备用户认证、多租户或数据授权能力。
+
+## 开发流程与验收门禁
+
+1. 制定并由维护者确认宪章；随后只在用户要求时进入 specify，必要时 clarify。
+   功能规格必须纳入已确认范围，并标记尚需决定的行为。
+2. plan 必须审查现有骨架、依赖兼容性、责任边界、数据契约和验证方案，经人工 review
+   确认后作为实施基线。tasks 必须覆盖所有验收要求，并明确依赖与当前阶段的持久化安排。
+3. tasks 完成后运行 `$speckit-analyze` 检查文档；有未解决的宪章冲突或阻断性歧义时，
+   不得开始依赖这些结论的实现。
+4. 按 US-1 Provider → US-2 ReAct → US-3 Memory／US-4 Tool → US-5 Web Service
+   的依赖推进。每个故事交付验收证据；工具与记忆的独立推进不自动授权多代理执行。
+5. 每个故事结束后复查文档与实现；核心阶段完成时统一验证持久化审计、重启恢复、
+   管理台与三个整合 Demo。未通过的项目必须报告为未完成，不得用模拟结果替代真实联调。
+6. 针对变更风险执行必要检查；纯文档修改做内容、引用和差异检查，不虚构构建结果。
+   本项目使用项目内工具链；官方课程仓库和绑定其路径的 `run.sh` 不得作为个人项目构建入口。
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- **批准与效力**：本稿首次批准日期待维护者明确确认后填写。确认前不得宣称已批准，
+  已在对话中确认的项目决定仍然有效；确认后宪章是本项目 spec、plan、tasks 和实现的
+  约束依据。来源文档冲突时必须记录差异，不能用旧文档或现有代码绕过已确认宪章。
+- **修改程序**：确认后任何宪章变更必须列出原因、旧约定与新约定、受影响的规格／代码／
+  数据及迁移或验证安排，提交维护者明确决定。AI 不得自行修改、弱化或绕过原则，
+  也不得将沉默、进度压力或历史授权视为本次修订获批。
+- **版本规则**：首次制定使用 1.0.0；移除原则或改变不兼容的治理约束升 MAJOR，
+  新增原则或实质扩展约束升 MINOR，仅澄清措辞而不改变约束升 PATCH。
+  修订保留原批准日期并更新 Last Amended；批准日期与修订日期使用 `YYYY-MM-DD`。
+- **合规审查**：方案审查和用户故事验收必须核对相关原则及本阶段约束，记录偏差及处理。
+  真正需要改变原则时，先走修订程序，再更新受影响的 spec／plan／tasks；不得以实现
+  方便为由追认违规。常规实现调整由已确认方案约束，不要求为每一行代码重新批准宪章。
+- **范围与环境保护**：保留已有未提交改动；不擅自重新初始化 Spec Kit、修改全局环境或
+  ACSP 配置。官方实验仓库仅供参考；提交、推送、部署和进入下一开发阶段需有对应授权。
+- **来源与解释**：本文依据需求文档的设计目标、技术方案的关键决策、开发指南及维护者
+  本轮明确选择制定。模块数、历史课程进度、示例原则和具体依赖补丁版本均不构成
+  自动获得确认的规则。来源文档尚未同步的差异须在后续规格中显式处理。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 未登记（确认效力见 spec AS-01） | **Last Amended**: 2026-11-12

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+  <!-- Deliberately empty: do not inherit the Maven installation's configuration. -->
+</settings>

@@ -1,0 +1,43 @@
+name: oryxos-personal-mem0
+services:
+  postgres:
+    image: pgvector/pgvector@sha256:3e8b3adfd27b5707128f60956f62a793c3c9326ea8cfaf0eab7adccb5d700b21
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: mem0
+      POSTGRES_USER: mem0
+      POSTGRES_PASSWORD: ${MEM0_DB_PASSWORD:?Set an isolated database password}
+    volumes: [mem0-postgres:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U mem0 -d mem0"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  mem0:
+    image: ${ORYXOS_MEM0_IMAGE:?Build and inspect the isolated application image first}
+    pull_policy: never
+    platform: linux/amd64
+    ports: ["127.0.0.1:18888:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    environment:
+      MEM0_TELEMETRY: "false"
+      AUTH_DISABLED: "false"
+      ADMIN_API_KEY: ${MEM0_API_KEY:?Set the private Mem0 API key}
+      JWT_SECRET: ${MEM0_JWT_SECRET:?Set a private JWT secret}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: mem0
+      POSTGRES_PASSWORD: ${MEM0_DB_PASSWORD:?Set an isolated database password}
+      POSTGRES_DB: mem0
+      APP_DB_NAME: mem0
+      POSTGRES_COLLECTION_NAME: oryxos_memories
+      HISTORY_DB_PATH: /app/history/history.db
+      OPENAI_API_KEY: ${MEM0_MODEL_API_KEY:?Set the extraction and embedding service key}
+      OPENAI_BASE_URL: ${MEM0_MODEL_BASE_URL:?Set the explicit compatible service base URL}
+      MEM0_DEFAULT_LLM_MODEL: ${MEM0_LLM_MODEL:?Set the extraction model}
+      MEM0_DEFAULT_EMBEDDER_MODEL: ${MEM0_EMBEDDING_MODEL:?Set the embedding model}
+    volumes: [mem0-history:/app/history]
+volumes:
+  mem0-postgres:
+  mem0-history:

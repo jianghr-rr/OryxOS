@@ -1,0 +1,51 @@
+{
+  "scope": "LOCAL CONTROLLED FIXTURES ONLY; no public model, news service or notification acceptance",
+  "timezone": "Asia/Shanghai",
+  "preference": "关注 AI 和芯片",
+  "agents": [
+    {
+      "name": "daily-weather",
+      "tools": [
+        "http_get",
+        "notify"
+      ],
+      "sourceRequests": 1
+    },
+    {
+      "name": "daily-tech-digest",
+      "tools": [
+        "read_file",
+        "mcp.news.search",
+        "notify"
+      ],
+      "sourceRequests": 1
+    },
+    {
+      "name": "github-daily",
+      "tools": [
+        "shell",
+        "notify"
+      ],
+      "sourceRequests": 3
+    }
+  ],
+  "requiredRuns": [
+    "manual",
+    "automatic-cron",
+    "source-failure",
+    "notify-rejected",
+    "notify-unknown"
+  ],
+  "additionalCases": [
+    "missing-reference",
+    "denied-http",
+    "denied-script",
+    "script-nonzero",
+    "body-reload",
+    "empty-news",
+    "incomplete-github-results",
+    "cli-memory-restart",
+    "memory-write-failure",
+    "script-credential-boundary"
+  ]
+}

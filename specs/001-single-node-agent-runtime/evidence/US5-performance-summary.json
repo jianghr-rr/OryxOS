@@ -1,0 +1,364 @@
+{
+  "runId": "259c364a-8f99-47f9-9e87-a03559ae7ae9",
+  "result": "FAILED",
+  "summary": {
+    "fatalFailure": null,
+    "phase": "FINISHED",
+    "acceptanceRun": true,
+    "result": "FAILED",
+    "startedAt": "2026-11-13T14:26:12.652815Z",
+    "startedAtShanghai": "2026-11-13T22:26:12.652815+08:00[Asia/Shanghai]",
+    "elapsedSeconds": 14422.635439083,
+    "requiredSeconds": 14400,
+    "agents": 10,
+    "clients": 100,
+    "activeClients": 0,
+    "peakInFlightClients": 100,
+    "attempts": 56599,
+    "completed": 56599,
+    "failedTasks": 0,
+    "throughputPerSecond": 3.9243174549518116,
+    "creation": {
+      "over50Millis": 44,
+      "maxMillis": 179.4075,
+      "p99Millis": 78.538541,
+      "count": 339,
+      "p95Millis": 55.155791,
+      "p50Millis": 3.40725
+    },
+    "internal": {
+      "over50Millis": 56350,
+      "maxMillis": 2184.36475,
+      "p99Millis": 1476.884042,
+      "count": 56599,
+      "p95Millis": 1128.873417,
+      "p50Millis": 352.932167
+    },
+    "serverTotal": {
+      "over50Millis": 56599,
+      "maxMillis": 27184.36475,
+      "p99Millis": 26476.884042,
+      "count": 56599,
+      "p95Millis": 26128.873417,
+      "p50Millis": 25352.932167
+    },
+    "criteria": {
+      "everyTaskInternalAtMost50ms": false,
+      "stabilityAndAudit": true,
+      "sessionCreateP99AtMost200ms": true,
+      "fourHours": true
+    },
+    "violations": 0,
+    "firstViolations": [],
+    "audit": {
+      "missingAcknowledgedWrites": 0,
+      "rows": {
+        "sessions": 349,
+        "executions": 56619,
+        "messages": 226476,
+        "llm_calls": 113238,
+        "tool_invocations": 56619,
+        "overlappingExecutionIntervals": 0,
+        "activeSessionsAtEnd": 100
+      },
+      "verified": true,
+      "badToolCallPairing": 0,
+      "corruptOrForeignRecords": 0
+    },
+    "heapUsedBytes": 323241752,
+    "processCpuNanos": 5313270935000,
+    "committedVirtualMemoryBytes": 428297256960,
+    "gcCount": 12665,
+    "gcMillis": 53549,
+    "runtimeInFlight": 0
+  },
+  "environment": {
+    "profile": {
+      "agents": 10,
+      "sessions": 100,
+      "durationSeconds": 14400,
+      "warmupClients": 10,
+      "warmupRounds": 2,
+      "modelDelayMillis": 10000,
+      "toolDelayMillis": 5000,
+      "clientThinkMillis": 0,
+      "creationProbeIntervalSeconds": 60,
+      "heartbeatSeconds": 30,
+      "historyTurns": 4,
+      "maxInternalMillis": 50,
+      "sessionCreateP99Millis": 200,
+      "description": "100 independent closed-loop clients evenly distributed across 10 Agents; each task uses model/tool/model, with real SQLite and all production audits. Warmup is reported separately. No percentile substitute for the per-task maximum."
+    },
+    "acceptanceRun": true,
+    "actualModelDelayMillis": 10000,
+    "actualToolDelayMillis": 5000,
+    "actualDurationSeconds": 14400,
+    "pid": 42639,
+    "javaVersion": "21.0.13",
+    "jvm": "OpenJDK 64-Bit Server VM",
+    "jvmArguments": [
+      "-Duser.home=/Users/jianghaoran/github/OryxOS/.oryxos-dev/home",
+      "-Djava.io.tmpdir=/Users/jianghaoran/github/OryxOS/.oryxos-dev/tmp"
+    ],
+    "maxHeapBytes": 4294967296,
+    "availableProcessors": 10,
+    "os": "Mac OS X",
+    "osVersion": "15.3.1",
+    "arch": "aarch64",
+    "diskType": "apfs",
+    "usableDiskBytesAtStart": 130377719808,
+    "measurement": "monotonic outer servlet Filter entry to final async onComplete; subtract only min(observed external sleep, configured external sleep); transport, framework, queue, DB and audit remain included; HTTP client roundtrip also retained",
+    "stores": [
+      "JpaSessionStore",
+      "JpaExecutionStore",
+      "JpaAuditSink"
+    ],
+    "runId": "259c364a-8f99-47f9-9e87-a03559ae7ae9"
+  },
+  "hardware": "hw.model: Mac16,1\nhw.memsize: 17179869184\nhw.physicalcpu: 10\nhw.logicalcpu: 10\n",
+  "sourceHashes": {
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java": "45896b90bf1a708f53e4f76930c1efbd5af233ffaf4b7b18f33ec7e56df6c18d",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java": "91614481484b963c5781e3a3734f3d5904d11e918533754d8b2379891a62b56c",
+    "tools/dev/test-groups.json": "51b6fd1437da02041161bb2fc30196bccfbfe236616eb5eaad2d77e699a462d7",
+    "oryxos-boot/src/test/resources/performance/load-profile.json": "ebf102d68d074d416faac44222f1ba03cd882e92d342d6501e90208938ca3416",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/SoakHarnessTest.java": "c93271544b90a2c4c1512e81339574b53032264bd876d6c0931c325f0970565d",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/KernelSoakIT.java": "03b460f5d351679da9b413fc781feb387ce1e5cb70debdd1c6c2a6d85afd4290",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/SoakTiming.java": "2e560cdf7aad831a3976b131926af4e5454b734bf0a56463bf4d741eeae617fd",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/SoakHarness.java": "cac45653b858626e7f583797bff2b33d3ab9100cda0884f17adbdc9850e0bae4"
+  },
+  "regression": {
+    "tests": 189,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "runIds": [
+      "437098ea-ba20-4cf7-a43c-73041047906d"
+    ],
+    "classes": [
+      "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+      "io.github.oryxlabs.oryxos.core.config.RuntimeConfigContractTest",
+      "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+      "io.github.oryxlabs.oryxos.core.session.SessionContractTest",
+      "io.github.oryxlabs.oryxos.core.session.SessionRuntimeContractTest",
+      "io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest",
+      "io.github.oryxlabs.oryxos.core.react.ReActContractTest",
+      "io.github.oryxlabs.oryxos.boot.HttpApiContractTest",
+      "io.github.oryxlabs.oryxos.boot.EntryPointContractTest",
+      "io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.RecordingFailureIT",
+      "io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT",
+      "io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest",
+      "io.github.oryxlabs.oryxos.boot.StructuredLogAuditTest",
+      "io.github.oryxlabs.oryxos.boot.DegradedStartupTest",
+      "io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest",
+      "io.github.oryxlabs.oryxos.boot.OryxOsApplicationTest",
+      "io.github.oryxlabs.oryxos.boot.EarlyCliLoopIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.KernelLocalIT",
+      "io.github.oryxlabs.oryxos.boot.MemoryFacadeIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.ToolIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.DiscoverySuffixIT",
+      "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+      "io.github.oryxlabs.oryxos.boot.TestDiscoveryIT",
+      "io.github.oryxlabs.oryxos.boot.CliCommandsIT",
+      "io.github.oryxlabs.oryxos.boot.SoakHarnessTest",
+      "io.github.oryxlabs.oryxos.boot.AdminPageContractTest",
+      "io.github.oryxlabs.oryxos.memory.Mem0ProtocolContractTest",
+      "io.github.oryxlabs.oryxos.memory.MemoryContractTest",
+      "io.github.oryxlabs.oryxos.cli.CliOperationsTest",
+      "io.github.oryxlabs.oryxos.cli.WorkspaceCommandsTest",
+      "io.github.oryxlabs.oryxos.cli.AgentStatusTest",
+      "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+      "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest",
+      "io.github.oryxlabs.oryxos.tool.ToolSafetyContractTest",
+      "io.github.oryxlabs.oryxos.tool.McpContractTest",
+      "io.github.oryxlabs.oryxos.tool.NotifyContractTest",
+      "io.github.oryxlabs.oryxos.tool.ToolsContractTest",
+      "io.github.oryxlabs.oryxos.storage.StorageLifecycleIntegrationTest",
+      "io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest",
+      "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest"
+    ]
+  },
+  "independentlyRecomputedInternalMillis": {
+    "count": 56599,
+    "p50": 352.932167,
+    "p95": 1128.873417,
+    "p99": 1476.884042,
+    "maximum": 2184.36475,
+    "minimum": 19.077834
+  },
+  "clientRoundtripMillis": {
+    "count": 56599,
+    "p50": 25353.25425,
+    "p95": 26129.436292,
+    "p99": 26478.924125,
+    "maximum": 33116.140708,
+    "minimum": 25019.324584
+  },
+  "clientRoundtripMinusExternalWaitMillis": {
+    "count": 56599,
+    "p50": 353.25425,
+    "p95": 1129.436292,
+    "p99": 1478.924125,
+    "maximum": 8116.140708,
+    "minimum": 19.324584
+  },
+  "shutdownDatabaseCheck": {
+    "immutablePhysicalDatabaseCountsMatch": true,
+    "counts": {
+      "sessions": 349,
+      "executions": 56619,
+      "messages": 226476,
+      "llm_calls": 113238,
+      "tool_invocations": 56619
+    }
+  },
+  "creationByPurposeMillis": {
+    "warmup": {
+      "count": 10,
+      "p50": 44.810083,
+      "p95": 44.918875,
+      "p99": 44.918875,
+      "maximum": 44.918875,
+      "minimum": 44.758041
+    },
+    "load-client": {
+      "count": 100,
+      "p50": 45.058416,
+      "p95": 55.893,
+      "p99": 56.352459,
+      "maximum": 56.656792,
+      "minimum": 0.785292
+    },
+    "creation-under-load": {
+      "count": 239,
+      "p50": 2.897125,
+      "p95": 20.62925,
+      "p99": 107.461042,
+      "maximum": 179.4075,
+      "minimum": 0.453458
+    }
+  },
+  "warmup": {
+    "tasks": 20,
+    "internalMillis": {
+      "count": 20,
+      "p50": 324.355125,
+      "p95": 362.140666,
+      "p99": 362.1505,
+      "maximum": 362.1505,
+      "minimum": 310.78975
+    },
+    "serverTotalMillis": {
+      "count": 20,
+      "p50": 25324.355125,
+      "p95": 25362.140666,
+      "p99": 25362.1505,
+      "maximum": 25362.1505,
+      "minimum": 25310.78975
+    }
+  },
+  "workload": {
+    "uniqueSessions": 100,
+    "perAgentCompletedTasks": {
+      "agent-00": 5660,
+      "agent-02": 5662,
+      "agent-09": 5659,
+      "agent-08": 5662,
+      "agent-07": 5656,
+      "agent-03": 5659,
+      "agent-06": 5660,
+      "agent-05": 5659,
+      "agent-01": 5658,
+      "agent-04": 5664
+    },
+    "minTasksPerSession": 565,
+    "maxTasksPerSession": 567,
+    "requestStartIntervalSeconds": {
+      "count": 56499,
+      "p50": 25.353093333,
+      "p95": 26.130307125,
+      "p99": 26.479356334,
+      "maximum": 33.116461792,
+      "minimum": 25.019455125
+    },
+    "clientGapMillis": {
+      "count": 56499,
+      "p50": 0.006667,
+      "p95": 0.017334,
+      "p99": 0.032333,
+      "maximum": 37.318875,
+      "minimum": 0.000583
+    }
+  },
+  "externalWaits": {
+    "stageCounts": {
+      "MODEL_1": 56619,
+      "TOOL": 56619,
+      "MODEL_2": 56619
+    },
+    "observedNanos": 1416039002129283,
+    "deductedNanos": 1415475000000000
+  },
+  "resources": {
+    "sampledSteadyHeapMinBytes": 88677120,
+    "sampledSteadyHeapMaxBytes": 1091567616,
+    "heartbeatCount": 483,
+    "lastHeartbeatAt": "2026-11-13T18:26:38.027156Z"
+  },
+  "artifacts": {
+    "samples.jsonl": {
+      "bytes": 63110390,
+      "sha256": "7360083497b5f5f712ab150f24c09bbe43db1de25743a414918dc0273b8d2e9b"
+    },
+    "external-waits.jsonl": {
+      "bytes": 28542438,
+      "sha256": "e35b40693d0249bdbf747da5de33b6828fa620dc15c6eeb423990bf1ff30d3b9"
+    },
+    "environment.json": {
+      "bytes": 1594,
+      "sha256": "f14f8a9239eb986e09a28b5cd57e33813ffa11aafc79e1d4473075ca81564044"
+    },
+    "summary.json": {
+      "bytes": 1837,
+      "sha256": "30d44b4de63e87f71118c11222ae507349a5af0e466d4a37239fb4a1a730e6bb"
+    },
+    "sessions.json": {
+      "bytes": 16062,
+      "sha256": "d27fc05cdac7b4a4486216111b903967f8bfb678c1a1864d38138af15431b9e9"
+    },
+    "source-manifest.json": {
+      "bytes": 1302,
+      "sha256": "68b1ce7977351edb047cde3b046b8b98e3b528842a1e5aabe937b00d09d1c4c5"
+    },
+    "observer.jsonl": {
+      "bytes": 133067,
+      "sha256": "39a488014f5ea005aee5e797a34bb13e921541bb27799b111048a99e1343757a"
+    },
+    "shutdown-database-check.json": {
+      "bytes": 194,
+      "sha256": "e799d794dd054754f34538a49a999e85348cdcd1337f711b1bb0413ce5c421d1"
+    },
+    "workspace/oryxos.db": {
+      "bytes": 247361536,
+      "sha256": "b81a8f1183e61c86cd481f745ba4cbdb798c30453710ebadf882c801dd2e8fc4"
+    }
+  },
+  "rawFolder": ".oryxos-dev/evidence/kernel-soak/259c364a-8f99-47f9-9e87-a03559ae7ae9",
+  "limitations": [
+    "Controlled loopback model/tool endpoints; no real model or notification acceptance",
+    "Production Boot HTTP/SQLite, driver and fixtures share one JVM; not a packaged-JAR process benchmark",
+    "T101 stays unchecked unless all original criteria pass; no T102 or later scope"
+  ],
+  "soakTestReport": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "exitCode": 1,
+    "runId": "259c364a-8f99-47f9-9e87-a03559ae7ae9",
+    "class": "io.github.oryxlabs.oryxos.boot.KernelSoakIT",
+    "method": "tenAgentsOneHundredSessionsRunFourHoursWithCompleteAudit",
+    "xmlSha256": "f3f420ad26443040e6003105f7a50fa1ccbeb84bdd03b17123d14b049720818b",
+    "archive": ".oryxos-dev/evidence/batch9-four-hour-soak"
+  }
+}

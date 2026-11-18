@@ -1,0 +1,2872 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://127.0.0.1:58525",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/api/v1/schedules/{id}/enabled" : {
+      "put" : {
+        "tags" : [ "schedule-controller" ],
+        "operationId" : "put__schedules_id_enabled",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EnabledInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ScheduleEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions" : {
+      "get" : {
+        "tags" : [ "session-controller" ],
+        "operationId" : "get__sessions",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        }, {
+          "name" : "agentName",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Agent名称"
+          }
+        }, {
+          "name" : "userId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "用户筛选"
+          }
+        }, {
+          "name" : "channel",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "http", "cli", "scheduler" ]
+          }
+        }, {
+          "name" : "archived",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SessionPageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "session-controller" ],
+        "operationId" : "post__sessions",
+        "parameters" : [ {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateSession"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SessionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{id}/messages" : {
+      "post" : {
+        "tags" : [ "session-controller" ],
+        "operationId" : "post__sessions_id_messages",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MessageInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "504" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/schedules/{id}/run" : {
+      "post" : {
+        "tags" : [ "schedule-controller" ],
+        "operationId" : "post__schedules_id_run",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "504" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runtime/recover" : {
+      "post" : {
+        "tags" : [ "runtime-controller" ],
+        "operationId" : "post__runtime_recover",
+        "parameters" : [ {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RecoverInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RuntimeStateEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/agents/{name}/invoke" : {
+      "post" : {
+        "tags" : [ "agent-controller" ],
+        "operationId" : "post__agents_name_invoke",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MessageInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          },
+          "504" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/ExecutionEnvelope"
+                  }, {
+                    "$ref" : "#/components/schemas/ErrorEnvelope"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tools" : {
+      "get" : {
+        "tags" : [ "capability-controller" ],
+        "operationId" : "get__tools",
+        "parameters" : [ {
+          "name" : "agentName",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "可选Agent过滤"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ToolPageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{id}" : {
+      "get" : {
+        "tags" : [ "session-controller" ],
+        "operationId" : "get__sessions_id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "beforeSeq",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SessionHistoryEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "session-controller" ],
+        "operationId" : "delete__sessions_id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "X-Oryx-User-Id",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 128,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SessionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/schedules" : {
+      "get" : {
+        "tags" : [ "schedule-controller" ],
+        "operationId" : "get__schedules",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        }, {
+          "name" : "agentName",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Agent名称"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SchedulePageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/schedules/{id}/executions" : {
+      "get" : {
+        "tags" : [ "schedule-controller" ],
+        "operationId" : "get__schedules_id_executions",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ScheduleEventPageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runtime/state" : {
+      "get" : {
+        "tags" : [ "runtime-controller" ],
+        "operationId" : "get__runtime_state",
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RuntimeStateEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/profiles" : {
+      "get" : {
+        "tags" : [ "capability-controller" ],
+        "operationId" : "get__profiles",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgentPageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memory" : {
+      "get" : {
+        "tags" : [ "capability-controller" ],
+        "operationId" : "get__memory",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoryViewEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/info" : {
+      "get" : {
+        "tags" : [ "system-controller" ],
+        "operationId" : "get__info",
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InfoEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health" : {
+      "get" : {
+        "tags" : [ "system-controller" ],
+        "operationId" : "get__health",
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/executions" : {
+      "get" : {
+        "tags" : [ "execution-controller" ],
+        "operationId" : "get__executions",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "default" : 100
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        }, {
+          "name" : "agentName",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Agent名称"
+          }
+        }, {
+          "name" : "sessionId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "UUID",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ExecutionPageEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/executions/{id}" : {
+      "get" : {
+        "tags" : [ "execution-controller" ],
+        "operationId" : "get__executions_id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "资源标识"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Public runtime response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Schedule" : {
+        "required" : [ "id", "agentName", "cron", "timezone", "message", "configuredPresent", "enabled", "nextRunAt", "lastExecutionId", "lastStatus" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "agentName" : {
+            "type" : "string"
+          },
+          "cron" : {
+            "type" : "string"
+          },
+          "timezone" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "configuredPresent" : {
+            "type" : "boolean"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "nextRunAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "lastExecutionId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "lastStatus" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ScheduleEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/Schedule"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ErrorDetail" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "executionId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "recordingStatus" : {
+            "type" : "string",
+            "nullable" : true,
+            "enum" : [ "COMPLETE", "INCOMPLETE", "UNKNOWN" ]
+          },
+          "details" : {
+            "type" : "object",
+            "additionalProperties" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ErrorEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/ErrorDetail"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "EnabledInput" : {
+        "required" : [ "enabled" ],
+        "type" : "object",
+        "properties" : {
+          "enabled" : {
+            "type" : "boolean"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Session" : {
+        "required" : [ "id", "identity", "kind", "status", "providerName", "model", "createdAt", "archivedAt" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "identity" : {
+            "$ref" : "#/components/schemas/Identity"
+          },
+          "kind" : {
+            "type" : "string",
+            "enum" : [ "CONVERSATION", "ONE_SHOT" ]
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "ACTIVE", "ARCHIVED" ]
+          },
+          "providerName" : {
+            "type" : "string"
+          },
+          "model" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "archivedAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Identity" : {
+        "required" : [ "channel", "userId", "agentName" ],
+        "type" : "object",
+        "properties" : {
+          "channel" : {
+            "type" : "string",
+            "enum" : [ "http", "cli", "scheduler" ]
+          },
+          "userId" : {
+            "type" : "string"
+          },
+          "agentName" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SessionEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/Session"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "CreateSession" : {
+        "required" : [ "agentName" ],
+        "type" : "object",
+        "properties" : {
+          "agentName" : {
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Execution" : {
+        "required" : [ "id", "sessionId", "identity", "status", "recordingStatus", "inFlightCount", "hasToolErrors", "startedAt", "deadlineAt", "hasUnresolvedToolErrors", "timezone" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "sessionId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "identity" : {
+            "$ref" : "#/components/schemas/Identity"
+          },
+          "scheduleId" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "RUNNING", "SUCCEEDED", "PARTIAL", "FAILED", "TIMED_OUT", "PARTIAL_RECORDING_FAILURE", "INTERRUPTED" ]
+          },
+          "stopReason" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "recordingStatus" : {
+            "type" : "string",
+            "enum" : [ "COMPLETE", "INCOMPLETE", "UNKNOWN" ]
+          },
+          "inFlightCount" : {
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "content" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "hasToolErrors" : {
+            "type" : "boolean"
+          },
+          "startedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "deadlineAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "finishedAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "llmCalls" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/LlmAttempt"
+            }
+          },
+          "toolAttempts" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ToolAttempt"
+            }
+          },
+          "error" : {
+            "$ref" : "#/components/schemas/ErrorDetail"
+          },
+          "hasUnresolvedToolErrors" : {
+            "type" : "boolean"
+          },
+          "timezone" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "LlmAttempt" : {
+        "required" : [ "attemptId", "iteration", "providerName", "model", "status", "durationMs", "inputTokens", "outputTokens", "errorCode" ],
+        "type" : "object",
+        "properties" : {
+          "attemptId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "iteration" : {
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "providerName" : {
+            "type" : "string"
+          },
+          "model" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "STARTED", "SUCCESS", "ERROR", "UNKNOWN" ]
+          },
+          "durationMs" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "nullable" : true
+          },
+          "inputTokens" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "nullable" : true
+          },
+          "outputTokens" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "nullable" : true
+          },
+          "errorCode" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ToolAttempt" : {
+        "required" : [ "attemptId", "toolCallId", "name", "attempt", "outcome", "sideEffectState", "durationMs", "safeResult", "errorCode", "resolutionStatus", "correctionOfCallId", "resolvedByCallId" ],
+        "type" : "object",
+        "properties" : {
+          "attemptId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "toolCallId" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "attempt" : {
+            "maximum" : 4,
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "outcome" : {
+            "type" : "string",
+            "enum" : [ "STARTED", "SUCCESS", "ERROR", "DENIED", "UNKNOWN", "NOT_EXECUTED" ]
+          },
+          "sideEffectState" : {
+            "type" : "string",
+            "enum" : [ "NONE", "CONFIRMED", "UNKNOWN" ]
+          },
+          "durationMs" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "nullable" : true
+          },
+          "safeResult" : {
+            "type" : "string"
+          },
+          "errorCode" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "resolutionStatus" : {
+            "type" : "string",
+            "enum" : [ "NOT_APPLICABLE", "UNRESOLVED", "RESOLVED" ]
+          },
+          "correctionOfCallId" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "resolvedByCallId" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ExecutionEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/Execution"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "MessageInput" : {
+        "required" : [ "content" ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "maxLength" : 32768,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "RuntimeState" : {
+        "required" : [ "workspaceId", "state", "storageWritable", "incidentId", "safeReason", "inFlightCount", "recoveryRequired" ],
+        "type" : "object",
+        "properties" : {
+          "workspaceId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "state" : {
+            "type" : "string",
+            "enum" : [ "READY", "PAUSED_RECORDING", "CONFIGURATION_ERROR", "STARTING" ]
+          },
+          "storageWritable" : {
+            "type" : "boolean"
+          },
+          "incidentId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "safeReason" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "inFlightCount" : {
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "recoveryRequired" : {
+            "type" : "boolean"
+          },
+          "currentIncident" : {
+            "$ref" : "#/components/schemas/IncidentDetail"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "IncidentDetail" : {
+        "required" : [ "id", "state", "detectedAt", "safeReason", "affectedExecutionIds", "knownActions", "unknownActions", "missingRecordSummary", "evidenceSources", "detailsComplete" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "state" : {
+            "type" : "string",
+            "enum" : [ "OPEN", "ACKNOWLEDGED" ]
+          },
+          "detectedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "safeReason" : {
+            "type" : "string"
+          },
+          "affectedExecutionIds" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "uuid"
+            }
+          },
+          "knownActions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IncidentAction"
+            }
+          },
+          "unknownActions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IncidentAction"
+            }
+          },
+          "missingRecordSummary" : {
+            "type" : "string"
+          },
+          "evidenceSources" : {
+            "minItems" : 1,
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "MEMORY", "FAULT_MARKER", "RUN_MARKER", "DATABASE" ]
+            }
+          },
+          "detailsComplete" : {
+            "type" : "boolean"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "IncidentAction" : {
+        "required" : [ "executionId", "attemptId", "toolCallId", "kind", "name", "outcome", "sideEffectState", "safeSummary" ],
+        "type" : "object",
+        "properties" : {
+          "executionId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "attemptId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "toolCallId" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "kind" : {
+            "type" : "string",
+            "enum" : [ "MODEL", "TOOL" ]
+          },
+          "name" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "outcome" : {
+            "type" : "string",
+            "enum" : [ "SUCCESS", "ERROR", "DENIED", "UNKNOWN", "NOT_EXECUTED" ]
+          },
+          "sideEffectState" : {
+            "type" : "string",
+            "enum" : [ "NONE", "CONFIRMED", "UNKNOWN" ]
+          },
+          "safeSummary" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "RuntimeStateEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/RuntimeState"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "RecoverInput" : {
+        "required" : [ "incidentId", "acknowledgeMissingRecords", "notes" ],
+        "type" : "object",
+        "properties" : {
+          "incidentId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "acknowledgeMissingRecords" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "notes" : {
+            "maxLength" : 2000,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ToolPage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Tool"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Tool" : {
+        "required" : [ "name", "description", "source", "available", "inputSchema", "safeRetry" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "source" : {
+            "type" : "string",
+            "enum" : [ "BUILTIN", "NATIVE", "MCP" ]
+          },
+          "available" : {
+            "type" : "boolean"
+          },
+          "inputSchema" : {
+            "type" : "object",
+            "additionalProperties" : true
+          },
+          "safeRetry" : {
+            "type" : "boolean"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ToolPageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/ToolPage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SessionPage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Session"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SessionPageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/SessionPage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SessionHistory" : {
+        "required" : [ "session", "messages", "nextBeforeSeq" ],
+        "type" : "object",
+        "properties" : {
+          "session" : {
+            "$ref" : "#/components/schemas/Session"
+          },
+          "messages" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PublicMessage"
+            }
+          },
+          "nextBeforeSeq" : {
+            "type" : "integer",
+            "format" : "int64",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "PublicMessage" : {
+        "required" : [ "id", "seq", "executionId", "turnId", "role", "content", "createdAt" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "seq" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "executionId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "turnId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "USER", "ASSISTANT", "TOOL" ]
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "toolCalls" : {
+            "type" : "array",
+            "items" : {
+              "required" : [ "id", "name", "arguments" ],
+              "type" : "object",
+              "properties" : {
+                "id" : {
+                  "type" : "string"
+                },
+                "name" : {
+                  "type" : "string"
+                },
+                "arguments" : {
+                  "type" : "object",
+                  "additionalProperties" : true
+                }
+              },
+              "additionalProperties" : false
+            }
+          },
+          "toolCallId" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "toolOutcome" : {
+            "type" : "string",
+            "nullable" : true,
+            "enum" : [ "SUCCESS", "ERROR", "DENIED", "UNKNOWN", "NOT_EXECUTED" ]
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SessionHistoryEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/SessionHistory"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SchedulePage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Schedule"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "SchedulePageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/SchedulePage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ScheduleEventPage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ScheduleEvent"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ScheduleEvent" : {
+        "required" : [ "id", "scheduleId", "executionId", "triggerKind", "status", "reason", "createdAt" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "scheduleId" : {
+            "type" : "string"
+          },
+          "executionId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "nullable" : true
+          },
+          "triggerKind" : {
+            "type" : "string",
+            "enum" : [ "SCHEDULED", "MANUAL" ]
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "DISPATCHED", "SKIPPED_OVERLAP", "SKIPPED_PAUSED", "FAILED" ]
+          },
+          "reason" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ScheduleEventPageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/ScheduleEventPage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "AgentPage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Agent"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Agent" : {
+        "required" : [ "name", "description", "availability", "providerName", "model", "tools", "notificationTargets", "scheduleIds", "loadedRevision", "bodyRevision", "safeError" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "availability" : {
+            "type" : "string",
+            "enum" : [ "AVAILABLE", "UNAVAILABLE" ]
+          },
+          "providerName" : {
+            "type" : "string"
+          },
+          "model" : {
+            "type" : "string"
+          },
+          "tools" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "notificationTargets" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "scheduleIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "loadedRevision" : {
+            "type" : "string"
+          },
+          "bodyRevision" : {
+            "type" : "string"
+          },
+          "safeError" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "AgentPageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/AgentPage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "MemoryView" : {
+        "required" : [ "backend", "core", "archival", "nextCursor", "sharedAcrossAgents" ],
+        "type" : "object",
+        "properties" : {
+          "backend" : {
+            "type" : "string",
+            "enum" : [ "md", "sqlite", "mem0" ]
+          },
+          "core" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MemoryEntry"
+            }
+          },
+          "archival" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MemoryEntry"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "sharedAcrossAgents" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          }
+        },
+        "additionalProperties" : false
+      },
+      "MemoryEntry" : {
+        "required" : [ "id", "scope", "content", "createdAt", "sourceAgentName" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "scope" : {
+            "type" : "string",
+            "enum" : [ "CORE", "ARCHIVAL" ]
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "sourceAgentName" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "MemoryViewEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/MemoryView"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Info" : {
+        "required" : [ "version", "workspaceId", "providerNames", "agentCount", "toolCount", "memoryBackend", "timezone" ],
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "type" : "string"
+          },
+          "workspaceId" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "providerNames" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "agentCount" : {
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "toolCount" : {
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "memoryBackend" : {
+            "type" : "string",
+            "enum" : [ "md", "sqlite", "mem0" ]
+          },
+          "timezone" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "InfoEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/Info"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "Health" : {
+        "required" : [ "live", "ready", "state" ],
+        "type" : "object",
+        "properties" : {
+          "live" : {
+            "type" : "boolean"
+          },
+          "ready" : {
+            "type" : "boolean"
+          },
+          "state" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "HealthEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/Health"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ExecutionPage" : {
+        "required" : [ "items", "nextCursor" ],
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Execution"
+            }
+          },
+          "nextCursor" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ExecutionPageEnvelope" : {
+        "required" : [ "code", "message", "data", "timestamp", "traceId" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/ExecutionPage"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "traceId" : {
+            "type" : "string"
+          }
+        },
+        "additionalProperties" : false
+      }
+    }
+  }
+}

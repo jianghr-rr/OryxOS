@@ -13,10 +13,15 @@ public final class OryxOsCli {
     }
 
     public static void main(String[] args) {
+        if (args.length > 1 || (args.length == 1 && !"--version".equals(args[0]))) {
+            System.err.println("This thin JAR only supports --version. Use the boot JAR for full commands.");
+            System.exit(2);
+            return;
+        }
         System.out.println("OryxOS " + version());
     }
 
-    private static String version() {
+    public static String version() {
         try (InputStream input = OryxOsCli.class.getResourceAsStream("version.properties")) {
             if (input == null) {
                 throw new IllegalStateException("Missing CLI version metadata; build with Maven first.");

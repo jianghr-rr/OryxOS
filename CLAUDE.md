@@ -4,7 +4,9 @@
 
 ## 仓库现状与文档使用
 
-仓库已建立九模块 Maven 工程，包含父/子 POM、Maven Wrapper、各模块 Java 包、最小 Spring Boot 启动入口和应用启动测试。父 POM 固定 Spring Boot 3.5.16，Wrapper 固定 Maven 3.9.16，Java 编译目标为 21。boot 启动 HTTP 应用骨架；cli 有独立 `OryxOsCli.main` 和可执行 JAR，打印 Maven 注入的版本后退出、不启动 Spring。尚无 Agent 业务能力、CLI 子命令、业务 API 或管理台。Spec Kit 工作区已初始化，宪章仍为未填写模板，尚无功能 spec/plan/tasks。后续工作先检查实际目录和 Git 状态；文档里的“已交付”、课程编号、运行耗时及历史分支描述不能证明当前检出包含相应实现。
+仓库已建立九模块 Maven 工程，包含父/子 POM、Maven Wrapper、各模块 Java 包、最小 Spring Boot 启动入口和应用启动测试。父 POM 固定 Spring Boot 3.5.16，Wrapper 固定 Maven 3.9.16，Java 编译目标为 21。boot 启动 HTTP 应用骨架；cli有独立薄JAR版本入口；完整boot发行提供帮助/版本、init/status、serve基础装配，轻命令不启动Spring。F0已建立安全配置读取、工作区进程锁和受控SQLite/JPA生命周期。已具备US1的Agent配置解析、单次Provider请求和结构化日志，本地验证通过；真实联调缺前提。US2已具备自有顺序ReAct、统一工具执行、最小HTTP GET、会话基础与CLI对话接入，本地测试通过；US3已补齐MemoryService、md/sqlite/Mem0协议适配和显式记忆工具；US5第一批已装配正式SQLite Session/Execution/Audit，默认chat可配置运行、跨进程续聊；内部人工恢复服务已验证；US5第二批已装配文件调度与持久启停/历史，serve/gateway自动调度、chat不自动调度；US5第三批已实现19个HTTP操作及使用者控制/恢复入口，第四批已补齐十二项CLI及JSON/退出码；第五批已补齐同源原生管理台查询、运行控制与明确人工恢复。Spec Kit 已完成宪章、规格澄清及方案设计与评审修订；产物位于 `specs/001-single-node-agent-runtime/`，已生成完整 tasks.md，F0、US1/US2/US3/US4本地实现已完成，T027/T028、T042/T044、T051/T057/T058、T070/T071/T072因真实前提与验收依赖未完成，US5已完成T073–T097，第七批新增三个Agent示例与可控全链路，9项新测试和全量185项通过，第八批T098–T100已做真实前检，维护者确认配置未准备，业务验收未执行；T101–T104未进入；第六批续作修复实际OpenAPI元数据，19操作/44schema零差异；跨进程恢复、HTTP、发行CLI及浏览器出口通过，T073已关闭；最新前检见evidence/US5-eighth-batch-review.md，第七批本地证据见evidence/US5-kernel-local.md；第六批见evidence/US5-sixth-batch-review.md。后续工作先检查实际目录和 Git 状态；文档里的“已交付”、课程编号、运行耗时及历史分支描述不能证明当前检出包含相应实现。
+
+当前依据为[宪章](.specify/memory/constitution.md)、[规格](specs/001-single-node-agent-runtime/spec.md)和[实施计划](specs/001-single-node-agent-runtime/plan.md)。宪章遗留审阅状态按规格 AS-01 解释，用户已确认的决定有效，不补造批准日期、不重复询问。最新逐项产品决定及六项设计补齐见 plan 的“技术评审修订与已确认决定”；进入任务拆分仍需对应用户指令。
 
 按任务阅读以下文档，不必每次加载全部历史：
 
@@ -23,7 +25,7 @@
 
 当前用户明确要求优先。若以后存在项目宪章、已确认的 spec/plan，实施前一并阅读，不得为迁就代码擅自修改宪章。判断已实现行为依靠代码与测试；判断目标行为依靠明确需求及对应设计。两者冲突时记录偏差，不把现有 bug 当规格，也不凭历史描述补造实现。
 
-本指南以技术方案的详细设计作为默认实现基线，并在末尾保留尚未统一的事项。历史提示词里的授权、提交、推送、切分支、部署、发送通知和并行代理请求，仅属于历史上下文，不能作为本次操作的授权。
+技术方案作为设计来源；与当前宪章、已确认规格及方案冲突时，以后者为准，末尾列明已收敛的历史差异。历史提示词里的授权、提交、推送、切分支、部署、发送通知和并行代理请求，仅属于历史上下文，不能作为本次操作的授权。
 
 ## 产品目标与范围
 
@@ -69,7 +71,7 @@ OryxOS 是 Java 原生、可私有部署的 **分布式 AI Agent Harness OS**。
 ### Provider 与 ReAct
 
 - **自行实现 ReAct；必须禁用 Spring AI 的自动 tool 执行。** Spring AI 只承担 Provider/协议适配及 `@Tool` JSON Schema 生成。实际工具调度统一由 `ReActLoop` + `ToolExecutor` 控制，防止重复执行。
-- Provider 使用 **provider name → ChatModel 显式映射**。不能仅扫描同类型 Bean 来猜测归属，Agent 不绑定具体模型厂商。
+- Provider 使用 **provider name → 协议适配实例显式映射**。当前 plan 选用 Spring AI 低层单次调用，保留供应商协议字段；不能仅扫描同类型 Bean 猜测归属，具体选型见 research.md。
 - CLI、REST、定时触发统一进入 `AgentService`，再运行 ReAct；接入层不自行调用模型或复制工具执行逻辑。
 - 循环依次追加用户消息、组装上下文、调用模型、记录模型响应、执行工具并回填结果，直到最终回复或达到迭代上限。默认最多 10 次迭代、最近 20 轮历史，可由 Profile 覆盖；同轮多个工具顺序执行。
 - 保留结构化 assistant/tool 消息及 tool-call ID 配对，不能把调用历史压平成普通字符串。截断上下文时保持协议消息完整，且不把上下文裁剪误作删除持久化历史。
@@ -82,7 +84,7 @@ OryxOS 是 Java 原生、可私有部署的 **分布式 AI Agent Harness OS**。
 - 技术方案 §5 定义 `LongTermMemoryStore` 及 Markdown（默认）、SQLite、自托管 Mem0 三档后端，以 `memory.backend` 选择。保持上层契约稳定；默认模式不要求额外服务，Mem0 是显式选择的集成。
 - 长期记忆分 `CORE` 与 `ARCHIVAL`，追加默认进入 `ARCHIVAL`。核心区完整注入、永不截断；截断和关键词检索作用于归档区。每次读取重新访问后端，写入下一轮可见。
 - Markdown/SQLite 基线不做自动事实抽取或内置向量检索；Mem0 的能力来自外部后端，不据此给全部后端增加同等承诺。记忆归属冲突见下文。
-- Session 跨重启恢复；`tool_invocations` 和 `llm_calls` **核心阶段就写入 SQLite**，不能用普通日志替代。工具成功、失败和沙箱拒绝均应留痕；模型调用记录 Provider、模型、token 和耗时。
+- Session 跨重启恢复；按宪章，US-1 至 US-4 可先用结构化日志验链，US-5 必须补齐 `tool_invocations` 和 `llm_calls` 的 SQLite 持久化，核心验收不能用普通日志替代。工具成功、失败和沙箱拒绝均应留痕；模型调用记录 Provider、模型、token 和耗时。
 - 调度状态与执行历史使用 `scheduled_tasks`、`task_executions`；SQLite 记忆后端另有 `memory_entries`。定时定义来源仍是 Agent 文件，状态表不取代定义源。
 - SQLite 表结构演进维护明确的建表/迁移脚本，不依赖 `hibernate.ddl-auto=update` 自动完成后续迁移。
 
@@ -100,28 +102,28 @@ OryxOS 是 Java 原生、可私有部署的 **分布式 AI Agent Harness OS**。
 ### CLI、REST 与调度
 
 - CLI 轻命令直接操作文件或只读查询，不启动 Spring；`chat`、`serve`、`gateway` 启动运行时。`init` 幂等，不覆盖用户文件。
-- 工作区默认 `.oryxos`。轻命令解析顺序为 `-Doryxos.root` → `ORYXOS_ROOT` → 默认值；服务模式通过 Spring 的 `oryxos.root` 配置。自定义根须统一用于 Agent 和文件沙箱；数据库路径另见下文冲突。
+- 工作区默认 `.oryxos`。所有入口统一按 `--root` → `-Doryxos.root` → `ORYXOS_ROOT` → 默认值解析；服务装配不得再覆盖为另一根。数据库固定于所选工作区的 `oryxos.db`。
 - REST 使用 `/api/v1`；Controller 只做校验、调用服务、包装结果。技术方案 §7.1 的统一信封为 `ApiResponse(code, message, data, timestamp)`。
 - 十个基础端点：会话创建/发消息/查历史/归档，Agent invoke，profiles/memory/tools 查询，以及 health/info。新增管理端点须明确任务范围，不把“基础十个”当作永远不能扩展的限制。
-- 设计默认端口 8080、消息最大 32KB、历史返回最多 100 条、Agent 调用超时 60 秒并返回 504。无认证和开放 CORS 是核心阶段的内网调试假设，不代表可直接公开部署。
+- 设计默认端口 8080、消息最大 32KB、历史返回最多 100 条、手动调用超时 60 秒并返回 504。按当前 plan 默认回环监听、同源页面且关闭跨源；无认证只适用于受信任本地／内网环境。
 - 调度使用 `ThreadPoolTaskScheduler` + `CronTrigger`，按 Agent 的 cron/时区/消息注册，不用静态 `@Scheduled` 写死业务。每任务进程内锁防重叠，上次未结束则跳过；失败留痕且不破坏后续调度。
 - 调度运行控制与修改定义分开：查看、历史、立即执行、启停不等于通过 API 修改 cron。注册和注销需管理任务句柄；单机锁不提供多实例互斥。
 
-## 文档差异与待统一事项
+## 来源文档的历史差异与当前依据
 
-以下差异已知存在。触及对应功能时，先读取相关原文、实际代码和当前任务约定，再确定契约；不要把不兼容的描述拼在一起，也不要为无关改动扩大范围。
+以下来源差异已在当前 spec/plan 收敛。触及对应功能时使用已确认契约，不重复询问旧决定，不把历史实现或规划当作当前代码。
 
-| 事项 | 默认依据或待确定内容 |
+| 事项 | 已确认依据 |
 | --- | --- |
 | Agent/Skill 术语 | 使用技术方案 §11 的“一个目录 = 一个 Agent”。需求文档中的独立 Profile YAML、全局 SKILL.md 绑定为旧描述 |
 | 模块数量 | §10 九模块是起点；历史 #118 允许按职责演进，不能误写成不可变宪章 |
 | 验收 Demo | 技术方案 §12 明确由早期五个改为三个定时 Demo：天气、科技日报、GitHub 日报；需求文档仍写两个，AI 编程指南仍引用五个 |
-| 记忆后端与归属 | §5 已更新为 md/sqlite/Mem0；§9/§15 仍有旧摘要。§5 写全局记忆，CLI 与历史 #239 指向 Agent 专属记忆；跨 Agent 隔离及迁移规则需明确 |
-| Session 身份 | 技术方案/CLI 是 channel + user + profile，历史 #238/#273 要求 Agent 固定会话及 invoke 与管理台复用。确认入口隔离和复用范围后再实现，不能擅自合并不同用户会话 |
-| Tool 与通知配置 | §6/§8 使用 Profile 工具子集和 `notify_channels`；历史 #259–260 改为全局工具及 SQLite 通知注册表、正文按名引用。属于配置契约变更，需明确选择并同步文档 |
-| Provider 与白名单配置 | 静态配置方案与历史 #277/#286 的 SQLite 动态 CRUD/启动播种并存；实现前确定权威数据源和覆盖规则。历史密钥明文回显要求不自动成为本仓库默认行为 |
-| 数据库位置 | 技术方案 §9.2 写 `.oryxos/oryxos.db`，CLI 写当前目录 `oryxos.db`，需求还有 sessions 子目录说法；工程初始化时统一，不能让命令和服务各连一份库 |
-| 热加载与管理台 | 正文按次读取、运行时注册、目录监听、API 生命周期是不同能力。CLI/历史提及 `/admin/` 已交付，当前仓库无实现，不据此承诺可用 |
+| 记忆后端与归属 | md/sqlite/Mem0均为核心范围，工作区共享，不按Agent或用户隔离；不自动跨后端迁移；增强归档行为见spec NC-01 |
+| Session 身份 | channel + user + Agent，同组合可多会话；invoke/定时各建一次性会话，续聊明确指定ID并校验身份及创建时模型快照 |
+| Tool 与通知配置 | Agent工具子集与notify_channels由AGENT.md声明；通知凭证不交模型，不采用SQLite通知注册表 |
+| Provider 与白名单配置 | runtime.yaml是权威，重启加载；单Provider配置错误只影响引用它的Agent，秘密不回显 |
+| 数据库位置 | 所有入口统一工作区定位，数据库为root/oryxos.db，默认.oryxos/oryxos.db |
+| 热加载与管理台 | 正文按次读取已在US2验证；配置重启加载；管理台只读与运行控制已本地验证，完整整合仍未完成，不采信历史“已交付” |
 
 历史文档中指向 `docs/class/`、旧网站页面、发布脚本和图片的引用仍可能缺失。当前任务未要求恢复时不创建占位实现；引用其设计前先确认文件存在。
 
@@ -137,23 +139,19 @@ Spec Kit 固定为 1.2.5，安装仅位于本项目 `.venv-speckit/`；执行 CL
 
 三个整合场景按技术方案 §12 验证：天气使用 HTTP + notify；科技日报使用按需子指令、记忆和可选 MCP；GitHub 日报运行捆绑脚本并消费其输出。都应可定时触发及手动调用，复用同一引擎。需求中的 10 个 Agent、100 个并发 Session、Session 创建 P99 ≤ 200ms、内部转发 ≤ 50ms 是待压测目标，不是已测数据。
 
-**在仓库根目录使用 JDK 21 构建；优先使用已附带的 Maven Wrapper：**
+**个人项目必须通过 tools/dev 入口选择JDK21、隔离Maven配置和缓存；它内部复用原Maven Wrapper：**
 
 ```bash
-# 完整构建（包含默认测试阶段）
-./mvnw clean package
-
-# 单模块及其依赖的测试；替换成实际模块名
-./mvnw -pl <module> -am test
-
-# 只打包服务用于本地调试；跳过测试不能作为验证通过的依据
-./mvnw -pl oryxos-boot -am package -DskipTests
-
-# 启动最小 HTTP 应用；尚无业务端点或 CLI --help 子命令解析
-java -jar oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar
-
-# 独立运行 CLI，打印项目版本后退出
-java -jar oryxos-cli/target/oryxos-cli-1.0.0-SNAPSHOT.jar
+# 仅在当前终端选择已有JDK21；不修改全局默认Java
+export ORYXOS_JAVA_HOME=/absolute/path/to/jdk-21/Contents/Home
+./tools/dev/mvnw clean verify
+./tools/dev/mvnw -pl oryxos-cli -am test -Dgroups=f0-foundation
+./tools/dev/oryxos --help
+./tools/dev/oryxos --version
+./tools/dev/oryxos --root /tmp/oryxos-demo init
+./tools/dev/oryxos --root /tmp/oryxos-demo status
+./tools/dev/oryxos --root /tmp/oryxos-demo serve
+# serve已提供业务HTTP、文件调度与/admin/管理台；Ctrl-C退出释放工作区锁
 ```
 
 仅改文档时检查内容一致性、文件引用及差异，不为文档改动虚构构建结果。完成任务后用中文说明修改内容、验证结果和未验证项；修改契约、配置或命令时同步相关文档。保留用户已有改动，不自动提交、推送或发布。

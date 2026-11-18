@@ -1,0 +1,2136 @@
+{
+  "result": "FAILED_SHORT_GATE",
+  "t101Complete": false,
+  "newFourHourRun": "NOT_STARTED_SHORT_GATE_FAILED",
+  "priorFourHourRun": "1f61d38e-5854-4701-b46f-cb6b3d1ba4ad (prior implementation; unchanged failed evidence)",
+  "shortRuns": [
+    {
+      "label": "transport and group timing",
+      "runId": "b494a4ef-5571-4948-99cd-9dcceea25456",
+      "summary": {
+        "fatalFailure": null,
+        "phase": "FINISHED",
+        "acceptanceRun": false,
+        "result": "DIAGNOSTIC_ONLY_NOT_T101",
+        "startedAt": "2026-11-16T09:04:18.174722Z",
+        "startedAtShanghai": "2026-11-16T17:04:18.174722+08:00[Asia/Shanghai]",
+        "elapsedSeconds": 126.279471,
+        "requiredSeconds": 14400,
+        "agents": 10,
+        "clients": 100,
+        "activeClients": 0,
+        "peakInFlightClients": 100,
+        "attempts": 500,
+        "completed": 500,
+        "failedTasks": 0,
+        "throughputPerSecond": 3.95947176560472,
+        "creation": {
+          "p50Millis": 3.719084,
+          "p95Millis": 7.746375,
+          "count": 101,
+          "p99Millis": 8.446459,
+          "maxMillis": 8.920875,
+          "over50Millis": 0
+        },
+        "internal": {
+          "p50Millis": 224.821625,
+          "p95Millis": 329.133125,
+          "count": 500,
+          "p99Millis": 339.857958,
+          "maxMillis": 342.726042,
+          "over50Millis": 500
+        },
+        "ingressIncludedInternal": {
+          "p50Millis": 241.44,
+          "p95Millis": 345.43425,
+          "count": 500,
+          "p99Millis": 354.291042,
+          "maxMillis": 357.213125,
+          "over50Millis": 500
+        },
+        "serverTotal": {
+          "p50Millis": 25224.821625,
+          "p95Millis": 25329.133125,
+          "count": 500,
+          "p99Millis": 25339.857958,
+          "maxMillis": 25342.726042,
+          "over50Millis": 500
+        },
+        "criteria": {
+          "sessionCreateP99AtMost200ms": true,
+          "fourHours": false,
+          "stabilityAndAudit": true,
+          "everyTaskIncludingIngressAtMost50ms": false,
+          "everyTaskInternalAtMost50ms": false
+        },
+        "violations": 0,
+        "firstViolations": [],
+        "audit": {
+          "corruptOrForeignRecords": 0,
+          "badToolCallPairing": 0,
+          "verified": true,
+          "rows": {
+            "sessions": 111,
+            "executions": 520,
+            "messages": 2080,
+            "llm_calls": 1040,
+            "tool_invocations": 520,
+            "overlappingExecutionIntervals": 0,
+            "activeSessionsAtEnd": 100
+          },
+          "missingAcknowledgedWrites": 0
+        },
+        "heapUsedBytes": 154134448,
+        "processCpuNanos": 18625480000,
+        "committedVirtualMemoryBytes": 428424396800,
+        "gcCount": 48,
+        "gcMillis": 240,
+        "runtimeInFlight": 0
+      },
+      "shutdownDatabaseCheck": {
+        "integrity": "ok",
+        "foreignKeyViolations": 0,
+        "counts": {
+          "sessions": 111,
+          "executions": 520,
+          "messages": 2080,
+          "llm_calls": 1040,
+          "tool_invocations": 520
+        },
+        "allAcknowledgedExecutionIdsPresent": true,
+        "allFinalAndComplete": true,
+        "walBytes": 0,
+        "mode": "ro&immutable=1 after JVM exit"
+      },
+      "sourceFiles": 314
+    },
+    {
+      "label": "owned virtual request body workers; JFR attached",
+      "runId": "a375aad2-a0d7-44ce-a490-74012cc0986c",
+      "summary": {
+        "fatalFailure": null,
+        "phase": "FINISHED",
+        "acceptanceRun": false,
+        "result": "DIAGNOSTIC_ONLY_NOT_T101",
+        "startedAt": "2026-11-16T09:13:37.845409Z",
+        "startedAtShanghai": "2026-11-16T17:13:37.845409+08:00[Asia/Shanghai]",
+        "elapsedSeconds": 125.977042041,
+        "requiredSeconds": 14400,
+        "agents": 10,
+        "clients": 100,
+        "activeClients": 0,
+        "peakInFlightClients": 100,
+        "attempts": 500,
+        "completed": 500,
+        "failedTasks": 0,
+        "throughputPerSecond": 3.9689771397972016,
+        "creation": {
+          "p95Millis": 28.516584,
+          "count": 101,
+          "p99Millis": 31.163667,
+          "maxMillis": 32.289083,
+          "over50Millis": 0,
+          "p50Millis": 7.065042
+        },
+        "internal": {
+          "p95Millis": 248.560208,
+          "count": 500,
+          "p99Millis": 261.076042,
+          "maxMillis": 271.300667,
+          "over50Millis": 500,
+          "p50Millis": 156.53275
+        },
+        "ingressIncludedInternal": {
+          "p95Millis": 265.767292,
+          "count": 500,
+          "p99Millis": 282.959708,
+          "maxMillis": 290.197084,
+          "over50Millis": 500,
+          "p50Millis": 178.0095
+        },
+        "serverTotal": {
+          "p95Millis": 25248.560208,
+          "count": 500,
+          "p99Millis": 25261.076042,
+          "maxMillis": 25271.300667,
+          "over50Millis": 500,
+          "p50Millis": 25156.53275
+        },
+        "criteria": {
+          "sessionCreateP99AtMost200ms": true,
+          "fourHours": false,
+          "stabilityAndAudit": true,
+          "everyTaskIncludingIngressAtMost50ms": false,
+          "everyTaskInternalAtMost50ms": false
+        },
+        "violations": 0,
+        "firstViolations": [],
+        "audit": {
+          "badToolCallPairing": 0,
+          "verified": true,
+          "rows": {
+            "sessions": 111,
+            "executions": 520,
+            "messages": 2080,
+            "llm_calls": 1040,
+            "tool_invocations": 520,
+            "overlappingExecutionIntervals": 0,
+            "activeSessionsAtEnd": 100
+          },
+          "missingAcknowledgedWrites": 0,
+          "corruptOrForeignRecords": 0
+        },
+        "heapUsedBytes": 140820552,
+        "processCpuNanos": 22028481000,
+        "committedVirtualMemoryBytes": 428476514304,
+        "gcCount": 52,
+        "gcMillis": 166,
+        "runtimeInFlight": 0
+      },
+      "shutdownDatabaseCheck": {
+        "integrity": "ok",
+        "foreignKeyViolations": 0,
+        "counts": {
+          "sessions": 111,
+          "executions": 520,
+          "messages": 2080,
+          "llm_calls": 1040,
+          "tool_invocations": 520
+        },
+        "allAcknowledgedExecutionIdsPresent": true,
+        "allFinalAndComplete": true,
+        "walBytes": 0,
+        "mode": "ro&immutable=1 after JVM exit"
+      },
+      "sourceFiles": 315
+    },
+    {
+      "label": "isolated external service workers",
+      "runId": "fdee48c9-7d70-4c2d-85f3-c423e328ec16",
+      "summary": {
+        "fatalFailure": null,
+        "phase": "FINISHED",
+        "acceptanceRun": false,
+        "result": "DIAGNOSTIC_ONLY_NOT_T101",
+        "startedAt": "2026-11-16T09:20:50.098247Z",
+        "startedAtShanghai": "2026-11-16T17:20:50.098247+08:00[Asia/Shanghai]",
+        "elapsedSeconds": 126.138133459,
+        "requiredSeconds": 14400,
+        "agents": 10,
+        "clients": 100,
+        "activeClients": 0,
+        "peakInFlightClients": 100,
+        "attempts": 500,
+        "completed": 500,
+        "failedTasks": 0,
+        "throughputPerSecond": 3.9639083462616815,
+        "creation": {
+          "over50Millis": 0,
+          "maxMillis": 33.42,
+          "p99Millis": 30.425083,
+          "count": 101,
+          "p95Millis": 29.41375,
+          "p50Millis": 26.195833
+        },
+        "internal": {
+          "over50Millis": 500,
+          "maxMillis": 264.177917,
+          "p99Millis": 252.978459,
+          "count": 500,
+          "p95Millis": 244.965417,
+          "p50Millis": 201.652666
+        },
+        "ingressIncludedInternal": {
+          "over50Millis": 500,
+          "maxMillis": 291.442167,
+          "p99Millis": 288.027125,
+          "count": 500,
+          "p95Millis": 279.669125,
+          "p50Millis": 229.159583
+        },
+        "serverTotal": {
+          "over50Millis": 500,
+          "maxMillis": 25264.177917,
+          "p99Millis": 25252.978459,
+          "count": 500,
+          "p95Millis": 25244.965417,
+          "p50Millis": 25201.652666
+        },
+        "criteria": {
+          "everyTaskInternalAtMost50ms": false,
+          "everyTaskIncludingIngressAtMost50ms": false,
+          "stabilityAndAudit": true,
+          "fourHours": false,
+          "sessionCreateP99AtMost200ms": true
+        },
+        "violations": 0,
+        "firstViolations": [],
+        "audit": {
+          "missingAcknowledgedWrites": 0,
+          "rows": {
+            "sessions": 111,
+            "executions": 520,
+            "messages": 2080,
+            "llm_calls": 1040,
+            "tool_invocations": 520,
+            "overlappingExecutionIntervals": 0,
+            "activeSessionsAtEnd": 100
+          },
+          "verified": true,
+          "badToolCallPairing": 0,
+          "corruptOrForeignRecords": 0
+        },
+        "heapUsedBytes": 104481176,
+        "processCpuNanos": 18750391000,
+        "committedVirtualMemoryBytes": 428625100800,
+        "gcCount": 45,
+        "gcMillis": 157,
+        "runtimeInFlight": 0
+      },
+      "shutdownDatabaseCheck": {
+        "integrity": "ok",
+        "foreignKeyViolations": 0,
+        "counts": {
+          "sessions": 111,
+          "executions": 520,
+          "messages": 2080,
+          "llm_calls": 1040,
+          "tool_invocations": 520
+        },
+        "allAcknowledgedExecutionIdsPresent": true,
+        "allFinalAndComplete": true,
+        "walBytes": 0,
+        "mode": "ro&immutable=1 after JVM exit"
+      },
+      "sourceFiles": 317
+    },
+    {
+      "label": "isolated external service and load driver; no JFR",
+      "runId": "c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7",
+      "summary": {
+        "fatalFailure": null,
+        "phase": "FINISHED",
+        "acceptanceRun": false,
+        "result": "DIAGNOSTIC_ONLY_NOT_T101",
+        "startedAt": "2026-11-16T09:28:22.456073Z",
+        "startedAtShanghai": "2026-11-16T17:28:22.456073+08:00[Asia/Shanghai]",
+        "elapsedSeconds": 125.87698575,
+        "requiredSeconds": 14400,
+        "agents": 10,
+        "clients": 100,
+        "activeClients": 0,
+        "peakInFlightClients": 100,
+        "attempts": 500,
+        "completed": 500,
+        "failedTasks": 0,
+        "throughputPerSecond": 3.9721319748872363,
+        "creation": {
+          "over50Millis": 0,
+          "p50Millis": 4.072875,
+          "p95Millis": 13.547125,
+          "count": 101,
+          "p99Millis": 15.291125,
+          "maxMillis": 16.69175
+        },
+        "internal": {
+          "over50Millis": 500,
+          "p50Millis": 151.161792,
+          "p95Millis": 189.585083,
+          "count": 500,
+          "p99Millis": 199.531125,
+          "maxMillis": 201.7955
+        },
+        "ingressIncludedInternal": {
+          "over50Millis": 500,
+          "p50Millis": 158.333417,
+          "p95Millis": 196.981375,
+          "count": 500,
+          "p99Millis": 206.289917,
+          "maxMillis": 207.072667
+        },
+        "serverTotal": {
+          "over50Millis": 500,
+          "p50Millis": 25151.161792,
+          "p95Millis": 25189.585083,
+          "count": 500,
+          "p99Millis": 25199.531125,
+          "maxMillis": 25201.7955
+        },
+        "criteria": {
+          "everyTaskIncludingIngressAtMost50ms": false,
+          "everyTaskInternalAtMost50ms": false,
+          "sessionCreateP99AtMost200ms": true,
+          "fourHours": false,
+          "stabilityAndAudit": true
+        },
+        "violations": 0,
+        "firstViolations": [],
+        "audit": {
+          "rows": {
+            "sessions": 111,
+            "executions": 520,
+            "messages": 2080,
+            "llm_calls": 1040,
+            "tool_invocations": 520,
+            "overlappingExecutionIntervals": 0,
+            "activeSessionsAtEnd": 100
+          },
+          "missingAcknowledgedWrites": 0,
+          "corruptOrForeignRecords": 0,
+          "badToolCallPairing": 0,
+          "verified": true
+        },
+        "heapUsedBytes": 164239744,
+        "processCpuNanos": 18535186000,
+        "committedVirtualMemoryBytes": 428902825984,
+        "gcCount": 39,
+        "gcMillis": 177,
+        "runtimeInFlight": 0
+      },
+      "shutdownDatabaseCheck": {
+        "integrity": "ok",
+        "foreignKeyViolations": 0,
+        "counts": {
+          "sessions": 111,
+          "executions": 520,
+          "messages": 2080,
+          "llm_calls": 1040,
+          "tool_invocations": 520
+        },
+        "allAcknowledgedExecutionIdsPresent": true,
+        "allFinalAndComplete": true,
+        "walBytes": 0,
+        "mode": "ro&immutable=1 after JVM exit"
+      },
+      "sourceFiles": 317
+    }
+  ],
+  "finalRunId": "c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7",
+  "finalRawFolder": ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7",
+  "finalSummary": {
+    "fatalFailure": null,
+    "phase": "FINISHED",
+    "acceptanceRun": false,
+    "result": "DIAGNOSTIC_ONLY_NOT_T101",
+    "startedAt": "2026-11-16T09:28:22.456073Z",
+    "startedAtShanghai": "2026-11-16T17:28:22.456073+08:00[Asia/Shanghai]",
+    "elapsedSeconds": 125.87698575,
+    "requiredSeconds": 14400,
+    "agents": 10,
+    "clients": 100,
+    "activeClients": 0,
+    "peakInFlightClients": 100,
+    "attempts": 500,
+    "completed": 500,
+    "failedTasks": 0,
+    "throughputPerSecond": 3.9721319748872363,
+    "creation": {
+      "over50Millis": 0,
+      "p50Millis": 4.072875,
+      "p95Millis": 13.547125,
+      "count": 101,
+      "p99Millis": 15.291125,
+      "maxMillis": 16.69175
+    },
+    "internal": {
+      "over50Millis": 500,
+      "p50Millis": 151.161792,
+      "p95Millis": 189.585083,
+      "count": 500,
+      "p99Millis": 199.531125,
+      "maxMillis": 201.7955
+    },
+    "ingressIncludedInternal": {
+      "over50Millis": 500,
+      "p50Millis": 158.333417,
+      "p95Millis": 196.981375,
+      "count": 500,
+      "p99Millis": 206.289917,
+      "maxMillis": 207.072667
+    },
+    "serverTotal": {
+      "over50Millis": 500,
+      "p50Millis": 25151.161792,
+      "p95Millis": 25189.585083,
+      "count": 500,
+      "p99Millis": 25199.531125,
+      "maxMillis": 25201.7955
+    },
+    "criteria": {
+      "everyTaskIncludingIngressAtMost50ms": false,
+      "everyTaskInternalAtMost50ms": false,
+      "sessionCreateP99AtMost200ms": true,
+      "fourHours": false,
+      "stabilityAndAudit": true
+    },
+    "violations": 0,
+    "firstViolations": [],
+    "audit": {
+      "rows": {
+        "sessions": 111,
+        "executions": 520,
+        "messages": 2080,
+        "llm_calls": 1040,
+        "tool_invocations": 520,
+        "overlappingExecutionIntervals": 0,
+        "activeSessionsAtEnd": 100
+      },
+      "missingAcknowledgedWrites": 0,
+      "corruptOrForeignRecords": 0,
+      "badToolCallPairing": 0,
+      "verified": true
+    },
+    "heapUsedBytes": 164239744,
+    "processCpuNanos": 18535186000,
+    "committedVirtualMemoryBytes": 428902825984,
+    "gcCount": 39,
+    "gcMillis": 177,
+    "runtimeInFlight": 0
+  },
+  "shutdownDatabaseCheck": {
+    "integrity": "ok",
+    "foreignKeyViolations": 0,
+    "counts": {
+      "sessions": 111,
+      "executions": 520,
+      "messages": 2080,
+      "llm_calls": 1040,
+      "tool_invocations": 520
+    },
+    "allAcknowledgedExecutionIdsPresent": true,
+    "allFinalAndComplete": true,
+    "walBytes": 0,
+    "mode": "ro&immutable=1 after JVM exit"
+  },
+  "sourceHashes": {
+    "mvnw": "cae96cef89ebea3531221f4ae17c23cf8edf67d00eae8306d4186ae1bbed4d02",
+    "oryxos-boot/pom.xml": "c8e27072b89e5ba97c968f3762a5cc6c69eaef65f0948c2c369388042b48c463",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/OryxOsApplication.java": "8d334e641b476befaaf0a5520ff69a01f4b6526e5343d0b1ace13387c0b547c3",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/audit/StructuredLogAuditSink.java": "3159567470bd81e2f73e8e35b4d0d23e6f41cc1a830b59475f4dc876443361ea",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/AgentRuntimeConfiguration.java": "ee5974f537b9dd21196186a09fddbefd785b66d0dea847c9efc34fcb02b3cb91",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/McpConfiguration.java": "6163d486205c4c5fe2bc881029c886b922c81d2d458804f8a3018a129f3c1498",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryConfiguration.java": "2469e7dfebd6c6112256eb496352e2ef69747877f7e7497f6ad40f1a6909d97b",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryToolConfiguration.java": "c9fa787aa3505a7de57250f6059d36b005818cf98f5befca432699ea1c6b426d",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/PersistentRuntimeConfiguration.java": "73c81902f5668b383d101fd063296bdde38891e202c3e4fd181815c313156bb2",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ProviderConfiguration.java": "68e42ac58636d03f04967e853c2daffe4371b83ae0fce897089d4dcb70457aa4",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/RuntimeConfiguration.java": "3a7509c950c7b34ebc8da75a47d641162c34ace8bf9214081629c1a694c31fba",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ScheduleConfiguration.java": "9867f29da4539614625d23d01ddfeb9e45d9ab0b2233e299127c31caec7b9495",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/StorageLifecycle.java": "c0ba438174ab365920e61b244cb98c9619d640030dcd81feca5e01e5e149a7b5",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ToolConfiguration.java": "abc1b853681aad2ae3a257d98ef30f351b83ccead7f00669d9b146aa2594a42e",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/WebApiConfiguration.java": "081a41b36ba125876d87e6fb8a5bb2476aab0007c5090a1976cef6137ec08b1e",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootCliQueries.java": "69b3a71aedb72201aeb51c4ba19810d8ab0573d4fb59af91a55c6f2ff53e664b",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootRuntimeLauncher.java": "bd631fc58774ea517e39a79e4e03af47ac1854fb47e9d3d91b97a080b0f6b0d0",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java": "ecb7a76e1723ebc49c7358a51ce49c6f89915bf7c60af8fe91ec3a8238317a1f",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java": "2ffc5b976cae89cca409f83cc4debdea92d4ad79cbb445b9b681cefa205ca6ce",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeRecoveryService.java": "116ac5c3217fef2e75ccea509af23c4aa38c78aeee75c0310e0053c1183874fd",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeStartupCheck.java": "5b59d7fbbe315dbd52f51d34436c73096a48e9776ff481d1329f3bff4ed5cd5f",
+    "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/schedule/SpringScheduleAdapter.java": "277954ec3bba5f62ecbbbc1b3dfea69f38069ee27ed60fe2ff2051f8910d5964",
+    "oryxos-boot/src/main/resources/logback-spring.xml": "bbc114902e059d2d7f02e6035e0153ccc1e8bce04d9094471a4fc0b555143a0d",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/AdminPageContractTest.java": "8be0c5e9645164ed8dbd69f7b8275110857684144518b778001c8d742aba63c4",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/CliCommandsIT.java": "dfa008997fc27738e0349f6b554334803a6826b74e6b1251463d8ad4c6a81138",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/CliRuntimeContractTest.java": "ded341aaadc97242006aee2dc622cb6e529a8e73c8df1dc1e7233ded722f9319",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/ConfiguredMcpIT.java": "4c85ca308aebe3302d1b2d7aa9cde6560ec467b3a5dc4b017737cb5e9321ffb5",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/CrossProcessAcceptanceIT.java": "8d05b8f7ac8a3c3b5680dc5b369fd45be83efee582f13fd8b0846e5df0c897dd",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/DegradedStartupTest.java": "825f70b4473c69bee60e61022f5092c8cbed2d08ae0071d21c05d44616f9c75e",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/DiscoverySuffixIT.java": "175e6d8c6dbf800f237f21f10ae58810b554133f5a162547658e948c9b405526",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/EarlyCliLoopIntegrationTest.java": "2c0781685bb6b81737738c018bd35ad0770afa12fb6a009a87474fc7e3700630",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/EntryPointContractTest.java": "5a2432e662cca07ccba32c9ea5b3b582f21885b090248df6047599247a695906",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/EvidenceLogTest.java": "08f468f17b49a7e862f264aad85bf5c7a0c5a0e0440aca13ebc08cb6887a549c",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/ExternalFixtureIsolationTest.java": "d0f744a0d0760184caae336343b4be0e9bea91385c6b25c0006e1e8e4ee3f8ac",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/HttpApiContractTest.java": "f92d110ec0c11ddf9d7ff6f9bf04e8ec3ce2609c4ce5e3e7188ab949d0b5ee14",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/HttpReadPathTest.java": "a6af385a5a62783b42b15d33dbca1c3eef65377ae5cb27d5b20c87b6ea699a03",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/KernelLocalIT.java": "0aaf6e85209a446253a12860c6f12ab6f5a0018c9f91b5bf1c806abe8ff372c5",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/KernelSoakIT.java": "03b460f5d351679da9b413fc781feb387ce1e5cb70debdd1c6c2a6d85afd4290",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/MemoryFacadeIntegrationTest.java": "39630da393043e64818df75479947f5fad921650511a87539578d8c4198e7012",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/OryxOsApplicationTest.java": "66099bd0833257c29f087ed5fba72ecd72cf6799b57450053c19f38245e92943",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/PublishedOpenApiTest.java": "1c64ea17f3952fa2b762d2f6f9f4300414fd2131d253a8b6ef02b99db1c29bd4",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/RealNotificationIT.java": "1275010248bcce97e557db96b52b86ca2207dea4e1d1872c3aa3aaa5216c6cfd",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/RealProviderToolLoopIT.java": "8cb5d004f7d4c481fa3cadcad208cc0cd42bd35528ab18994c4ae2de3468420f",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/RecordingFailureIT.java": "70767ab141a327356e7a366b05d98f02cc202eb42d77395e02cdd05439ea3bb1",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/RestartRecoveryIT.java": "fc2e7dfd7e09373ac9837564929ca06a13ce96b0ca2ad90c6feab5182363a0d0",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/ScheduleIntegrationTest.java": "484962eed90cc3d1e392baab485d5006d9cac8f58d90df57279d5798a1eb2d6f",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/ShortPerformanceGateIT.java": "17fdd164b41ce8fcc63db62bd7898d2d3d2994eb308393ae9748b48579d5a3df",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/SoakDiagnosticIT.java": "63acab59a0da0fb006a8093d06b526a9e0ce2467e6f3f42e4c0ab6e6beb23b93",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/SoakHarnessTest.java": "490e82d0c3e2b428102748d6cf13a460a9568223575e3762ffd7833f32a2197a",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/StructuredLogAuditTest.java": "d1ca3480b67f1770830ece6eaeaa1090061c4f07e410abd4f827f818ac4f808a",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/TestDiscoveryIT.java": "3f15402bdc3644165670ae6b4501256e5f5feebc61719fd0380c6f3eff4d96f7",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/ToolIntegrationTest.java": "18b07944fbcb706674e762e96c71078f847795feed24813539a78e835b725904",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/AdminBrowserProbe.java": "eaf4c6d251bf474c03fbf9d1107b878a34d9d3073eac62ddc0b2e7b666a21f62",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/EarlyRuntimeConfiguration.java": "eca9a9c3044613bdcb604cc082598292089ea3bddfe304df32a942e2d9712239",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/EmptyMemoryFacade.java": "4eb0784a62b979368aa1c4f087b19356b39079f9f0cefb0079e1d2a801089819",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/ExternalFixtureExecutor.java": "ab570c9123df5e3875437edaf331f2b966aacf85e29cb5108dde69418ab92f04",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/KernelFixture.java": "84e96691711d4e3c37bf633ab6d0685157452136e59ac49589724f1e170dc0e3",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/LocalHttpFixture.java": "b4b6adbaba8a2745e18c22b205c7df605d25b64c0895d612c494bdb8d4c96e81",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/MemoryFixture.java": "917d910a13759cc1ea6edf39673399f352784d469983276d3ac403cbf19514d0",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/PersistentFixture.java": "2973dc0fb89ed283671c6de3f8a6f8568c6272180204f0e35f0583400fb8aa86",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/PersistentRuntimeProbe.java": "cd7f0e2d9b5a4fb4a7001bebf61c10be1e14397d50c3db2776159c871a06c2b5",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/RealToolProbe.java": "f95b728d2c09a7f2b2c52bac3fa588f456fac66725a7fca9f5c0356ed25f9b51",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/RuntimeProcess.java": "950ef5d7676f76b40e3b8b4ed31fa89e842662937dd73fd7ff81a8714e66c396",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/ScheduleRuntimeProbe.java": "ff17b2c2280537624cdc40a0cbf9b3af7c5ca77402d15cc6aba78377601ac92d",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/SoakEvidenceLog.java": "e5310d564d00904f3f41c558715541f1f6af8ce5642b975fc87a9a4db7e4460b",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/SoakHarness.java": "f82fc64b7a948c94ce2b5f1675f3556cf9b1a479fd3a6c1ebc8bf8fe9bc2af89",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/SoakTiming.java": "7b56665e5d1d3991653aab6401687b5e23668cf912e8743a52af075267da8f4c",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/TransientExecutionStore.java": "47d71a9a9c7a838a8cfc624daa99e1eb7a359054462813e3c49516913f0d81f7",
+    "oryxos-boot/src/test/java/io/github/oryxlabs/oryxos/boot/support/TransientSessionStore.java": "4da86bc5d5b4a3cb77e82de8e884ad89a9366e06dad1f2fd96dc4b8fa70872c2",
+    "oryxos-boot/src/test/resources/faults/recording-failure.json": "e8eeb37fa20901d42020358e67b61db62a85b3b3f197b1fed9dc2e5dddf6ec76",
+    "oryxos-boot/src/test/resources/kernel/scenarios.json": "ca78675c89eb834790d47e9796a95ca53d383bdd3a3583b8c0215ff1baa55fbf",
+    "oryxos-boot/src/test/resources/performance/load-profile.json": "ebf102d68d074d416faac44222f1ba03cd882e92d342d6501e90208938ca3416",
+    "oryxos-channel-cli/pom.xml": "5bef9c700d4f8c13bd9eb80597045eed4cfa2a12d3ff2abf02d4ada6ed0aa644",
+    "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliChannelAdapter.java": "eb0b9b33124b572dfba191cc55926515c30b1dc220b400956670244924eb893f",
+    "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliExecutionAwaiter.java": "cb669b8c759808038302b0bcc2dfef9b75e21779db754fa2e79f934900ac0495",
+    "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliOutput.java": "0ebb00ce1267cd6cc3fe92406a1f2e7ca86f19b493891b480e4306be581e361d",
+    "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/package-info.java": "9f87546b76b2e399862f2705115d8be2ffa753aab216c5abdaa46aa100826926",
+    "oryxos-cli/pom.xml": "aba2237727b09c862bd0f75a97d601d374e557fc79c6ec8449eb73f2cf233a92",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/OryxCommandLine.java": "b0f0d6600d7ac320d0f4dc24c31e5fd40a6ab289a24fb9bd381b9508e0a09d03",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/OryxOsCli.java": "d4641122220900f76c3232b4613d58d92fb480ecfccba536650dcd769c64eb06",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ChatCommand.java": "741344002614377e6469143b7875fe5a0a80c364db964f3134bc9fdcb8400abe",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/GatewayCommand.java": "9b896dae24f092475ffcfca09665ebfc0127572e5e47fdbf33b8dd707a447bd2",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/InitCommand.java": "494d0cc67974f6256798d27ea84ffc35dec644329c3529518036952f4a10c625",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileCommand.java": "9dde7103653f8f785aa32d836d8681fbcecb390cdd6813b7c9bd879f01fac06f",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java": "979f3d169605e1ea22ee1d906913462c75d78784a6bd6c2c7d7a14ccd10bda57",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProviderListCommand.java": "9a8454d058b582d974053019534ec4536b46366477583a09c0b424b1493638e3",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ServeCommand.java": "afe3a02e168b01017796515d57a754e8c372fd6d0c731a598710b6e8bd80a7d4",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/SessionListCommand.java": "8f4d114b28c785b69ed62a6b7f857bcc224572c3e5ea79f5eee4b2f3261cf6e7",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/StatusCommand.java": "89b2f9d1357b59b0488d4512d58e2ad620efcbb773ea157992e5d15c8e89ad02",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ToolListCommand.java": "6c53d243549a1f63ede3741e0fc18597736cb38b2e76e7fdca0161e7ad09b51d",
+    "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/package-info.java": "85ce65e4eb50e92687523c3ecba928bcfb283b41e6df880d27cf87f655dfdbe0",
+    "oryxos-cli/src/test/java/io/github/oryxlabs/oryxos/cli/AgentStatusTest.java": "2a5597f533b49403eec3df1602b047acfde51fb7b61db686d13bb0a3a1e067d4",
+    "oryxos-cli/src/test/java/io/github/oryxlabs/oryxos/cli/CliOperationsTest.java": "cfe37a85cfd6e756d7c9a24d07d0e4be2401ec9ba29fbc2ea4ea3112e9821402",
+    "oryxos-cli/src/test/java/io/github/oryxlabs/oryxos/cli/WorkspaceCommandsTest.java": "83e42c708b64fe311f1b1a92c492441193cda1cc917ccd0aacfdd7c0219f8e93",
+    "oryxos-core/pom.xml": "1414a73a1dd210545bdd0518c8b06af46bf6bd8e9f560b7fa2a0738a90891c5b",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java": "c4ca3fe20b65266bd384c82944f0152fd5a0cd05f944475513779e5cdb6fcd54",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java": "f0de7ab664d4b5591c6635332f2595f0a7ee3060b2f6e2a135470226720b577b",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentProfile.java": "fc9777a06c93e29a419f15f1fd1762790602eb4afb59f046e4d4425218093873",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java": "24ebc953f4d981c020ac8a6b66c5a519fc00be8fcea5f7c50afa200b11358079",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java": "c0b87bc8c6761d4a2415cdf289186046c6e5b988c2237a5ec1b64bf2b327036f",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/audit/AuditSink.java": "2da44e9e14ec0e1391a87f83bf768faaf637f518221f50b1180a4c2846b7df20",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/audit/ModelCallRecord.java": "b53a94d02c39cdf3892d455ed8587aea51ab5908a0d4e5e868e0d0af0924bd86",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/audit/ToolCallRecord.java": "0e0fd830ec1696ba3259aff6f27bd9ef94d204a1045798d76ec1cf36f2f765af",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/ConfigDiagnostics.java": "d32a1206fa54437ed2d9ae41291237a2b017b3dfe81a584b268ebc3c7f791a60",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/ProviderDefinition.java": "674049da26773c41e16bdf5b445e3914eda3454bd8fb0bf17e653a14168e8eb7",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfig.java": "6d68db58ebaf91751b77d309dcc5f6783c5326ddfbbf41c26db8e954ae925f4d",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigLoader.java": "0ecb823cb2bb7e8ae6ef459a88f479a56c3a9d2c2f5191af045f2331d07f92ee",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java": "30f044692b5b0d0f46af54117fc6ce93a5e1c3e67a6a6adfafe720fee98c8d70",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java": "4ac62b9836a0248551868afdba4f608406051b87d24dd7e11a12b48b30fed1aa",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/PromptBuilder.java": "c1e1bcd51dd75d7c1e00aa7082df0426441d44f734013cae3d842f402e728cbf",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/error/OryxError.java": "11f3b77a996831274d00078ff1d528358c9363585a254d472841fc72871a501d",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/Execution.java": "bf732ca87654f3aecba97efcc2f2f24efe3d1f6c4660bd9aa22d7f5fcf52aa40",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ExecutionContext.java": "b7d0a781a6276c5cc8b619fe1c2249d51413860f6e71b0d798670a3ca9eb7b7c",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ExecutionStore.java": "0fbd1a4263aafa4393de35014a4a7a1cb9f762230a32afece13d2c866cf71356",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ProcessRequest.java": "36ce8e369815eebf0db5621b1553fee19eae592cd46b00a90d8153cb5440194f",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/RecordedActionDispatcher.java": "38abac13923f8e6789aa7ddf7ee349cfef92e30990a9d2fa96ff0860dd5d80a8",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/RecordingScope.java": "45e0ee475791cf57542c2861f55606c0a1fd48d9cf212f7e6de00d75b7cb6bc0",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/ContextMemory.java": "cdb6d337a3d124dadf1d7d6d3e0f1f7f03f8d972a38661dccf854ff193344036",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/LongTermMemoryStore.java": "6df56e7bcc1dfff012d228e373a7470302186f941c49418fa65a77bef3f2eafb",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryEntry.java": "e57ed1ef465243cd5f316e37c25d07625157c7e5ef03c11382706442a83233fd",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryPort.java": "9396c0a73f172171ffcc9f5be1bb8020e5a160ab8fd256b1b8b375a42d49faf8",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryRecordStore.java": "2bc1b7b96faacb34f47d6a6f63f930c7218000ade8275b7f65ebb6f2236d719c",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/WriteReceipt.java": "b573dc5fc1cef16a669b15341c4c1f58e32ef595446b1e20fa60c5b1c3c6f525",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ChatMessage.java": "59fe45ad1cffe774d1da02e0ca20b3bc89b052f56fe52cb1d2679b1745e0a80c",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ToolCall.java": "a55dad025fcbfd36377aaec30424932f3c1f12479b65ac9d0ee3b242723c452e",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ToolNameMap.java": "d8b10789c0bfdedd6cf858fce66c22873e64d996e6c3e8c02057288c2259587f",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/package-info.java": "750b29a5b3f80545825c7b424797f071c223b03e57d20dd629396cd67f1d414a",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/provider/ProviderPort.java": "6f5934535da86e997211e7d86cab2a3fdd0faeaece4dd7eee113f9bbb93f9bc3",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/provider/ProviderReply.java": "a91e67977b355aa4b5431875d27a3b0944c67bd76c01f89bed1ca3b5cf762e02",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/provider/ProviderRequest.java": "9907df0b72a3790d82c21240bd1dc937db09036d3586e7c3d872d989431287b1",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/CorrectionTracker.java": "abbff0eeae4014187ea6705db632479d63e08e51344d5a970bba5d5999c287f9",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ReActLoop.java": "c3c13301554a4436c878df0489d0161211bfd784967881d2fe24299c06ff71d0",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ToolFailurePolicy.java": "3e7388dbb89ddcf2387b8199eb9701d591c31045c80fc9d26be4343c354be064",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/ActionDispatcher.java": "a5dc31900eaf64054e67e0f1d3c951f89aba93b8cbef61d522ee82bd220712f7",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/ChatOptions.java": "9dc3d7211ad463a3115fb5ca57be2e27ecca0dbd7708fa12de7bbac84b4fe2b0",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/Deadline.java": "6caecaa1a07c8d0ca48925f2d086cb96a5be839902c544f5418c7cb5dec4cfc0",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/IncidentDetail.java": "fa8269eabe10b0099fc56d4172d80cd1cd4bf97d6c7a91a94c0fc1a62dc825c9",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/LaunchMode.java": "efb11e63ed27349436b94c5e3a05378583a19ed4268200e3906de68069c9fd29",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/QueryPort.java": "46e48ac655f4551def1da6899aff757cd365c238962fd9f4882f789d8a375ea1",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RecoveryPort.java": "2078d565bc4a0a6468f35a2ba9d51c540f092c2f49a1a00d4d5339413509a0bc",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeGate.java": "271ff477d87b36bc9db3fbaf85fba69e6f640e26cf35a4631da8a058a9d1c0b8",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeLauncher.java": "a1604e3200f1ff1ef0c132c326b259502558fa6b150981d6e2d0295ecf8e1d6d",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeTiming.java": "ca65fa95a434ca1893e60c8d968726b97fbb4fec347249867eb1d2138561ee7e",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/StorageAvailability.java": "4d81d24688fac563c01756f6bc9a1ecce554b27328a80cf03c8bef2916fb2b5d",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/TimeSource.java": "36b763fd9eab26e22f4b772cf94114e4a62e463a3636e8aa24d1501a3151041a",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleCoordinator.java": "e5a59e6957d9ef26b388efd43825b64864dbe5c0523b73fb91b319a6cb2200aa",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleDefinition.java": "7d54eb81c4cabc4fd0708e348f6863c1b9fb2e8d79953697bc5c1b362456de1d",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleEvent.java": "0effec58a77cb89310bbb503175d752bd730bab8f9be71827ccbdb1e2b5d9b64",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleState.java": "e04bd7ceda3b2640843ef2744bebfdff55d4f4baf9ea0e945fc05ee4cbeecaa6",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleStore.java": "ab7ffa0330019c1aaf3f0b8678a2d0fc0488cdd9ff43fe1d534dfaa216608f49",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleTimer.java": "475107f3d3e556ba27a3e9f1d5a2c5912b6cfc61be5ff849710259a30f784579",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/Redactor.java": "a7207efc4bd9978575a002d053961d55861aa983b2cbf4bd94c3338975a1cdf0",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/SecretResolver.java": "0d190cd809390b19565e3b1e1661100141e2cf42ffa02c3bdc7f3a0b47ec6abf",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/HistorySelector.java": "78300b3d38800266b88c29602d6641aa9d1ce3e408a5f0bf73093b0475e256a3",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/Session.java": "e9ce8544337fb107e99345c7af826dfad7a003adbb7651bb18dd88f6d4a0a1e1",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionHistoryPort.java": "cb36206753cb6dbc989b88e648349d917c33041e4089cb6a06086ca67324e05b",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java": "c1f403a1ff48203f113a07b6a8575ce008af1fe2b997f93314f5017d28943906",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionMessage.java": "996f6e41947eb4629f35d46abae9293d5d7babbf77652cba9b8413b7e1f2876c",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionStore.java": "8d8f94833378dab599c747bb31e94a7c47370d9a1668f16cc36d4ebf3520f272",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/OryxTool.java": "6d01bace8bfbe48a990ff134ccd7f36dbb3928b3d7cebf79608b5cc4fc3bff26",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolDescriptor.java": "c47871c99b681de76e3508cdedd12ada2daf425a73b2bfecca1b92d247b4e8f9",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolExecutor.java": "5525b6ad5346339c8f735c66fd64b17a1580d391274fdb7bd8dab8b88fd2c84f",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolRegistryPort.java": "cff1b55c7cccce91824fcc91879d9fc789aebb4429e65d64f389b02b56959916",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolResult.java": "dec0fa73788cf99df2e3bb878f4d0691f555a8754c848ca49176fc279e9f7d47",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceHandle.java": "151813320f29c4540e2f6f23a16efda9461328d195163d25be1f1d247045503b",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java": "33597df69b4c90a66ca80fe108dbbec6ed137b83f3bd52a06c7fee082dffba54",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInspector.java": "5f871502e8ab9ce33b1cc0dd026dd24f01190f448ccd04c9c0ba2487bcc0b55e",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java": "3033a9ae3c25033d877cbc40e469e122d2c64bcf45c5ab437cb152e75f75ec7c",
+    "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java": "47dc5c0e69387586b9934e75f74ca0cdcca13f1af78bd824b499d2f759e28472",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalogContractTest.java": "b71d16720adcabf52892ad77fb9cb19e8c259506f3f94a922322f702b2e7799f",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigContractTest.java": "aba78f00184f1ccfde22af79d620b699e377d9a875f66a6394e8cc3841681629",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/react/FailurePolicyContractTest.java": "09502ee215b7469fe9dc9acf8b6756e7195e19d54124dad1d0e21b4fa310862d",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/react/LoopFixture.java": "dc908d9d4ea251662ef0b08d951d70c9f1994c7d13031c15215a04b225fd45bd",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/react/ReActContractTest.java": "0322037b47a18ea1bc68408fe69c3ba570471024f3ede6de870e2e049a6e7f80",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/runtime/DeadlineRaceTest.java": "07a835fcaf4159c0abd3a2bd4f170c4565337a70cfd2d03a93f87b9d74dcdbee",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeTimingTest.java": "8bf537934c65696dfc901af7d9d3f927c96b191529baade875071cc4dc9c1c73",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/security/RedactorConcurrencyTest.java": "29483154576bf3687d4eab4d447cb246fccd5921b1caacac78e2cce631fcbc61",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/session/SessionContractTest.java": "e50a8b12f66cd48fc7a2e3f3b896a523c6357724d64845fe8a26cc41fc2ac13f",
+    "oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/session/SessionRuntimeContractTest.java": "5422968678348fb4788c99c51526443f87061f62d1acbc612d9131502b1f8742",
+    "oryxos-core/src/test/resources/react/scripted-turns.json": "adaca10ac35fd498e49c16b5da351f17a68fc8a38944920c7bb2a5ca4a573181",
+    "oryxos-memory/pom.xml": "69317146e4e7530511e52551d00163101394115cb2f4558e5991d4328e9a349e",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryBackendFactory.java": "c5635717f0a65056ebd6887eb07856b8993ebef2541dff1c5e37ba0f900b6b50",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryService.java": "4c1896d6ddf9dea6b5133d9dd56e8822ba9712dff131e1e728dcddf5b14ac79f",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java": "f97acfbe32ae944f5cff79fcbc0dd5c15390710cb452051b2a5ace3d7d06d1bc",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/Mem0MemoryStore.java": "44f17cec2935cc980497a2d0909e9697a4a374ad25ba42b34b53e5d96896e478",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MemoryTextCodec.java": "4b0a2308604e9469911a39c3cae508a869178a3d55de09b21f7ddf15b4967464",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/SqliteMemoryStore.java": "d827afbfeca8856d0581f9044f445bad855f90c148d1b17e8933297b38969df5",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java": "4019b4d9d00510de4459629c95effb40e3420e5168a79edd115c0862e9e24241",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Config.java": "65dd500978b19cdcfce88a6d3d7fc9cb1ae05c4f0e16cd84c8a80c2ee07073e8",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/package-info.java": "df1cc6665b290b200d81dba3d2cf37bc4ebd17a01f6d5a49b89475a7ac2731ba",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/RecallMemoryTool.java": "ce59b9e4b44a872ee72ba695350ef69f0023e280f0e2ce7c0e63a6a866e7b43f",
+    "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/SaveMemoryTool.java": "5a1f7d942f42b0a7948c98f5ba9debdb3c8752e5ae285c1d47654ba5b8c2d5df",
+    "oryxos-memory/src/test/java/io/github/oryxlabs/oryxos/memory/Mem0ProtocolContractTest.java": "77a9184871a39135955af5606e4ff290f59350891c17d2e3f25a3ad64a9a9f5f",
+    "oryxos-memory/src/test/java/io/github/oryxlabs/oryxos/memory/MemoryContractTest.java": "d019d080ebd452c899848cfedfd76e7ff1bcca89ecef7a9954734977f2c56469",
+    "oryxos-memory/src/test/java/io/github/oryxlabs/oryxos/memory/MemoryFixture.java": "6bd8b4d7f3e761a3bb6b7a850f5049bb760f9970c3320e78bbd6e66b96694cb0",
+    "oryxos-memory/src/test/java/io/github/oryxlabs/oryxos/memory/RealMem0IT.java": "1179023a61c86adc69df386b0f7c23a6ca77346f5e8a21da6d42bd94790f2dea",
+    "oryxos-memory/src/test/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownReadConcurrencyTest.java": "b5c2e48859a234c53450b40851f2d140e2d7e014534915848792a811696ee596",
+    "oryxos-memory/src/test/resources/memory/semantic-cases.json": "c9838c940ae19282fec6854d157130decc95c865969b3b54f154ff630b802204",
+    "oryxos-provider/pom.xml": "49a45cdeb8acfc274934c226f1a419420308da9577164a64f687c1fa88a366f7",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java": "b31dc056924b06e5bfb1ec5d4343c9f4f4cfce477051b7da0f8ddc63c55dd9ef",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java": "88a22bfe87fac0bee367cc9a01f10459a7b290953be7dd55f3ca7dcf98d14466",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderErrorMapper.java": "cfe394f32ae7aa659fe1d78f553c0bcf415856c7ef0dabe741979be564afba17",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderMessageMapper.java": "07cce8d30a0d681fb4d18e372f64e9e89f3b8aa88813066b5deeba9c0a0ffc2e",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderOptionsMapper.java": "6afcdd3a2d198d060ac5d06f4a720886c8d95605fe942b651e52fa04878d4250",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java": "8e0ed0860c5e27044c4d03b5f90a194a5537f57f23685ab6f8b8e22c89875ed1",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java": "fdbbc9e702333e80010a7eaa8fb428107a8abe422d74b0be3b9880d3dc4be89c",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java": "ee0b6182ffc241b2620bdfa4d8a7bea262d4d3b659d1e9598e5c099b7b18377e",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ToolWireNameMapper.java": "2b0bfb3c5898083a68392c5596d87117b49ad8d2706649a7a9d2ceb334b6f408",
+    "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/package-info.java": "17405c4fe1d8091f3e4f52779bd5fe502d07fc8274d352a9ac2791827ee00b27",
+    "oryxos-provider/src/test/java/io/github/oryxlabs/oryxos/provider/ProviderConcurrencyProbeIT.java": "66b54114b5eb7f3a453330cf5d58852b9f563b137c6e84e417699be3c30a77c1",
+    "oryxos-provider/src/test/java/io/github/oryxlabs/oryxos/provider/ProviderContractTest.java": "cbcd29af51ce24dd3062da60c0dc3f0d9cab10fa66a1b186be1d81005c8188da",
+    "oryxos-provider/src/test/java/io/github/oryxlabs/oryxos/provider/ProviderSmokeTest.java": "c33f9b3670f8329dfc7ca838d4e34ef9aa95f19575e6006c76c9cfc2a3abdbdd",
+    "oryxos-provider/src/test/java/io/github/oryxlabs/oryxos/provider/RealProviderIT.java": "3fc7d7cf990da299445485a2436c0196c88fc63fc75f936fe613a07efb187fdc",
+    "oryxos-provider/src/test/resources/responses/tool-reasoning.json": "b987c719128589020b40f66a0bcc6c7db6c22da4c2bc759c9ee190eae8ad8fa5",
+    "oryxos-storage/pom.xml": "acaf82fd57564566296619c0a9082b703ea4993eca7800f2410b91d0fa8dd36f",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/JpaAuditSink.java": "aa752d9bc919c37cb9c278b937c9efa1379ed50758831d684b37acaea3a97de6",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/LlmCallEntity.java": "bd932a6680263d2c2d9ad9bafe2140142ceaf859d9a301135e4e530e5891e93a",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/ToolInvocationEntity.java": "c143afe37d38a7b6063b354b523e05f92bbed8f11d4a26640478a359e9ec299a",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/ExecutionEntity.java": "38b9b4822f244ae7be4c9bb47dbb7e3b7a8146f740fcb396f020b1bbd98e210e",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/JpaExecutionStore.java": "ca463a4eb5b02a17a931a1854da9250786e2e38d1fa3b25f87d1987f904921ae",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResourceFactory.java": "5827a21667fa47d04d2d30ad862a465a6b8e6cd3a0a2fa6e5161bff28223f00e",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResources.java": "2ad1424b8a4f3327286061cece5674b7d82e8d7768d231acf3146fa3e5c8ec00",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/JpaMemoryRecordStore.java": "d91efc8274ab93fa54a673cbc0daaadb474c57008ec951f5c572e042a6807b29",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/MemoryEntryEntity.java": "c12ea56a8dfbcbf4b4626a9c2849bdb13e0a37f6ac87cae5b780cc4c61629b1c",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/RemoteLinkEntity.java": "f2ccc19486c07c185b757f4966e90def26ec0bfba79a842794c252ba92104cd1",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java": "77cb8961d2698763d2aebb8e48eacaa2248a554ed9d174b05fa95b42d401591e",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/package-info.java": "95f3e1a3c3a6b3bd897d3184c0749ec3ea7dfae3b7c3070e3f725b6217a41055",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java": "33fabeb40b85b573c591806bb3f488c31e982cc5419339a9e322123576f4feaf",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEntity.java": "20aaa1206f9cec49b9ca7a871f99989539a8b9ea03557c2a0334e3a4dbce6df2",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEvidenceReader.java": "db44ca646c337f4de77826766666ec97403740608a04f1e557798f4a3f24ae21",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentRepository.java": "5d51fc8589a1b297bb16eca6c7319e9c37c2834388e930f07fd0db9d09a6b0d1",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java": "a5751f28ef8c61f5200c60f6c08755f3af90b9a3a3fcc7c8f6d8b86cfb5890f5",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/WorkspaceStateEntity.java": "2ab157cda7a2416740845acc1a5b74d7e4aec15a99c477dad0750d0d90f552bf",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/JpaScheduleStore.java": "0d3a100dda37942b5969690733e263d1eef811f67b86d4f8296ceb4d0c0dabea",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/ScheduleEventEntity.java": "a4b162f83f5d2b151319e6059c286fc97a01d7a4959b77f6d893118f241968af",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/ScheduleStateEntity.java": "faffe3be3cd567930c949a891c2dda671683f7cd779a494beea38bb29ca98384",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java": "c030e78ab938e2d7c7a53f84b804231f9adc83dafb8b0096b9bd8d031470f3f3",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/MessageEntity.java": "d6189cafd9c73a0bdc22598b06dafe40fa43436154ab39bf974c5cec47539405",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/SessionEntity.java": "ab7aeea260f8cab14edc27947d5a3446675f0a5e9767c9f134385c4bf6c2d7c5",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/sqlite/SqliteConnectionFactory.java": "8bc216f23bdac6e5d2309642b0a47fb8c2deb1c1fcdef44b30d164c6d0d7dd62",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredJson.java": "0c91610450d38072ece169cbaec10c32995f5b8679d05f70cb989e508eb78cea",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredSql.java": "6af611c085ce16a4be9785bfdc3d2515d7785ec194edf7441766eadd74c4817c",
+    "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java": "ffb63e23a1504549aca0cb506eaf66859ca02c19fe76b7cd9c213ca635bf181c",
+    "oryxos-storage/src/main/resources/db/migration/V001__schema_metadata.sql": "d42ab5e68d0cf65f7d5a63db3dde1531cb6b774f7ac8267a6385d7fe8020cdd6",
+    "oryxos-storage/src/main/resources/db/migration/V002__memory_ledger.sql": "b4d57e34bea1b286442babd1288b1b27e01ee0fad9421ff724b70d64ce267521",
+    "oryxos-storage/src/main/resources/db/migration/V003__session_execution.sql": "bce7043ce66e56146878e072131461aebd1c5072a04085ee6559573fe51e8536",
+    "oryxos-storage/src/main/resources/db/migration/V004__call_audits.sql": "bb99393172181136231a72097219f9ad0a5f4d2d9c0335128980787585adf5ee",
+    "oryxos-storage/src/main/resources/db/migration/V005__incidents.sql": "1ad191a9df7a2b2ad03840b7e7952af0b25a35fb09e41a5497a4f321d302663e",
+    "oryxos-storage/src/main/resources/db/migration/V006__schedules.sql": "d92be12ffc5f8fa91311efbe0d3702581d572b37ef56e8de4ab1b2edde294205",
+    "oryxos-storage/src/main/resources/db/migration/V007__bounded_session_history.sql": "712b754461e06542eba58f2dd3c73ee852a17247669b26416a2947715c014d32",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/PersistentStorageContractTest.java": "54f801f1dda31d5a810feacdc3590a98cec4181c8b638ac8beb603b834808db4",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/ScheduleStorageContractTest.java": "49974e47bfea73ae4123f1a3d87d71c0159125abcb233ecf7c4904874782a237",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/SessionReadContractTest.java": "632540c4b8dc0ce404ae6f6eba9239b867199462344bfadf99702b058c3d81eb",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/SessionReadPerformanceIT.java": "a7e048d1763211dea7043140198d56374a5152f6b3524749c1ea410722ff6ad3",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/StorageLifecycleIntegrationTest.java": "630df547b889c150a09fb0731e1ee95d5e188c0e04949ce026e14c2cfc169a35",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/WriteCoordinatorPerformanceIT.java": "6ab294afdf661faf033cb4d51f478ea223b4db0b71068e27566874700296d81c",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/WriterCarrierProbe.java": "38d56eef83597eb893b8f4fca5922d4fee9f951e999ac303b7058d4834481c5a",
+    "oryxos-storage/src/test/java/io/github/oryxlabs/oryxos/storage/WriterIsolationTest.java": "21fdf70018faf84a6a2a5e792b73cad4a586cedd1cc22bef6e63d516984b16d2",
+    "oryxos-storage/src/test/resources/migration/probe.sql": "d9134507a3148cb615f35d44120af0ea630ffa41b97b9552c49dc21165c8776e",
+    "oryxos-tool/pom.xml": "fc701950d55e7778bf5f12e138767c951615874a33334283c9be4b22119a79f6",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/ToolRegistry.java": "fc8d421aaa490bc68b8d799cd0a45c3c2913491a021464c125b2e3c6abf506ed",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java": "aae76ed2fc584554822057b021c0a746438b2570ccb0feeb4f2978b110e836c7",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/ListDirTool.java": "edd12ac21f4c038bcdf4cc87dac34fe9ef68bdfc55e0cabfb0aa5d2182ef533f",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/ReadFileTool.java": "0d40b3f4b3d7978b46115029024c5f15cdab280cc7cf97bf624eac617a62379f",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java": "7d1134845d7e1c60f9b8c00bc1423fbda0c93e30c210edd43e77b172c59efb96",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java": "dc7c1dba3a39640d53ff6c73da7228aa6489639d18da5099513ec420929d9922",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpGetTool.java": "2523fbe7573b61d373b18ccc6ab66eaaae897a4c7ac17524b99b668c543dc3c1",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpPostTool.java": "627594acc99669facb36be43cf13321843db5f52153583358d0cbc5a65d19b68",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpTargetPolicy.java": "813fde2bc7a579db21626991fb0f22c13c708153a2cd40f85ff8235ab9a2981a",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java": "0069c1b9115dfc24063d2c44d6c506ffd91ed92dd8c9fa00793ba2d32b53ef5f",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolAdapter.java": "83fcb8a586ebedb8c789c9b21c01641f9df457f13cd43b9efc8835f12a979584",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolDiscovery.java": "e4a162452af135f7dcafde977f9b922a387b8a9df83b3961a675a42d0c58d010",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java": "78c09beb7ff6750f513561a873f9c8586d5e02838e61ffc7170765ee9d04c3a1",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/AnnotatedToolAdapter.java": "e6d4f7d062d4651c2a6073c3daa5b1d4fb03ec761930b95512125e7abd3c5174",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/EchoTool.java": "5d71f5e4c4b906f1c8728d54c0830bd7764f8e48bf05a8583011081b0897a986",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/NativeToolRegistrar.java": "411ccb5cb57ea34e1453f20de7314ffbefc483463e7d0d8249496f9b14c56293",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotificationTargetResolver.java": "1d063d51812caf5d9e8457a2f0bbfb38cec935fb6f0936c57b912100a52a34c9",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotifyTool.java": "3017198da662a370a0ca22e4b72f7700c5d5d41ba24e2b1dd297cca2a73d6eb8",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/WebhookNotifyAdapter.java": "838a038a85cd331d054b066ce8c745bc7eda14d72f75e2ba0c058ac271d59656",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/package-info.java": "6aafe3127208f2ef89ee04c4f4014f4d3caa4ac4000ade4f0af079f2f12e21de",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/policy/ToolPolicy.java": "e981b44cd9495f5c98a1964b667b6147507329bb594fd7427ed806623629c795",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/policy/ToolRetryPolicy.java": "83ac687c203622004454b6c797b1ce4f4a785057da60c7f66cfe627a8915fe7f",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java": "a6ba69d510c681f21ca2fd5049b9031eb0715dd3e733619d86778ed5e89e50f1",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ShellTool.java": "0630b6de6e76b857305faf2348513c8bc9cfdb2987f313ff4cbaa857d138e84b",
+    "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/validation/ToolArgumentValidator.java": "091599a0161860a7f9ac8822d061606c48279ed1ada8d0e1ca92a8981a6c7ee5",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/EnvironmentBoundaryProbe.java": "59e64e7284ac23d7f1fe844058fa39c12de9b7763f213bddfd4f065480166c55",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/HttpTransportReuseTest.java": "9c3dd046da7faac7ebd3526b47dd640a54e0de245dcbca5d4901071dff92e7ab",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/McpContractTest.java": "b07034ed5a84918a589e7a1904e36ca9015b96d3a2ef80d3595e4cb9786a6f76",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/NotifyContractTest.java": "eabba2c7b6c0005dea8e327f48c0fbba6d91311cd4686871ae8148a3deeb022a",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/ToolSafetyContractTest.java": "ed231cf4059bd3f5d36cacbeafd49dd451e8ad23e0a01f2aecc8642eba245be0",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/ToolsContractTest.java": "d2898c92c746cc5833c46aa47382331776ba7697201b7a6d4a8b960699d4b8fa",
+    "oryxos-tool/src/test/java/io/github/oryxlabs/oryxos/tool/support/ToolFixture.java": "9bc73773b0b5c45591f391bea26d6e81734da8612e6b125defd36f8cca90822a",
+    "oryxos-web/pom.xml": "dbe84b903924f376c2cced629a7cc4b74cf3e14fd4197ee270cf9027ce3d1aa0",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ApiExceptionHandler.java": "505e4fa5da3c978d0702f1179011f1d0f6b3c7ca7ec32a9ad7b2a070b47f6b6a",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ApiResponse.java": "0d7bb29f420e0f804404354796f75ef5b6ba44fae4b75ec806bc5f6c95a7e96d",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ContractDtos.java": "df1304707f497385f47bda4f24a53e9d489652b2472680be544831592a61254e",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/PublicDtoMapper.java": "9f9de5b438c63500aaa658f6b688d4181a78530c0b2c51d97b33d7143ec65ad4",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/RequestLimits.java": "ea52a775b4e048e5cf3a6db933fb32879ba780a6f9f0c39a1d863b69298e20be",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/WebRuntimePort.java": "1873464db27a7d408a9821cccb0bb7ecb1465a64af5e595290898d5fabd00fae",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/AdminController.java": "bfae31d1b1ddefdf3ae871920704dcff7a065a0948b2537b59e42b3f64aeaa4e",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/AgentController.java": "09733acfc6bfb3bcd9e1f627791082bee3ad66c4e363d1dce9297c9ed3fb44c9",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/CapabilityController.java": "a2878097e640e33322506f3745e6e244361758ccb169008f66334b871f5b8fb6",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ExecutionController.java": "1b56aea0dae90cb4a43471dcc2684a4a05f0c562868f5a5a3070f6684317d543",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/RuntimeController.java": "953193d00072cf0ebb1fef91763363057bd25b24af268ecddfb1a329bbf5fde1",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ScheduleController.java": "5c85b003efd87f36bf7e1df14388100faaa9dd927e043f5c7e6722bb3515b885",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/SessionController.java": "9afd0c8aefdf2cbb7dc6f75a9d9eda6f6281ce01ff44251207c9f1fe709d12b5",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/SystemController.java": "a8d968c02ed44a1f28becbf229f087b04036c3531411a526ee4fa4d2603de0c5",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java": "81352df4ec9b1cdbaef60b6b316006cb58a6dff0a12a89e5d2831835b8a52269",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/HttpContract.java": "f229f35660608c196ca6edd2c49a1f3631a6f2d8bb45da6c8a13550c380ebdb2",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/PublicSchemas.java": "dc94694589960a48e3139886b9094254719793c15ad85946f9203b1bbb501594",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/RuntimeOpenApi.java": "2ddbe3aebc13faa6e58f9fdb10820aaf8049aafb7af13032a8a960f54548aa7b",
+    "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/package-info.java": "d16fffcfa4be66ea89f664b7a1e872d8b140ac09dece067f5ff33dd8c5b11df5",
+    "pom.xml": "fca62b0c45dd4e96d4ea9493418671675c5502789e0e8fa805a76da2d2ca19a1",
+    "tools/dev/build.py": "38296948440cfd5bdf01a8176c013761be043e1d87b9cc3d6f5235f31381d0c4",
+    "tools/dev/check-test-reports.py": "5c2737edc374e963fc82f37d77fb019c33e9dbb87102d09d313d2c21e76d7b5d",
+    "tools/dev/mvnw": "8979b6cddc52712adc1dda3928e61faaf03565409212769512d0a0544d5afa19",
+    "tools/dev/test-groups.json": "15a8366302a43b4e6535f645327a86725f20b9c4a9dded364a67303592e85526"
+  },
+  "regression": {
+    "tests": 221,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "runIds": [
+      "e63294da-0378-46f7-bec8-eb3e597e5115"
+    ],
+    "classes": [
+      "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+      "io.github.oryxlabs.oryxos.core.config.RuntimeConfigContractTest",
+      "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+      "io.github.oryxlabs.oryxos.core.session.SessionContractTest",
+      "io.github.oryxlabs.oryxos.core.session.SessionRuntimeContractTest",
+      "io.github.oryxlabs.oryxos.core.security.RedactorConcurrencyTest",
+      "io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest",
+      "io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest",
+      "io.github.oryxlabs.oryxos.core.react.ReActContractTest",
+      "io.github.oryxlabs.oryxos.boot.HttpApiContractTest",
+      "io.github.oryxlabs.oryxos.boot.EntryPointContractTest",
+      "io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest",
+      "io.github.oryxlabs.oryxos.boot.RecordingFailureIT",
+      "io.github.oryxlabs.oryxos.boot.EvidenceLogTest",
+      "io.github.oryxlabs.oryxos.boot.HttpReadPathTest",
+      "io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT",
+      "io.github.oryxlabs.oryxos.boot.SoakDiagnosticIT",
+      "io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest",
+      "io.github.oryxlabs.oryxos.boot.StructuredLogAuditTest",
+      "io.github.oryxlabs.oryxos.boot.DegradedStartupTest",
+      "io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest",
+      "io.github.oryxlabs.oryxos.boot.OryxOsApplicationTest",
+      "io.github.oryxlabs.oryxos.boot.EarlyCliLoopIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.KernelLocalIT",
+      "io.github.oryxlabs.oryxos.boot.MemoryFacadeIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.ToolIntegrationTest",
+      "io.github.oryxlabs.oryxos.boot.DiscoverySuffixIT",
+      "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+      "io.github.oryxlabs.oryxos.boot.TestDiscoveryIT",
+      "io.github.oryxlabs.oryxos.boot.CliCommandsIT",
+      "io.github.oryxlabs.oryxos.boot.SoakHarnessTest",
+      "io.github.oryxlabs.oryxos.boot.AdminPageContractTest",
+      "io.github.oryxlabs.oryxos.memory.Mem0ProtocolContractTest",
+      "io.github.oryxlabs.oryxos.memory.backend.MarkdownReadConcurrencyTest",
+      "io.github.oryxlabs.oryxos.memory.MemoryContractTest",
+      "io.github.oryxlabs.oryxos.cli.CliOperationsTest",
+      "io.github.oryxlabs.oryxos.cli.WorkspaceCommandsTest",
+      "io.github.oryxlabs.oryxos.cli.AgentStatusTest",
+      "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+      "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest",
+      "io.github.oryxlabs.oryxos.tool.ToolSafetyContractTest",
+      "io.github.oryxlabs.oryxos.tool.HttpTransportReuseTest",
+      "io.github.oryxlabs.oryxos.tool.McpContractTest",
+      "io.github.oryxlabs.oryxos.tool.NotifyContractTest",
+      "io.github.oryxlabs.oryxos.tool.ToolsContractTest",
+      "io.github.oryxlabs.oryxos.storage.WriterIsolationTest",
+      "io.github.oryxlabs.oryxos.storage.StorageLifecycleIntegrationTest",
+      "io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest",
+      "io.github.oryxlabs.oryxos.storage.SessionReadContractTest",
+      "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest"
+    ]
+  },
+  "regressionRequiredReferences": 311,
+  "openApi": {
+    "operations": 19,
+    "schemas": 44,
+    "diff": []
+  },
+  "targetedChecks": [
+    {
+      "name": "batch9-provider-timing-red",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "2e27bcad-435f-4e34-95ff-67158e606bbf"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest"
+      ]
+    },
+    {
+      "name": "batch9-provider-timing-green",
+      "tests": 17,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "7b3eeb2a-3e2c-4fd5-80b4-719db31d1bfb"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest"
+      ]
+    },
+    {
+      "name": "batch9-provider-timing-verified",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "c1232327-6d6f-4bef-bc77-6dd40c97389c"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest"
+      ]
+    },
+    {
+      "name": "batch9-group-timing-red",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "7312036a-991c-4000-b4bb-82c1c736133b"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest"
+      ]
+    },
+    {
+      "name": "batch9-group-timing-green",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "99cb6a7f-6783-45be-8bd5-d1c0517e6a7c"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest",
+        "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest"
+      ]
+    },
+    {
+      "name": "batch9-provider-probe-red",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "826ae588-57b7-4125-9952-031e321a3353"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.provider.ProviderConcurrencyProbeIT"
+      ]
+    },
+    {
+      "name": "batch9-provider-body-worker-red",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "994680b9-8545-425b-9f7a-cd02401c8b40"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest"
+      ]
+    },
+    {
+      "name": "batch9-provider-body-worker-green",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "3badbf59-472a-4ccd-8f8b-c5e541e22ec8"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest"
+      ]
+    },
+    {
+      "name": "batch9-external-carrier-red",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "73aa08f2-c2d2-4928-beb0-4554f2f696c7"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest"
+      ]
+    },
+    {
+      "name": "batch9-external-carrier-green",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "8d2263a8-55ac-4fb2-aa3d-c25e1acf1a97"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest",
+        "io.github.oryxlabs.oryxos.boot.SoakHarnessTest"
+      ]
+    },
+    {
+      "name": "batch9-driver-carrier-red",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "139c343e-8497-41e0-b983-f21c71a0900a"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest"
+      ]
+    },
+    {
+      "name": "batch9-driver-carrier-verified",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "e2ce7f2f-8bb6-48d4-990e-c46a8935a6da"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest",
+        "io.github.oryxlabs.oryxos.boot.SoakHarnessTest"
+      ]
+    },
+    {
+      "name": "batch9-transport-segmented-short",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "b494a4ef-5571-4948-99cd-9dcceea25456"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT"
+      ]
+    },
+    {
+      "name": "batch9-body-workers-short",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "a375aad2-a0d7-44ce-a490-74012cc0986c"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT"
+      ]
+    },
+    {
+      "name": "batch9-isolated-external-short",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "fdee48c9-7d70-4c2d-85f3-c423e328ec16"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT"
+      ]
+    },
+    {
+      "name": "batch9-isolated-driver-short",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT"
+      ]
+    },
+    {
+      "name": "batch9-transport-batch-verify",
+      "tests": 221,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runIds": [
+        "e63294da-0378-46f7-bec8-eb3e597e5115"
+      ],
+      "classes": [
+        "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+        "io.github.oryxlabs.oryxos.core.config.RuntimeConfigContractTest",
+        "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+        "io.github.oryxlabs.oryxos.core.session.SessionContractTest",
+        "io.github.oryxlabs.oryxos.core.session.SessionRuntimeContractTest",
+        "io.github.oryxlabs.oryxos.core.security.RedactorConcurrencyTest",
+        "io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest",
+        "io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest",
+        "io.github.oryxlabs.oryxos.core.react.ReActContractTest",
+        "io.github.oryxlabs.oryxos.boot.HttpApiContractTest",
+        "io.github.oryxlabs.oryxos.boot.EntryPointContractTest",
+        "io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest",
+        "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest",
+        "io.github.oryxlabs.oryxos.boot.RecordingFailureIT",
+        "io.github.oryxlabs.oryxos.boot.EvidenceLogTest",
+        "io.github.oryxlabs.oryxos.boot.HttpReadPathTest",
+        "io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT",
+        "io.github.oryxlabs.oryxos.boot.SoakDiagnosticIT",
+        "io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest",
+        "io.github.oryxlabs.oryxos.boot.StructuredLogAuditTest",
+        "io.github.oryxlabs.oryxos.boot.DegradedStartupTest",
+        "io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest",
+        "io.github.oryxlabs.oryxos.boot.OryxOsApplicationTest",
+        "io.github.oryxlabs.oryxos.boot.EarlyCliLoopIntegrationTest",
+        "io.github.oryxlabs.oryxos.boot.KernelLocalIT",
+        "io.github.oryxlabs.oryxos.boot.MemoryFacadeIntegrationTest",
+        "io.github.oryxlabs.oryxos.boot.ToolIntegrationTest",
+        "io.github.oryxlabs.oryxos.boot.DiscoverySuffixIT",
+        "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+        "io.github.oryxlabs.oryxos.boot.TestDiscoveryIT",
+        "io.github.oryxlabs.oryxos.boot.CliCommandsIT",
+        "io.github.oryxlabs.oryxos.boot.SoakHarnessTest",
+        "io.github.oryxlabs.oryxos.boot.AdminPageContractTest",
+        "io.github.oryxlabs.oryxos.memory.Mem0ProtocolContractTest",
+        "io.github.oryxlabs.oryxos.memory.backend.MarkdownReadConcurrencyTest",
+        "io.github.oryxlabs.oryxos.memory.MemoryContractTest",
+        "io.github.oryxlabs.oryxos.cli.CliOperationsTest",
+        "io.github.oryxlabs.oryxos.cli.WorkspaceCommandsTest",
+        "io.github.oryxlabs.oryxos.cli.AgentStatusTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+        "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest",
+        "io.github.oryxlabs.oryxos.tool.ToolSafetyContractTest",
+        "io.github.oryxlabs.oryxos.tool.HttpTransportReuseTest",
+        "io.github.oryxlabs.oryxos.tool.McpContractTest",
+        "io.github.oryxlabs.oryxos.tool.NotifyContractTest",
+        "io.github.oryxlabs.oryxos.tool.ToolsContractTest",
+        "io.github.oryxlabs.oryxos.storage.WriterIsolationTest",
+        "io.github.oryxlabs.oryxos.storage.StorageLifecycleIntegrationTest",
+        "io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest",
+        "io.github.oryxlabs.oryxos.storage.SessionReadContractTest",
+        "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest"
+      ]
+    }
+  ],
+  "worstSamples": [
+    {
+      "token": "SOAK~b36c1b2b~steady~c5~a5~t0",
+      "internalMillis": 201.7955,
+      "exclusiveMillis": {
+        "provider.http.headers": 52.355001,
+        "db.group.before": 26.868249,
+        "db.queue": 21.355542,
+        "db.acknowledge.queue": 19.968833,
+        "react.tool": 17.019708,
+        "db.group.after": 14.343374,
+        "external.oversleep": 14.156084,
+        "db.read.connection": 13.318958,
+        "db.commit": 10.751541,
+        "framework.unattributed": 4.478791,
+        "db.batch": 1.432625,
+        "db.read.query": 1.274458,
+        "react.prompt": 0.728126,
+        "agent.dispatch.queue": 0.49775,
+        "db.write": 0.492044,
+        "provider.http.consume": 0.373334,
+        "db.connection": 0.287832,
+        "db.entityManager": 0.256084,
+        "react.provider": 0.230084,
+        "provider.http.encode": 0.216832,
+        "db.statement.execute": 0.197752,
+        "provider.transport": 0.196749,
+        "db.action": 0.186998,
+        "db.begin": 0.183125,
+        "provider.client": 0.1645,
+        "http.dispatch.queue": 0.13575,
+        "provider.http.close": 0.078708,
+        "audit.model": 0.047667,
+        "provider.reply": 0.046291,
+        "audit.tool": 0.041167,
+        "session.find": 0.034167,
+        "session.turn": 0.016499,
+        "db.flush": 0.016211,
+        "db.statement.bind": 0.016165,
+        "provider.http.read": 0.0145,
+        "session.finish": 0.005208,
+        "session.sequence": 0.003876,
+        "http.session.lookup": 0.003375,
+        "session.lock": 0.001542
+      }
+    },
+    {
+      "token": "SOAK~b36c1b2b~steady~c8~a8~t0",
+      "internalMillis": 201.155208,
+      "exclusiveMillis": {
+        "provider.http.headers": 55.918791,
+        "db.group.before": 26.109251,
+        "db.acknowledge.queue": 21.115124,
+        "db.queue": 20.724914,
+        "db.group.after": 16.974168,
+        "react.tool": 13.308292,
+        "db.read.connection": 11.699833,
+        "external.oversleep": 11.429166,
+        "db.commit": 10.652333,
+        "framework.unattributed": 3.994583,
+        "db.batch": 1.444874,
+        "db.read.query": 1.262083,
+        "react.prompt": 1.123874,
+        "agent.dispatch.queue": 1.122875,
+        "http.dispatch.queue": 1.016375,
+        "db.write": 0.54167,
+        "react.provider": 0.330418,
+        "db.action": 0.320458,
+        "provider.http.consume": 0.296249,
+        "provider.transport": 0.25625,
+        "provider.http.encode": 0.243709,
+        "session.find": 0.206959,
+        "db.statement.execute": 0.202708,
+        "db.entityManager": 0.169667,
+        "db.connection": 0.150832,
+        "db.begin": 0.129375,
+        "provider.client": 0.111166,
+        "provider.http.close": 0.081292,
+        "audit.model": 0.072041,
+        "audit.tool": 0.042917,
+        "provider.reply": 0.033792,
+        "db.flush": 0.015667,
+        "db.statement.bind": 0.015084,
+        "session.turn": 0.012917,
+        "provider.http.read": 0.011959,
+        "session.sequence": 0.006125,
+        "session.finish": 0.003375,
+        "http.session.lookup": 0.002459,
+        "session.lock": 0.001583
+      }
+    },
+    {
+      "token": "SOAK~b36c1b2b~steady~c9~a9~t0",
+      "internalMillis": 200.327875,
+      "exclusiveMillis": {
+        "provider.http.headers": 54.289332,
+        "db.group.before": 27.730876,
+        "db.queue": 21.723459,
+        "db.acknowledge.queue": 18.005416,
+        "react.tool": 16.781875,
+        "db.group.after": 14.460541,
+        "db.read.connection": 12.267374,
+        "db.commit": 11.178457,
+        "external.oversleep": 10.310834,
+        "framework.unattributed": 3.853789,
+        "db.read.query": 2.327374,
+        "db.batch": 1.425081,
+        "react.provider": 1.176082,
+        "react.prompt": 0.787668,
+        "provider.http.encode": 0.536,
+        "db.write": 0.52017,
+        "agent.dispatch.queue": 0.499375,
+        "provider.http.consume": 0.419166,
+        "provider.http.close": 0.352874,
+        "db.connection": 0.312248,
+        "db.entityManager": 0.287876,
+        "provider.transport": 0.21346,
+        "db.begin": 0.192334,
+        "db.statement.execute": 0.166958,
+        "db.action": 0.165127,
+        "provider.client": 0.077625,
+        "http.dispatch.queue": 0.069042,
+        "audit.model": 0.045625,
+        "provider.reply": 0.034959,
+        "audit.tool": 0.02425,
+        "db.statement.prepare": 0.021708,
+        "provider.http.read": 0.017876,
+        "db.flush": 0.015502,
+        "db.statement.bind": 0.014915,
+        "session.turn": 0.007959,
+        "session.find": 0.005958,
+        "session.finish": 0.003751,
+        "session.sequence": 0.003167,
+        "http.session.lookup": 0.001083,
+        "session.lock": 0.000709
+      }
+    },
+    {
+      "token": "SOAK~b36c1b2b~steady~c16~a6~t0",
+      "internalMillis": 200.044916,
+      "exclusiveMillis": {
+        "provider.http.headers": 59.024667,
+        "db.group.before": 27.273667,
+        "db.acknowledge.queue": 21.451042,
+        "db.queue": 20.429001,
+        "react.tool": 16.726293,
+        "db.group.after": 11.803083,
+        "db.read.connection": 11.689209,
+        "external.oversleep": 10.814042,
+        "db.commit": 10.751541,
+        "framework.unattributed": 2.420458,
+        "db.batch": 1.430084,
+        "agent.dispatch.queue": 1.064542,
+        "db.read.query": 0.787083,
+        "http.dispatch.queue": 0.761916,
+        "db.write": 0.611376,
+        "react.prompt": 0.584959,
+        "provider.transport": 0.337667,
+        "provider.http.consume": 0.335083,
+        "react.provider": 0.212708,
+        "db.statement.execute": 0.181166,
+        "provider.http.encode": 0.177541,
+        "db.entityManager": 0.169667,
+        "db.connection": 0.150832,
+        "session.find": 0.150208,
+        "db.action": 0.147747,
+        "provider.client": 0.144333,
+        "db.begin": 0.129375,
+        "provider.http.close": 0.059167,
+        "audit.tool": 0.050998,
+        "session.sequence": 0.046209,
+        "audit.model": 0.034793,
+        "provider.reply": 0.028625,
+        "db.flush": 0.018958,
+        "session.turn": 0.015208,
+        "provider.http.read": 0.013833,
+        "db.statement.bind": 0.012877,
+        "session.finish": 0.002958,
+        "session.lock": 0.00125,
+        "http.session.lookup": 0.00075
+      }
+    },
+    {
+      "token": "SOAK~b36c1b2b~steady~c10~a0~t0",
+      "internalMillis": 200.019125,
+      "exclusiveMillis": {
+        "provider.http.headers": 57.83725,
+        "db.group.before": 29.318168,
+        "db.acknowledge.queue": 26.887793,
+        "db.read.connection": 21.504583,
+        "external.oversleep": 18.479834,
+        "db.commit": 10.434249,
+        "react.tool": 8.48779,
+        "db.read.query": 6.749875,
+        "db.group.after": 6.689248,
+        "db.queue": 5.70071,
+        "framework.unattributed": 2.062877,
+        "db.batch": 1.416126,
+        "agent.dispatch.queue": 1.057958,
+        "db.write": 0.79358,
+        "react.prompt": 0.687876,
+        "db.statement.execute": 0.213083,
+        "db.entityManager": 0.201875,
+        "react.provider": 0.200666,
+        "provider.http.consume": 0.192708,
+        "db.connection": 0.181832,
+        "provider.transport": 0.175709,
+        "db.action": 0.141876,
+        "provider.http.encode": 0.13975,
+        "db.begin": 0.13925,
+        "provider.client": 0.088209,
+        "provider.http.close": 0.053375,
+        "http.dispatch.queue": 0.051583,
+        "audit.model": 0.034251,
+        "provider.reply": 0.023249,
+        "db.flush": 0.015957,
+        "db.statement.bind": 0.012626,
+        "audit.tool": 0.012209,
+        "provider.http.read": 0.011417,
+        "session.turn": 0.010334,
+        "session.find": 0.005583,
+        "session.sequence": 0.002916,
+        "session.finish": 0.001625,
+        "http.session.lookup": 0.000583,
+        "session.lock": 0.000542
+      }
+    }
+  ],
+  "artifacts": {
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/summary.json": {
+      "bytes": 2067,
+      "sha256": "c27ed0e6697061696e06808338c2de23fb410d72d93137c1a28623a24806a9cd"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/environment.json": {
+      "bytes": 1652,
+      "sha256": "da96a5983ff844d5fefcfca86ea20a8dd3ef590a89fd5a0b9752270753227bfd"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/samples.jsonl": {
+      "bytes": 9359492,
+      "sha256": "b764330b592a2759aecd1ebb3525eec621241d90ab2b15e439abf92b63b0d689"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/external-waits.jsonl": {
+      "bytes": 259270,
+      "sha256": "eaffc671bb6c68f78dc107940bdf47ccb1327e00ff4da13079450e34fe26be55"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/sessions.json": {
+      "bytes": 16062,
+      "sha256": "1d7883ea2e8e834a2089ff59cf42a2917b932a28cf4f1629f84e148529835f74"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/workspace/oryxos.db": {
+      "bytes": 2736128,
+      "sha256": "9aa96e51d84e1fd5a42c1b0f084384f3cc03e0a9dff7b7efd89a3a1589a14793"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/source-manifest.json": {
+      "bytes": 49287,
+      "sha256": "b7941bd54d980ab5d517d7b061e149c9765421b659f9053d096130e5f36f8b6e"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/b494a4ef-5571-4948-99cd-9dcceea25456/source-snapshot.tar.gz": {
+      "bytes": 285137,
+      "sha256": "94ef1fc88c0b8984d21c3a2be494c325920abab0ba242e7c362038acfe5a4eb1"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/summary.json": {
+      "bytes": 2076,
+      "sha256": "283bd8f8f3bd7be8ddad837416500b900d76cd1ad8d364ff7a47d3be06b32476"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/environment.json": {
+      "bytes": 1652,
+      "sha256": "16669683011195560bfea120cad0214ed2bc04fa39d8aed774897c069bf99ba8"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/samples.jsonl": {
+      "bytes": 9301629,
+      "sha256": "695053ef1541cea3e20d1bbac8f326ba76876d4af51a33633f4a4675d394457e"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/external-waits.jsonl": {
+      "bytes": 259270,
+      "sha256": "2303bfefd4d829adb632c975cf49ca80b028fed2039f01f5d4cd1ef9cd10c90f"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/sessions.json": {
+      "bytes": 16062,
+      "sha256": "97b1cdb4a4d77fe0cd8b6484ec1201a81a6293b4d04830b92682f4dc9b337485"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/workspace/oryxos.db": {
+      "bytes": 2719744,
+      "sha256": "943f0d7f35f76b2db3ff91cb5645fcb64a6209a106e1d5ffa95c3cfc89697ae7"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/source-manifest.json": {
+      "bytes": 49459,
+      "sha256": "e2d1bffa6bab9a15cf9d46cde7a476215fc1bb0f73d489c969ba1ae8a3b33bd9"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/a375aad2-a0d7-44ce-a490-74012cc0986c/source-snapshot.tar.gz": {
+      "bytes": 287041,
+      "sha256": "ac6e921c68561c7770b405aa8992c4e3a508a8270ef1fa781fdaeb1f182b766a"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/summary.json": {
+      "bytes": 2076,
+      "sha256": "bbddf934b46d3750ae611417a1fe996eba6def12e9385d78e04e0f7b76721c2a"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/environment.json": {
+      "bytes": 1821,
+      "sha256": "c2cce5fde0166b000588296e9fe0987d0555cad1a4c04cb6ac1c76130278822b"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/samples.jsonl": {
+      "bytes": 9204249,
+      "sha256": "4c53ed7a62391a88117c95d2c3a2ee73939430644eff16fd9dfa20bbcc0459c8"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/external-waits.jsonl": {
+      "bytes": 259270,
+      "sha256": "73812a1070451696572917766996d079f4a4dcfb8b372f9cbdc8e3e0c6fab17e"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/sessions.json": {
+      "bytes": 16062,
+      "sha256": "c1a7b15445c8014a5fbcab0b64528e3105122c66b321094219cac467b18bfbee"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/workspace/oryxos.db": {
+      "bytes": 2736128,
+      "sha256": "5117a9a3fc48208e7e9649d22ba71d53b43e47c69c660af033d0fdbdd65c27d1"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/source-manifest.json": {
+      "bytes": 49794,
+      "sha256": "39144032c9d866f503e57459f71af3e8c140b5f5b0654e8a245caad53192865e"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/fdee48c9-7d70-4c2d-85f3-c423e328ec16/source-snapshot.tar.gz": {
+      "bytes": 288088,
+      "sha256": "32d46a04177107afe8667e2ca2116249de19a5095a2b1b118147d9cf7f6700d2"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/summary.json": {
+      "bytes": 2074,
+      "sha256": "4a0e2f73ffbcd6cae5b55a04a352dd202e2be039d0430d1fdceb2c9d95ab781a"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/environment.json": {
+      "bytes": 1983,
+      "sha256": "df808d5bc846336ad41ae4e66d38c3e0594dd2056fdaf07a54eae453b9bc951c"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/samples.jsonl": {
+      "bytes": 9260862,
+      "sha256": "91a8cef9c01b1febfebfa201e1af6d2d6f552b1d7f65f2c170553bb9b90fa9e5"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/external-waits.jsonl": {
+      "bytes": 259270,
+      "sha256": "ea9781e1a63537b02bba3b6e25a6b289646944eecc5de9d6eca88f14c04c130f"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/sessions.json": {
+      "bytes": 16062,
+      "sha256": "aeab9b37eca2c3b74a1e64ca6f555157ef0acf475283bd9ef6c7acf54f7a7a2d"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/workspace/oryxos.db": {
+      "bytes": 2727936,
+      "sha256": "b06f31caf47671601a30cba2d7dca808f0b52c722a70554d84ab0aecc7863d4c"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/source-manifest.json": {
+      "bytes": 49794,
+      "sha256": "95782f1391bf5184f4b899b4e4cf68769a996888d7bd7f2b112e9e6f1f8f0314"
+    },
+    ".oryxos-dev/evidence/short-performance-gate/c8e5b2e7-90f8-4ac7-a1de-9b41fef371f7/source-snapshot.tar.gz": {
+      "bytes": 288369,
+      "sha256": "8e4e2a042ff6d5c1aa3b43961b6b6cf8d5021f0020f90172997168140ce61b0f"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-red/summary.json": {
+      "bytes": 209,
+      "sha256": "242520c5b4493b8bf0750ed55909ee0427dece2193f9e6581fb7db3ea5206d12"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-red/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 19894,
+      "sha256": "c8059697f7564ac61c5326063f197fe1f115b7cd09d43c959bd54820d180586e"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-red/build.log": {
+      "bytes": 8215,
+      "sha256": "5da4efd6bdd13db27ae3616c06942a0a2f30a34447ec6bb6e61bba189d5ce402"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-red.log": {
+      "bytes": 8215,
+      "sha256": "5da4efd6bdd13db27ae3616c06942a0a2f30a34447ec6bb6e61bba189d5ce402"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green/summary.json": {
+      "bytes": 339,
+      "sha256": "0e7381d5c25e05cfc3b24eaa98b0bed8cf6249f8775daefa4179258880798504"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green/TEST-io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest.xml": {
+      "bytes": 18836,
+      "sha256": "17de5193aba52404e668336695ed4a90691691a0344d3fc7056352d97c45fa3a"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 21223,
+      "sha256": "41fb2c47c22b51aa0d1cadfdb07ee335cdf179592d2d16d4faafb9a87149e314"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green/TEST-io.github.oryxlabs.oryxos.provider.ProviderSmokeTest.xml": {
+      "bytes": 19022,
+      "sha256": "5373489f4619b8342afa8718e7358f43dfc5cb4691abdb73d22f9115cab2e2f4"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green/build.log": {
+      "bytes": 8871,
+      "sha256": "075de73fde18016f758b3bda954d4b383cdbb1861e51e795b8efaa008374293e"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-green.log": {
+      "bytes": 8871,
+      "sha256": "075de73fde18016f758b3bda954d4b383cdbb1861e51e795b8efaa008374293e"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified/summary.json": {
+      "bytes": 339,
+      "sha256": "7585cfc828fdb5af7c9f73c8adf2e96e4bf5db144490c9b1b54e17181ccf2730"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified/TEST-io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest.xml": {
+      "bytes": 18835,
+      "sha256": "e5374aa01b7951d1614617d12ed50d93d1d4338378f1c08abd75ee1d600ebffd"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 20184,
+      "sha256": "e97965bc52ef8a8aaa61344eda4c1e7b8c591c363276587b11c7f9670d88a23d"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified/TEST-io.github.oryxlabs.oryxos.provider.ProviderSmokeTest.xml": {
+      "bytes": 19021,
+      "sha256": "8f041678a0df9e1216d7f7e39fa8a5ffc9e7e1e5f572c4c7df33c18da9ada5e2"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified/build.log": {
+      "bytes": 6714,
+      "sha256": "ddd00170cc0565b38295fe2d0325a536719e7c18f673932ccf18a36a1e50418f"
+    },
+    ".oryxos-dev/evidence/batch9-provider-timing-verified.log": {
+      "bytes": 6714,
+      "sha256": "ddd00170cc0565b38295fe2d0325a536719e7c18f673932ccf18a36a1e50418f"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-red/summary.json": {
+      "bytes": 217,
+      "sha256": "cdc79e72a90b50114c909f57a1e3a56c10a40edbdf2e559df9e1d5c2b50757dd"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-red/TEST-io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest.xml": {
+      "bytes": 28443,
+      "sha256": "909f4d75e33a299e9cc781a0d084e60c9c118565cb214864eb06f804c0bcb197"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-red/build.log": {
+      "bytes": 9268,
+      "sha256": "585340ce3ac18e72c3efbf89416280d398214d461c01e77c830ee899b38c9ad0"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-red.log": {
+      "bytes": 9268,
+      "sha256": "585340ce3ac18e72c3efbf89416280d398214d461c01e77c830ee899b38c9ad0"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-green/summary.json": {
+      "bytes": 282,
+      "sha256": "1a720cf5ff409a8384478ec899adf8e6071d094fc9f70030aa50b72d20c7cdd6"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-green/TEST-io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest.xml": {
+      "bytes": 18338,
+      "sha256": "54eede0bae477eac18455e1de18ceea9edd567c753c56fc20bd4b73b0a7d0bd9"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-green/TEST-io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest.xml": {
+      "bytes": 37812,
+      "sha256": "7744d3e64058c710fcd9871b1192f6c445e78d310aadd746edd9555c3200d2d8"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-green/build.log": {
+      "bytes": 16387,
+      "sha256": "5575b1edaf7926a8b83d8fd23c8f23e116f59b234f11a431c05b535723f0670e"
+    },
+    ".oryxos-dev/evidence/batch9-group-timing-green.log": {
+      "bytes": 16387,
+      "sha256": "5575b1edaf7926a8b83d8fd23c8f23e116f59b234f11a431c05b535723f0670e"
+    },
+    ".oryxos-dev/evidence/batch9-provider-probe-red/summary.json": {
+      "bytes": 215,
+      "sha256": "d1342547882681438eca7fb9917ffe4a61557b80602276720478f309e5a13766"
+    },
+    ".oryxos-dev/evidence/batch9-provider-probe-red/TEST-io.github.oryxlabs.oryxos.provider.ProviderConcurrencyProbeIT.xml": {
+      "bytes": 18745,
+      "sha256": "6a0a21b56c648ad6447946714ecc2d49e2543367b46531105b993d9cf16983aa"
+    },
+    ".oryxos-dev/evidence/batch9-provider-probe-red/build.log": {
+      "bytes": 6170,
+      "sha256": "0cd8efe2cb989c552015ed730073de02d9a4912fb0a25885498e70318f6441e4"
+    },
+    ".oryxos-dev/evidence/batch9-provider-probe-red.log": {
+      "bytes": 6170,
+      "sha256": "0cd8efe2cb989c552015ed730073de02d9a4912fb0a25885498e70318f6441e4"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-red/summary.json": {
+      "bytes": 209,
+      "sha256": "6907252c43b54a03287a9b319f10280a5a15d48de71fe784d834a3a1fcffa4bf"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-red/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 20047,
+      "sha256": "705e21c7ea4859085da5c785cb8db5c884ecb3030b83c4ae273eacdedacfb52f"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-red/build.log": {
+      "bytes": 8182,
+      "sha256": "f4be8ee2a19cf986f920b8ad0132b90ac356d44797fc89c9166e45c9345c5e25"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-red.log": {
+      "bytes": 8182,
+      "sha256": "f4be8ee2a19cf986f920b8ad0132b90ac356d44797fc89c9166e45c9345c5e25"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green/summary.json": {
+      "bytes": 339,
+      "sha256": "0422d92af9daa9932b4c8c208b3de530872e7e57830818f8818beb633aa8f59f"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green/TEST-io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest.xml": {
+      "bytes": 18884,
+      "sha256": "6745a368437a08e4245660d896a6b8d87e39062af2ddfee716d8f9946b5e3b87"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 20396,
+      "sha256": "867ed1be99cd0131c9aab734f7c9927ed03feabaf1afa3e4133a7e9f9042ab7c"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green/TEST-io.github.oryxlabs.oryxos.provider.ProviderSmokeTest.xml": {
+      "bytes": 19070,
+      "sha256": "0a9b0aabf1692e77d795efa01d1abe081a9c0f58b248a61c5725c541ebc54114"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green/build.log": {
+      "bytes": 6811,
+      "sha256": "59a2871cf587fabf054347617d912a53d707ba555e80aa274219e96c216ab0fb"
+    },
+    ".oryxos-dev/evidence/batch9-provider-body-worker-green.log": {
+      "bytes": 6811,
+      "sha256": "59a2871cf587fabf054347617d912a53d707ba555e80aa274219e96c216ab0fb"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-red/summary.json": {
+      "bytes": 213,
+      "sha256": "f4d23b5cd12f23921c3e7bb6d0fb05dc91b1525a1121eb9cbc34f4ec063effd6"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-red/TEST-io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest.xml": {
+      "bytes": 42817,
+      "sha256": "f29dd62e1e516819b9350c7f2305ba60a2ca388eee0e86db64e10e4f57516706"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-red/build.log": {
+      "bytes": 20762,
+      "sha256": "e869a4bc2697df3192a5ff076612605ecf71b9967f63f4e2d6bf011bd2878451"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-red.log": {
+      "bytes": 20762,
+      "sha256": "e869a4bc2697df3192a5ff076612605ecf71b9967f63f4e2d6bf011bd2878451"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-green/summary.json": {
+      "bytes": 267,
+      "sha256": "99c1cb301c5dab6cdfd5fc88118c16b53139d0738636b3c48c3e2bf27ad63caf"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-green/TEST-io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest.xml": {
+      "bytes": 41557,
+      "sha256": "8ad89ff90d71a55b72a3c2f5c1f1af9eebc1ebb2bcbc9c7ea6f0adac5e0be2f4"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-green/TEST-io.github.oryxlabs.oryxos.boot.SoakHarnessTest.xml": {
+      "bytes": 49545,
+      "sha256": "6329a57a9f8de2a68cf725363d0598a84f5644c4cfb0f0ed2b032901f8c22474"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-green/build.log": {
+      "bytes": 25167,
+      "sha256": "01c820f98ca187f113d715c7fe8d46f2822a4c4a356707869a78701d39ea255a"
+    },
+    ".oryxos-dev/evidence/batch9-external-carrier-green.log": {
+      "bytes": 25167,
+      "sha256": "01c820f98ca187f113d715c7fe8d46f2822a4c4a356707869a78701d39ea255a"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-red/summary.json": {
+      "bytes": 213,
+      "sha256": "fd94322149c215d89320c8bb8ef6a9240f2236d2c6540e3078bebc10d730a420"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-red/TEST-io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest.xml": {
+      "bytes": 43085,
+      "sha256": "9d9fdd8f29cf5b7cbc8b45e47ffc670d578bdd11fc3b3cbfc10e57890b3981cc"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-red/build.log": {
+      "bytes": 20874,
+      "sha256": "54b3ef2544847978f75b13c0d0ce5baa6866cb35651558573a2463f8a31ce616"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-red.log": {
+      "bytes": 20874,
+      "sha256": "54b3ef2544847978f75b13c0d0ce5baa6866cb35651558573a2463f8a31ce616"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-verified/summary.json": {
+      "bytes": 267,
+      "sha256": "4cd90079b68b78b36aea795870edba030c33ce8cb474657c55aa80457aac2af2"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-verified/TEST-io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest.xml": {
+      "bytes": 41707,
+      "sha256": "76175b6355f54270a64c2cf8dd9f217bf00c919cb77a99119ea32c33b2707b63"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-verified/TEST-io.github.oryxlabs.oryxos.boot.SoakHarnessTest.xml": {
+      "bytes": 49497,
+      "sha256": "e94f9fe0b97d559efe6fe9049aa06f106541bc2b1677123e262ccdcc8ffda6bd"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-verified/build.log": {
+      "bytes": 25117,
+      "sha256": "728111271ae22b85adf4180dabf66d8d2edcdbd196e7cd5fa15a5f56eb58667e"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-verified.log": {
+      "bytes": 25117,
+      "sha256": "728111271ae22b85adf4180dabf66d8d2edcdbd196e7cd5fa15a5f56eb58667e"
+    },
+    ".oryxos-dev/evidence/batch9-transport-segmented-short/summary.json": {
+      "bytes": 207,
+      "sha256": "2fb7664285634c904c9ec5a21807bebe6e0206a63da67864533bc9d85ce05860"
+    },
+    ".oryxos-dev/evidence/batch9-transport-segmented-short/TEST-io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT.xml": {
+      "bytes": 53833,
+      "sha256": "decc79db34d737abd8c700414915db79eefcb1ed0b50986f8cc3d07834fb50ec"
+    },
+    ".oryxos-dev/evidence/batch9-transport-segmented-short/build.log": {
+      "bytes": 30621,
+      "sha256": "5d92021b45eabc4b9d2b94456faea8b50c9c9727a8947e259e2afcd8a67d1132"
+    },
+    ".oryxos-dev/evidence/batch9-transport-segmented-short.log": {
+      "bytes": 30621,
+      "sha256": "5d92021b45eabc4b9d2b94456faea8b50c9c9727a8947e259e2afcd8a67d1132"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-short/summary.json": {
+      "bytes": 207,
+      "sha256": "a65785ac5f18a42823c7af6192fd3a7381cb0697920ee92f5d4d1ef9ff299250"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-short/TEST-io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT.xml": {
+      "bytes": 53961,
+      "sha256": "941449798f6b3fae2ed7a724e8af7d5bead04accb6e54e3c3ccab66265c50ce2"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-short/build.log": {
+      "bytes": 30626,
+      "sha256": "5254c4548f4a9cdd693fe0868db772548e4d12b115d3db0162a184998f75348f"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-short.log": {
+      "bytes": 30626,
+      "sha256": "5254c4548f4a9cdd693fe0868db772548e4d12b115d3db0162a184998f75348f"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-external-short/summary.json": {
+      "bytes": 207,
+      "sha256": "233a9886a8f1a1a704665975f5e6c0af32a0534a2388378ddbeecf365eb46b4e"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-external-short/TEST-io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT.xml": {
+      "bytes": 53832,
+      "sha256": "75e3ce936c1c613fe52ce4340aac6b03d2c91f2d84ecb35a2c1edc2b0482ff43"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-external-short/build.log": {
+      "bytes": 31095,
+      "sha256": "59788baffc6122f5b379fa53f957f39175c6fcc446d098227de7b2c2d845e202"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-external-short.log": {
+      "bytes": 31095,
+      "sha256": "59788baffc6122f5b379fa53f957f39175c6fcc446d098227de7b2c2d845e202"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-driver-short/summary.json": {
+      "bytes": 207,
+      "sha256": "cef846e00abb0aef4b68574a8b250e4030862e5ddb4e81a3af65a55fbd211656"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-driver-short/TEST-io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT.xml": {
+      "bytes": 53768,
+      "sha256": "db5a650c9cb0c7c87b8d47ab42c3da27ce26c82e05db499ca13691dc43fe88b2"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-driver-short/build.log": {
+      "bytes": 30558,
+      "sha256": "1cfbf8d8725d67f58243dd69c798393a2ccac7f4570055e5e2e09b85a3d5d67c"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-driver-short.log": {
+      "bytes": 30558,
+      "sha256": "1cfbf8d8725d67f58243dd69c798393a2ccac7f4570055e5e2e09b85a3d5d67c"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/summary.json": {
+      "bytes": 3280,
+      "sha256": "73a2522b52787edd64332f0a84e8f859df920978c9bbbdc508e25a54c3084f98"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.HttpApiContractTest.xml": {
+      "bytes": 125397,
+      "sha256": "fa121c8ca041c75b77467f2d6f101e75ccdbe56a6306516006d6a47161b6a064"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest.xml": {
+      "bytes": 19049,
+      "sha256": "9bd74f9f61d415342f722f3a551cc2488a5e17b63e87bce3389701efcaccb927"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.tool.ToolSafetyContractTest.xml": {
+      "bytes": 19738,
+      "sha256": "6ec9bb0147857a231d8a1695773cda295e6191febb2480af6c86a3db3f75375a"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.config.RuntimeConfigContractTest.xml": {
+      "bytes": 18719,
+      "sha256": "18fc0f4432dece5fc01f49ec1c3c53e63a90050a30c8ead81982e49e25b1dd25"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.storage.WriterIsolationTest.xml": {
+      "bytes": 26006,
+      "sha256": "782e44e72a907b4f75692ff78d2bdcecf9ac0ed06db28317773e1df291f47d19"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.EntryPointContractTest.xml": {
+      "bytes": 42785,
+      "sha256": "3e3e9864c251c3fd44ff47fef8b9022a057120f52e39bd881e563da932b11e75"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.cli.CliOperationsTest.xml": {
+      "bytes": 21434,
+      "sha256": "bae8da438927f658eb57c485a6eee869466071338922761f81e864ff62150932"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.tool.HttpTransportReuseTest.xml": {
+      "bytes": 19449,
+      "sha256": "786c10637288705096bd2b311af79e995079dfe2d57cf7b1d6f860d407aada3d"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest.xml": {
+      "bytes": 108469,
+      "sha256": "66d3c71b3954179f89ad8ef17585d0af0bf1a2bcc95d7777306dd244dd5047bd"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest.xml": {
+      "bytes": 42854,
+      "sha256": "e66a8a4581a1894c2cba654a4080e970406a03b821b31ffb9aa703aa89fdd528"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.RecordingFailureIT.xml": {
+      "bytes": 83796,
+      "sha256": "4e5800be13f9d255a146117aa8f9b158b2568530b5df41699ae20fe4653d7960"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.EvidenceLogTest.xml": {
+      "bytes": 42824,
+      "sha256": "11c2598d62536defc607bdefbb08684bb1a8fb0218173d6ca7cecebce1a252bb"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.tool.McpContractTest.xml": {
+      "bytes": 20107,
+      "sha256": "84bf1d3bc6f11ff169c501446f04545055f72c9cc2624c76adfd6e3179a7984c"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest.xml": {
+      "bytes": 18783,
+      "sha256": "04373f24ef1e6caa4fc5faadfce423567b924927934a6c9717ffb1d589e7de2c"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.session.SessionContractTest.xml": {
+      "bytes": 18878,
+      "sha256": "4bf0df3730419da5abfd9202b8a5a8140155cba3b003709f41e3f62e3d26bcda"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.session.SessionRuntimeContractTest.xml": {
+      "bytes": 18592,
+      "sha256": "6bf2f1dd60e91ad9ca86829ed6f7c2b62d96600313dc88c821fa5ca0c37e3c9b"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.HttpReadPathTest.xml": {
+      "bytes": 47666,
+      "sha256": "80e131c1fb66ab89a7ec4d9fef8de0f31eea634c90996354959978a6be3bd939"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/published-openapi-diff.json": {
+      "bytes": 3,
+      "sha256": "5984eac0c5c6d947241e29dd5671b81a1546cedf77e08d38438ac47029969afa"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.storage.StorageLifecycleIntegrationTest.xml": {
+      "bytes": 31232,
+      "sha256": "169274d49a549622d92c20a5b44cf14b72554dd390874bc8681d49f6831769ae"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.cli.WorkspaceCommandsTest.xml": {
+      "bytes": 20518,
+      "sha256": "a4d78e5d06da39f949cdb583cc67d92d9fc1718c171564893b17108d145d8914"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.security.RedactorConcurrencyTest.xml": {
+      "bytes": 18115,
+      "sha256": "ab47111b0bfcb5ec83137d38d0a1a1db2f8f773748a94795e21d462fc522dc4a"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT.xml": {
+      "bytes": 43064,
+      "sha256": "d09b2d2a57136d0410e47bfe21847eac4e512160590db6937fbeb07d35a84d8b"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.memory.Mem0ProtocolContractTest.xml": {
+      "bytes": 23419,
+      "sha256": "926b25070872d4a5139ed8a245a31a87ec861529e49638b48cefd69e7d590e90"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.SoakDiagnosticIT.xml": {
+      "bytes": 49315,
+      "sha256": "eeb90a44b035e0133ae419e26f13ba36104fc57c88e5781c195682163b5cd865"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest.xml": {
+      "bytes": 42831,
+      "sha256": "9ac20f08c5f093ac23a97d8db3cbbf1304ffa7052cc9802dd9171d49fb3429a3"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.tool.NotifyContractTest.xml": {
+      "bytes": 19750,
+      "sha256": "590f230f2d234ee715f4e1687d3cb97bcb72fd0b1f2e6242890b43af28c5f387"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.provider.ProviderContractTest.xml": {
+      "bytes": 20343,
+      "sha256": "9f423218c2e21c1ed4cdb6c759c086fd8af7613a3601cb80ffd0c8be9a6b3815"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.cli.AgentStatusTest.xml": {
+      "bytes": 19785,
+      "sha256": "a16471a74601d06919e2d005d547ba87ec7031362b2160c0968963bb8746c523"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest.xml": {
+      "bytes": 18939,
+      "sha256": "3d8fa1f0f04cf299b292ab9c6c29f044dfe9e185ea2674fc5cea3843db706635"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.StructuredLogAuditTest.xml": {
+      "bytes": 43323,
+      "sha256": "1132c3df4e9b11210da07e0499c1d6e40caa046feff97542c4acba1be2adefd5"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.DegradedStartupTest.xml": {
+      "bytes": 54654,
+      "sha256": "bd9470845b522fbd0a82bd440463986c807e965f4e71691c25b683f598db05f6"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest.xml": {
+      "bytes": 29438,
+      "sha256": "3b07b7fcef6afb7a7ac3d4f85e80d886d9f7cff9fc8cc4b8e032461f6ca7ebfd"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest.xml": {
+      "bytes": 70163,
+      "sha256": "de500e1a4b3e1ff69ee2c6a624a5dc000100e5ff4fb192170937fff6b7a962e4"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.OryxOsApplicationTest.xml": {
+      "bytes": 48407,
+      "sha256": "ceac43669f8c793dd1c91a06b3d067e10406a237f986cb64a5dcdf1818db55d3"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.memory.backend.MarkdownReadConcurrencyTest.xml": {
+      "bytes": 22669,
+      "sha256": "a1bef6c23c90b5019b84da4a522db64edae7bdb902d9b6eade9f134ff4954d5a"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.EarlyCliLoopIntegrationTest.xml": {
+      "bytes": 52850,
+      "sha256": "43e668856859f651b6e7d77f363715de85e21cfdd5ab22b06ed7d3a2144a494b"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest.xml": {
+      "bytes": 18252,
+      "sha256": "60e0c7bd685e834ed1b9eb3286fb76f2626e41d4c70a984d36d0b23dc7c4b50a"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.KernelLocalIT.xml": {
+      "bytes": 43853,
+      "sha256": "065e775818a2134b998d4dbec0a13763706876694c16f86dd09443001fc134e5"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.core.react.ReActContractTest.xml": {
+      "bytes": 18846,
+      "sha256": "8a9bd844d4b2e1e6865a0aef4746c667e010bd61b0d47097ce375fb1675ce6e5"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.MemoryFacadeIntegrationTest.xml": {
+      "bytes": 53451,
+      "sha256": "721385f28992940a1b1583a9de50227d8f1082c26695aba18c1b0cd86e744436"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.ToolIntegrationTest.xml": {
+      "bytes": 77810,
+      "sha256": "81569f89e7ce39bac31d336ce96b24348b3c2abc86637ffb8c9f4c3d1dc6c555"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.DiscoverySuffixIT.xml": {
+      "bytes": 42651,
+      "sha256": "6e95a65e074ef9e862a7355666a9a1346238e37215f076af2dc3924ecdd863db"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/published-openapi.json": {
+      "bytes": 79496,
+      "sha256": "8e0a6182ff608fb7bb35a516e3388c35f537a0c02baa90f6cd58b92e0bc2f0c9"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.provider.ProviderSmokeTest.xml": {
+      "bytes": 19016,
+      "sha256": "98d2c3d107d65707af8f8723f3b3889d85321893cd9cf07f7fb53602f5259fa3"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.memory.MemoryContractTest.xml": {
+      "bytes": 23421,
+      "sha256": "e223eaa7367b3c082a526fbf39d3b9069a0606b6785d7f345c53ad59c5cd5d6a"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.RestartRecoveryIT.xml": {
+      "bytes": 61243,
+      "sha256": "d85eb510a077c40809749103fb1295e8e9a52ccbb00d1c9cbfada1d092dc3b0d"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.TestDiscoveryIT.xml": {
+      "bytes": 42645,
+      "sha256": "746696b6557aacacbd298b97fc8efa021994dffdcb5cb66251ea36284cc5dc5e"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.storage.SessionReadContractTest.xml": {
+      "bytes": 30082,
+      "sha256": "0b90d13dc6b9baeaa1ff367095e9830f8ffb3129b6583b1928cdae23f6af7e5b"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.CliCommandsIT.xml": {
+      "bytes": 42993,
+      "sha256": "e07381f53c7a53e69ebf812ab24f82ed28ef31c542cbf1c550f93d6b94ee596c"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest.xml": {
+      "bytes": 51430,
+      "sha256": "ccc987d79170d4b906e0b57a7f83be1c0944d511659c5886d762f3c1e30ee1db"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.SoakHarnessTest.xml": {
+      "bytes": 49669,
+      "sha256": "adbf9059f7479416f01a13860b8a0216ce653694c91cd89d5d350c38e0f97c15"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.tool.ToolsContractTest.xml": {
+      "bytes": 20140,
+      "sha256": "1565b1b8d4b4908f2efd0ac73f063f6d4737241f8918981a6132e0869b367f4e"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/TEST-io.github.oryxlabs.oryxos.boot.AdminPageContractTest.xml": {
+      "bytes": 52780,
+      "sha256": "5bef4e370cc74191092a2a72b893edf752df84ab26b03cbfddd7a8d40acb9406"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify/build.log": {
+      "bytes": 392402,
+      "sha256": "3da0fca2c102a8f644ec6a8caf8c7f9380b3f18ed901eb4b35058fe6537cc2a9"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-verify.log": {
+      "bytes": 392402,
+      "sha256": "3da0fca2c102a8f644ec6a8caf8c7f9380b3f18ed901eb4b35058fe6537cc2a9"
+    },
+    ".oryxos-dev/evidence/batch9-transport-segmented-analysis.json": {
+      "bytes": 7412,
+      "sha256": "167f5a30c34e636f4f748a90651fd387ca3b19af97f19a8441b1af688eb93025"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-partial.jfr": {
+      "bytes": 2158191,
+      "sha256": "bdd1f4f78c0a7b0ec76fd06f68b0bc2517efa791f75ba41e100bda34319a1eb5"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-profile.jfr": {
+      "bytes": 3781838,
+      "sha256": "7dc8904d1ea5d3180aa77c266b423504a0e3eb51d6ae911733f4d89133c5a7a0"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-partial.json": {
+      "bytes": 93196963,
+      "sha256": "e095a130ce54d3c2690086db7b77f1e5cb9a1dcddf11f7316568eaadbc24c758"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-analysis.json": {
+      "bytes": 7495,
+      "sha256": "5a5b3b874907a82c0163fc850b89143eec5a1aa90d8b892b6f128e57d207c26e"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-contention.json": {
+      "bytes": 145631595,
+      "sha256": "41a692a85764caf379f1738d1d20dbd7e22fb784676d3bf95db7ef8dbe2a1e0d"
+    },
+    ".oryxos-dev/evidence/batch9-body-workers-contention-summary.json": {
+      "bytes": 550,
+      "sha256": "b092a7a2666ac47ed0791d7421bb4535ea05831bd1811eae72a1252d39cfc85f"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-driver-analysis.json": {
+      "bytes": 7413,
+      "sha256": "0099847544fe2276518bbe0c1c06ade6527c182942c34ffd97c2a4fa85be6056"
+    },
+    ".oryxos-dev/evidence/batch9-isolated-external-analysis.json": {
+      "bytes": 7525,
+      "sha256": "baacda21cfcb0f17ef21b1e8b4ab8451d842a873e97c261a74a681d8ae390f93"
+    },
+    ".oryxos-dev/evidence/external-carrier-73aa08f2-c2d2-4928-beb0-4554f2f696c7.log": {
+      "bytes": 506,
+      "sha256": "3f78c03303da618602a0926897636d9f7481bf4e718df5792b407d0bb03f257d"
+    },
+    ".oryxos-dev/evidence/external-carrier-8d2263a8-55ac-4fb2-aa3d-c25e1acf1a97.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    },
+    ".oryxos-dev/evidence/external-carrier-driver-139c343e-8497-41e0-b983-f21c71a0900a.log": {
+      "bytes": 506,
+      "sha256": "9ba0b0f915b6a4be30282e05c34235a15381850d3deb9f17ffc6bebc07d50411"
+    },
+    ".oryxos-dev/evidence/external-carrier-server-139c343e-8497-41e0-b983-f21c71a0900a.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    },
+    ".oryxos-dev/evidence/external-carrier-driver-e2ce7f2f-8bb6-48d4-990e-c46a8935a6da.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    },
+    ".oryxos-dev/evidence/external-carrier-server-e2ce7f2f-8bb6-48d4-990e-c46a8935a6da.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    },
+    ".oryxos-dev/evidence/provider-probe-826ae588-57b7-4125-9952-031e321a3353.json": {
+      "bytes": 361724,
+      "sha256": "61709e531e857aefe23d4e9c4ca5b9381a422c4893c0f5ff7bf3520ccb2d3d06"
+    },
+    ".oryxos-dev/evidence/batch9-driver-carrier-green.log": {
+      "bytes": 235,
+      "sha256": "1b34ef8bd9b6ee4d6aecc02de9f26ad84f8af114a27005e32c01c40b1ce92156"
+    },
+    ".oryxos-dev/evidence/batch9-transport-batch-python-tests.log": {
+      "bytes": 104,
+      "sha256": "b95b5805bef96b568b1b2424b637003cd6f306e6312d682e4f2e4e23f635b26a"
+    },
+    ".oryxos-dev/evidence/external-carrier-server-e63294da-0378-46f7-bec8-eb3e597e5115.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    },
+    ".oryxos-dev/evidence/external-carrier-driver-e63294da-0378-46f7-bec8-eb3e597e5115.log": {
+      "bytes": 199,
+      "sha256": "4e9fbf0269613d8e5d2c031dd972702cf5043ddbfc29c5d7a932bb5759fee9fc"
+    }
+  },
+  "limitations": [
+    "No new four-hour proof for this implementation: strict short gate failed.",
+    "All queue/database/audit/transport and excess external wait remain included; 50ms maximum unchanged.",
+    "External service and load driver use separate bounded platform pools; all 100 clients and complete synchronous evidence retained. Production audit remains synchronous; no altered deduction.",
+    "Different code/host/JVM/JFR conditions are not a controlled A/B; no overall improvement claim.",
+    "Local controlled external model/tool delays do not validate real models, Mem0, MCP or notification targets.",
+    "No T102+ work; no commit or push."
+  ]
+}

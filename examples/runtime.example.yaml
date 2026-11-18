@@ -1,0 +1,35 @@
+# Copy into a NEW workspace as runtime.yaml; configure every .invalid/model placeholder first.
+# Local integration tests replace these with explicitly marked loopback fixtures.
+schema_version: 1
+timezone: Asia/Shanghai
+providers:
+  example:
+    protocol: openai_chat_completions
+    endpoint: https://model.example.invalid
+    completions_path: /chat/completions
+    api_key: '${EXAMPLE_MODEL_KEY}'
+    connect_timeout_seconds: 5
+memory:
+  backend: md
+  archival_context_characters: 4000
+tools:
+  file:
+    allowed_read_paths: [agents/daily-tech-digest/skills]
+    allowed_write_paths: []
+  shell:
+    # Check this interpreter on your machine; keep command and Agent instruction consistent.
+    allowed_commands: [/usr/bin/python3]
+    allowed_script_paths: [agents/github-daily/scripts]
+    timeout_seconds: 20
+    env: {}
+    # Optional authenticated GitHub search: replace env above with
+    # env: {GITHUB_TOKEN: '${GITHUB_TOKEN}'}
+    # Only after adding the secret locally; never pass it via argv or Agent Markdown.
+  http:
+    allowed_targets:
+      - {scheme: https, host: weather.example.invalid, port: 443}
+      - {scheme: https, host: notify.example.invalid, port: 443}
+    connect_timeout_seconds: 5
+    read_timeout_seconds: 5
+    max_response_bytes: 65536
+# The HTTP allowlist applies to HTTP/notify tools. Trusted script/MCP networking is separate.

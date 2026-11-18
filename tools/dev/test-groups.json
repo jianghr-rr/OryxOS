@@ -1,0 +1,1129 @@
+{
+  "groups": {
+    "f0-discovery": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.TestDiscoveryIT",
+          "methods": [
+            "localFixtureIsReachable"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.EntryPointContractTest",
+          "methods": [
+            "versionDoesNotStartSpring",
+            "helpDoesNotStartSpring"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.DiscoverySuffixIT",
+          "methods": [
+            "suffixOnlyItIsDiscovered"
+          ]
+        }
+      ]
+    },
+    "f0-foundation": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-cli",
+          "class": "io.github.oryxlabs.oryxos.cli.WorkspaceCommandsTest",
+          "methods": [
+            "initIsIdempotentAndStatusIsHonest",
+            "invalidConfigurationIsSafeAndDoesNotStartRuntime",
+            "initRefusesEscapingSymlink"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.config.RuntimeConfigContractTest",
+          "methods": [
+            "providerFailuresStayLocalAndSecretsNeverEnterDiagnostics",
+            "unsafeYamlAndGlobalErrorsFailClosed",
+            "secretReferencesHaveExplicitPrecedenceAndNoExpansion",
+            "rootsAreCanonicalAndPrecedenceIsShared",
+            "permitsStopAtDeadlineAndPauseCannotAutoRecover"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.StorageLifecycleIntegrationTest",
+          "methods": [
+            "sqlitePragmasTransactionsAndJpaSurviveReopen",
+            "checksumMismatchAndCorruptionNeverRecreateDatabase",
+            "storageRequiresTheSameWorkspaceLock"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.DegradedStartupTest",
+          "methods": [
+            "failedStorageCanBeRebuiltWithoutReopeningGateOrLeakingManagers",
+            "diagnosticHttpContextSurvivesBadDatabaseAndConfiguration"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.OryxOsApplicationTest",
+          "methods": [
+            "applicationStartsWithAllModules"
+          ]
+        }
+      ]
+    },
+    "us1-contract": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+          "methods": [
+            "isolatesInvalidAgentsAndKeepsOnlyExplicitPermissions",
+            "snapshotsConfigurationSeparatelyFromBodyAndValidatesSchedules",
+            "rejectsUnsafeDefinitionsAndBootstrapEscapesWithoutAffectingGoodAgent",
+            "exposesNotificationNamesOnlyAndKeepsRevisionStableAcrossFormatting"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "methods": [
+            "routesTwoProvidersAndAuditsActualModelsWithoutInventingUsage",
+            "missingCredentialsAndEmptyTasksNeverReachNetwork",
+            "returnsStructuredCallsAndReplaysReasoningWithoutExecutingTools",
+            "classifiesFailuresWithoutRetriesFallbackOrRawResponseLeakage",
+            "budgetsCoverHeadersAndBodyAndExpiredRequestsDoNotStart",
+            "rejectsRedirectsDisconnectRetriesAndForeignContinuation",
+            "mapsMcpNamesAndDetectsCollisionsAndUnknownWireNames",
+            "recordingFailuresNeverBecomeSuccessOrTriggerReplay"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderSmokeTest",
+          "methods": [
+            "twoAgentDefinitionsReachTheirConfiguredServices"
+          ]
+        },
+        {
+          "module": "oryxos-cli",
+          "class": "io.github.oryxlabs.oryxos.cli.AgentStatusTest",
+          "methods": [
+            "statusParsesCurrentAgentsWithoutStartingRuntimeOrLeakingTargets"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.StructuredLogAuditTest",
+          "methods": [
+            "logProjectionIsJsonWithUnknownUsageAndNoSecretsOrOpaqueData"
+          ]
+        }
+      ]
+    },
+    "real-provider": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.RealProviderIT",
+          "methods": [
+            "deepseekOrdinaryRequest",
+            "kimiOrdinaryRequest"
+          ]
+        }
+      ]
+    },
+    "us2-loop": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest",
+          "methods": [
+            "unknownSideEffectStopsBeforeModelOrRemainingToolCanRun",
+            "parameterCorrectionPreservesOriginalErrorAndLinksResolution",
+            "changedValidFieldsOrDeniedUnknownToolsCannotClearErrors",
+            "malformedOrMultipleFailuresCannotBeClearedByLaterSuccess",
+            "correctionChainLinksEveryErrorWithoutRewritingOriginalOutcomes",
+            "safeRetrySuccessResolvesItsAttemptsButUnknownNeverRetries"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.react.ReActContractTest",
+          "methods": [
+            "directReplyStopsWithoutToolIo",
+            "toolsRunSequentiallyAndHistoryContainsPairedMessagesOnce",
+            "iterationLimitPairsUnexecutedProposalsAndStopsNewIo",
+            "bodyAndBootstrapAreReloadedWithoutChangingStartupConfiguration",
+            "missingOversizedAndSecretBootstrapFailBeforeModelIo",
+            "referencesAreReadOnDemandAndOnlyScriptOutputEntersHistory"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+          "methods": [
+            "slowStartedRecordCannotAuthorizeActionAfterDeadline",
+            "closureRejectsInternalSubrequestsButDoesNotUndoAdmittedWork",
+            "recordingFailurePausesOtherExecutionsAndNeverDispatches",
+            "callerDeadlineKeepsSessionBusyUntilLateToolAndFinalRecordExit",
+            "lateRecordFailureRetainsDeadlineAndMarksIncomplete",
+            "initialSessionStorageFailurePausesWorkspaceBeforeAnyProviderCall",
+            "completedModelStillExpiresCallerWhileFinalRecordingIsBlocked"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.session.SessionRuntimeContractTest",
+          "methods": [
+            "identityAndCreationModelAreCheckedEvenForEmptySessions",
+            "busyLeaseRejectsWithoutQueueAndAllowsReuseOnlyAfterClose",
+            "historySelectsCompleteTurnsOnceAndNeverDeletesOrIncludesCurrent",
+            "incompleteToolPairsFailClosed",
+            "activeLeaseReusesPriorTurnHistoryAcrossIterationsWhileReflectingAppendedCurrentMessages"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.ToolSafetyContractTest",
+          "methods": [
+            "schemasAreOfflineBoundedAndReportFieldsWithoutValues",
+            "permissionAndRedirectBoundariesHaveNoUnauthorizedIo",
+            "readsAreBoundedAndEachHopHasOneTransportAttempt",
+            "safeRetriesAreAuditedAndAuthenticationIsNotRetried"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.EarlyCliLoopIntegrationTest",
+          "methods": [
+            "cliRunsRealAdapterAndWeatherToolThenResumesSameSession",
+            "defaultDistributionDoesNotFallbackToTemporaryStores"
+          ]
+        }
+      ]
+    },
+    "deadline-boundary": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.react.FailurePolicyContractTest",
+          "methods": [
+            "unknownSideEffectStopsBeforeModelOrRemainingToolCanRun",
+            "parameterCorrectionPreservesOriginalErrorAndLinksResolution",
+            "changedValidFieldsOrDeniedUnknownToolsCannotClearErrors",
+            "malformedOrMultipleFailuresCannotBeClearedByLaterSuccess",
+            "correctionChainLinksEveryErrorWithoutRewritingOriginalOutcomes",
+            "safeRetrySuccessResolvesItsAttemptsButUnknownNeverRetries"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+          "methods": [
+            "slowStartedRecordCannotAuthorizeActionAfterDeadline",
+            "closureRejectsInternalSubrequestsButDoesNotUndoAdmittedWork",
+            "recordingFailurePausesOtherExecutionsAndNeverDispatches",
+            "callerDeadlineKeepsSessionBusyUntilLateToolAndFinalRecordExit",
+            "lateRecordFailureRetainsDeadlineAndMarksIncomplete",
+            "initialSessionStorageFailurePausesWorkspaceBeforeAnyProviderCall",
+            "completedModelStillExpiresCallerWhileFinalRecordingIsBlocked"
+          ]
+        }
+      ]
+    },
+    "real-provider-tools": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RealProviderToolLoopIT",
+          "methods": [
+            "deepseekToolResultRoundTrip",
+            "kimiToolResultRoundTrip"
+          ]
+        }
+      ]
+    },
+    "us3-memory": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.session.SessionContractTest",
+          "methods": [
+            "archiveRequiresMatchingIdentityAndNoActiveLease",
+            "oneShotArchivesOnlyWhenItsLeaseActuallyCloses",
+            "creationSnapshotCannotHaveEmptyModelOrProvider",
+            "oneShotDeadlineDoesNotArchiveUntilLateWorkAndFinalRecordExit",
+            "oneShotArchiveFailureCompletesCallerAndPausesAdmission"
+          ]
+        },
+        {
+          "module": "oryxos-memory",
+          "class": "io.github.oryxlabs.oryxos.memory.Mem0ProtocolContractTest",
+          "methods": [
+            "archiveConfirmsEachRemoteIdAndSendsOnlyExplicitContent",
+            "coreIsCompleteAndNeverContactsRemoteService",
+            "emptyMissingForeignAndDisconnectedProjectionsNeverBecomeFacts",
+            "deadlineClosesReadbackAdmissionAndRetainsUnknownSource",
+            "searchDropsForeignLowScoreAndUnconfirmedSources",
+            "realHttpTimeoutLeavesUnknownAndNeverRetriesOrReadsBack"
+          ]
+        },
+        {
+          "module": "oryxos-memory",
+          "class": "io.github.oryxlabs.oryxos.memory.MemoryContractTest",
+          "methods": [
+            "markdownSharesOriginalCoreAndArchivesAcrossAgentsAndReopens",
+            "literalRecallFoldsUnicodeWithoutWildcardsOrCoreLeakage",
+            "concurrentConfirmedWritesSurviveAndCorruptionIsNotEmpty",
+            "facadeLoadsHistoryOnceKeepsFullCoreAndBoundsOnlyArchiveCodePoints",
+            "explicitSaveAllowsOrdinaryUrlsButRejectsRegisteredCredentialsBeforeWrite",
+            "corruptAndEscapingMarkdownFailWithoutChangingFiles"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.MemoryFacadeIntegrationTest",
+          "methods": [
+            "engineUsesUnifiedMemoryToolsSharesFactsAndKeepsSessionsSeparate",
+            "realSqliteAndMarkdownRemainSeparateAndConfirmedConcurrentWritesSurviveReopen",
+            "mem0UsesRealLocalLedgerAndOnlyConfirmedWorkspaceMappingsSurviveReopen"
+          ]
+        }
+      ]
+    },
+    "real-mem0": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-memory",
+          "class": "io.github.oryxlabs.oryxos.memory.RealMem0IT",
+          "methods": [
+            "realSemanticIsolationCoreOfflineAndRestartPersistence"
+          ]
+        }
+      ]
+    },
+    "us4-tools": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.ToolsContractTest",
+          "methods": [
+            "filesWriteReadAndListActualOutput",
+            "deniedControlTraversalAndSymlinkNeverChangeFiles",
+            "fileReadAndDirectoryListingAreBoundedAndMarked",
+            "shellUsesArgvExplicitEnvironmentAndBoundedRedactedOutput",
+            "shellTimeoutIsUnknownAndProcessDoesNotContinue",
+            "nativeAnnotationUsesUnifiedValidationPermissionAndAudit",
+            "actualChildJvmWithForeignCanaryDoesNotLeakIntoShellOrMcp"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.NotifyContractTest",
+          "methods": [
+            "configuredTargetEscapesContentChecksBusinessAckAndNeverExposesSecrets",
+            "missingOrForeignTargetsAreRejectedBeforeNetwork",
+            "acceptedThenDisconnectedNotifyAndPostAreUnknownWithoutRetries",
+            "getRetriesAreBoundedButPostAndInjectedHeadersNeverReplay"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.McpContractTest",
+          "methods": [
+            "actualStdioPaginatesSeparatesNamesAndCallsOnlyRemoteName",
+            "remoteSchemaIsRejectedOfflineAndDoesNotBreakOtherServer",
+            "serverErrorIsErrorButDisconnectIsUnknownAndNeverReplayed",
+            "remainingDeadlineBoundsCallAndPreventsFurtherWireRequests",
+            "forcedShutdownIsReportedAsFailedGracefulClose"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ToolIntegrationTest",
+          "methods": [
+            "cliRunsNineToolsNativeExtensionAndRealStdioThroughOneExecutor",
+            "allNineToolsDenyUnlistedAgentBeforeAnyExternalAction",
+            "notificationReceiptLossStopsSameTaskAndLeavesLaterTaskUsable",
+            "unavailableToolOrServerOnlyDisablesItsReferencingAgent"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.agent.AgentCatalogContractTest",
+          "methods": [
+            "notificationDefaultsAndPrivateHeadersAreValidatedPerAgent"
+          ]
+        }
+      ]
+    },
+    "real-notify": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RealNotificationIT",
+          "methods": [
+            "configuredWebhookAcknowledgesOneIdentifiableMessage"
+          ]
+        }
+      ]
+    },
+    "real-mcp": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ConfiguredMcpIT",
+          "methods": [
+            "pinnedConfiguredServerDiscoversCallsOnceAndCloses"
+          ]
+        }
+      ]
+    },
+    "storage-faults": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+          "methods": [
+            "productionUsesPersistentPortsAndVersionedTables",
+            "abandonedRunPausesWithoutReplacingOldEvidence",
+            "actualJvmChatResumesStructuredHistoryAndAuditsAfterRestart",
+            "actualJvmCrashLeavesStartedAttemptAndRequiresRecoveryWithoutReplay",
+            "emptySessionSnapshotArchiveAndReadonlyQueriesSurviveRestart"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RecordingFailureIT",
+          "methods": [
+            "userInsertFailureRollsBackSessionExecutionAndMessageBeforeAnyIo",
+            "startedFailureSendsNothingAndRequiresExplicitAcknowledgement",
+            "acceptedSideEffectAndFailedResultNeverReplayAcrossRestart",
+            "recoveryWaitsForInflightActionAndFinalRecording",
+            "runEvidenceStillPreventsRestartBypassWhenDatabaseAndFaultWritesFail",
+            "repairedStorageRebuildsTheOriginalPortsWithoutMemoryFallback",
+            "unreadableDatabaseKeepsDiagnosticAndRecoveryServiceAvailable"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "upgradingV2PreservesMemoryLedgerAndChecksums",
+            "structuredMessagesPaginationModelSnapshotAndForeignKeysPersist",
+            "auditsRetainFailuresCorrectionLinksDenialsUnknownsAndNullUsage",
+            "writerQueueIsBoundedAndWaitingUsesRemainingBudget"
+          ]
+        }
+      ]
+    },
+    "restart-recovery": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+          "methods": [
+            "productionUsesPersistentPortsAndVersionedTables",
+            "abandonedRunPausesWithoutReplacingOldEvidence",
+            "actualJvmChatResumesStructuredHistoryAndAuditsAfterRestart",
+            "actualJvmCrashLeavesStartedAttemptAndRequiresRecoveryWithoutReplay",
+            "emptySessionSnapshotArchiveAndReadonlyQueriesSurviveRestart"
+          ]
+        }
+      ]
+    },
+    "us5-schedules": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest",
+          "methods": [
+            "callbackAlreadyTakenByTimerCannotRunAfterDisableAndReenable",
+            "scheduleTablesStoreStateAndHistoryWithoutAuthoritativeDefinitions",
+            "productionProvidesSchedulerUsingPersistentEngine",
+            "automaticCronEntersThePersistentEngine",
+            "disabledManualRunsKeepIdentityFreshSessionsAndSixtySecondBudget",
+            "persistedEnablementSurvivesDefinitionChangesDeletionAndRestoration",
+            "manualAndAutomaticOverlapRemainLockedThroughTimeoutAndLateRecording",
+            "ordinaryFailureLeavesLaterTriggersUsable",
+            "dispatchRecordFailurePausesBeforeModelAndRecoveryNeverReplaysSkippedTicks",
+            "failedEnabledCommitDoesNotClaimStateChange",
+            "workspaceTimezoneAndFileSnapshotsApplyToBothTriggerKinds",
+            "invalidTimezoneOrBudgetOnlyDisablesItsAgent",
+            "realCronObservesOverlapAndContinuesAfterProviderFailure",
+            "actualJvmRestartPreservesHistoryAndDisabledStateWithoutCatchup",
+            "chatDoesNotRegisterAutomaticJobsEvenWhenFilesEnableThem",
+            "serveAndGatewayCliProcessesActivateTheSamePersistentScheduler"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest",
+          "methods": [
+            "historyOrdersFractionalInstantsAndRejectsForeignCursorsWithoutPausing",
+            "v5UpgradePreservesSessionExecutionAuditAndMigrationChecksums"
+          ]
+        }
+      ]
+    },
+    "us5-http-api": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.HttpApiContractTest",
+          "methods": [
+            "httpTimeoutPreservesCompletedModelAndUnconfirmedRecord",
+            "allNineteenOperationsUseContractEnvelopesAndPersistentRecords",
+            "invalidInputAndIdentityNeverReachModel",
+            "pausedHealthAndQueriesStayHonestAndRecoveryRequiresConfirmation",
+            "actualSixtySecondHttpDeadlineSealsActionsBefore504",
+            "everySchemaHasExactDtoFieldsAndValidNullableSerialization",
+            "paginationAndSharedConfirmedMemorySurviveHttpRestart",
+            "actualSqlFailuresPauseAndHttpRecoveryDoesNotReplayAcceptedAction",
+            "unreadableStorageReturnsErrorsAndRecover503WithoutFakeLists",
+            "providerIterationAndCorrectedToolOutcomesKeepTheirEvidence",
+            "concurrentScheduleAndSessionMutationsAreRejectedUntilSettlement",
+            "disconnectedClientDoesNotCancelWorkOrReleaseSessionLock",
+            "failedScheduleControlCannotClaimEnabledAndBadAgentIsIsolated",
+            "httpReadonlyCrossChannelAndEmptyModelSnapshotStayBoundAcrossReload"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+          "methods": [
+            "completedModelStillExpiresCallerWhileFinalRecordingIsBlocked"
+          ]
+        }
+      ]
+    },
+    "us5-cli": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-cli",
+          "class": "io.github.oryxlabs.oryxos.cli.CliOperationsTest",
+          "methods": [
+            "profilesAreFileBasedNeverOverwriteAndArchiveWithoutDeletingHistory",
+            "deletionIsBlockedWhileAnyRuntimeOwnsWorkspace",
+            "profilePathsRejectTraversalAndEscapingSymlinks",
+            "lightJsonQueriesAreHonestAndMalformedInputIsSafe",
+            "profileShowRedactsConfigurationAndBodyAndExplainsSnapshot",
+            "twelveOperationsAndModeHelpAreDiscoverableWithoutLaunching"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest",
+          "methods": [
+            "offlineToolsNeverDiscoverMcpAndMissingDatabaseIsNotAnEmptyList",
+            "liveToolsAndProfileSnapshotsFollowLoadedDefinitionsThenRefreshAfterRestart",
+            "jsonChatAndReadonlyPaginationKeepHttpIdentityAndHistoricalRowsAfterDelete",
+            "failureAndPauseExitCodesRemainStructured",
+            "actualProcessJsonOutputIsSeparateFromBootLogsAndLightQueriesStayOffline",
+            "actualSixtySecondCliDeadlineReportsUnknownAndNeverDispatchesLateTool",
+            "actualRecordFailureIsExitSevenAndPublicOutputRetainsUncertaintyAndCorrectionFlags",
+            "mcpToolsComeFromActualRegistrationWithoutRediscoveryOrStaleSnapshots",
+            "callerDeadlineIncludesBlockedAdmissionAndFinalRecord"
+          ]
+        }
+      ]
+    },
+    "us5-admin": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.AdminPageContractTest",
+          "methods": [
+            "adminEntryAndModulesAreServedByTheRealBackend",
+            "pausedWorkspaceStillServesTheConsoleAndRealIncident"
+          ]
+        }
+      ]
+    },
+    "us5-process": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT",
+          "methods": [
+            "historyMemoryAuditsScheduleAndEmptySnapshotsSurviveDistinctJvms",
+            "realNotifyAcceptedOnceWithBrokenFaultEvidenceRequiresHttpRecoveryAfterProcessRestart",
+            "httpAdmissionRecordFailureStopsAllIoAcrossRestartUntilExplicitRecovery"
+          ]
+        }
+      ]
+    },
+    "us5-published-contract": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest",
+          "methods": [
+            "generatedOpenApiDescribesAllOperationsAndPublicSchemas",
+            "metadataFollowsActualRecordsAndGenericEnvelope"
+          ]
+        }
+      ]
+    },
+    "us5-http": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.HttpApiContractTest",
+          "methods": [
+            "httpTimeoutPreservesCompletedModelAndUnconfirmedRecord",
+            "allNineteenOperationsUseContractEnvelopesAndPersistentRecords",
+            "invalidInputAndIdentityNeverReachModel",
+            "pausedHealthAndQueriesStayHonestAndRecoveryRequiresConfirmation",
+            "actualSixtySecondHttpDeadlineSealsActionsBefore504",
+            "everySchemaHasExactDtoFieldsAndValidNullableSerialization",
+            "paginationAndSharedConfirmedMemorySurviveHttpRestart",
+            "actualSqlFailuresPauseAndHttpRecoveryDoesNotReplayAcceptedAction",
+            "unreadableStorageReturnsErrorsAndRecover503WithoutFakeLists",
+            "providerIterationAndCorrectedToolOutcomesKeepTheirEvidence",
+            "concurrentScheduleAndSessionMutationsAreRejectedUntilSettlement",
+            "disconnectedClientDoesNotCancelWorkOrReleaseSessionLock",
+            "failedScheduleControlCannotClaimEnabledAndBadAgentIsIsolated",
+            "httpReadonlyCrossChannelAndEmptyModelSnapshotStayBoundAcrossReload"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.runtime.DeadlineRaceTest",
+          "methods": [
+            "completedModelStillExpiresCallerWhileFinalRecordingIsBlocked"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ScheduleIntegrationTest",
+          "methods": [
+            "callbackAlreadyTakenByTimerCannotRunAfterDisableAndReenable",
+            "scheduleTablesStoreStateAndHistoryWithoutAuthoritativeDefinitions",
+            "productionProvidesSchedulerUsingPersistentEngine",
+            "automaticCronEntersThePersistentEngine",
+            "disabledManualRunsKeepIdentityFreshSessionsAndSixtySecondBudget",
+            "persistedEnablementSurvivesDefinitionChangesDeletionAndRestoration",
+            "manualAndAutomaticOverlapRemainLockedThroughTimeoutAndLateRecording",
+            "ordinaryFailureLeavesLaterTriggersUsable",
+            "dispatchRecordFailurePausesBeforeModelAndRecoveryNeverReplaysSkippedTicks",
+            "failedEnabledCommitDoesNotClaimStateChange",
+            "workspaceTimezoneAndFileSnapshotsApplyToBothTriggerKinds",
+            "invalidTimezoneOrBudgetOnlyDisablesItsAgent",
+            "realCronObservesOverlapAndContinuesAfterProviderFailure",
+            "actualJvmRestartPreservesHistoryAndDisabledStateWithoutCatchup",
+            "chatDoesNotRegisterAutomaticJobsEvenWhenFilesEnableThem",
+            "serveAndGatewayCliProcessesActivateTheSamePersistentScheduler"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.ScheduleStorageContractTest",
+          "methods": [
+            "historyOrdersFractionalInstantsAndRejectsForeignCursorsWithoutPausing",
+            "v5UpgradePreservesSessionExecutionAuditAndMigrationChecksums"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RestartRecoveryIT",
+          "methods": [
+            "productionUsesPersistentPortsAndVersionedTables",
+            "abandonedRunPausesWithoutReplacingOldEvidence",
+            "actualJvmChatResumesStructuredHistoryAndAuditsAfterRestart",
+            "actualJvmCrashLeavesStartedAttemptAndRequiresRecoveryWithoutReplay",
+            "emptySessionSnapshotArchiveAndReadonlyQueriesSurviveRestart"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RecordingFailureIT",
+          "methods": [
+            "userInsertFailureRollsBackSessionExecutionAndMessageBeforeAnyIo",
+            "startedFailureSendsNothingAndRequiresExplicitAcknowledgement",
+            "acceptedSideEffectAndFailedResultNeverReplayAcrossRestart",
+            "recoveryWaitsForInflightActionAndFinalRecording",
+            "runEvidenceStillPreventsRestartBypassWhenDatabaseAndFaultWritesFail",
+            "repairedStorageRebuildsTheOriginalPortsWithoutMemoryFallback",
+            "unreadableDatabaseKeepsDiagnosticAndRecoveryServiceAvailable"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "upgradingV2PreservesMemoryLedgerAndChecksums",
+            "structuredMessagesPaginationModelSnapshotAndForeignKeysPersist",
+            "auditsRetainFailuresCorrectionLinksDenialsUnknownsAndNullUsage",
+            "writerQueueIsBoundedAndWaitingUsesRemainingBudget"
+          ]
+        },
+        {
+          "module": "oryxos-cli",
+          "class": "io.github.oryxlabs.oryxos.cli.CliOperationsTest",
+          "methods": [
+            "profilesAreFileBasedNeverOverwriteAndArchiveWithoutDeletingHistory",
+            "deletionIsBlockedWhileAnyRuntimeOwnsWorkspace",
+            "profilePathsRejectTraversalAndEscapingSymlinks",
+            "lightJsonQueriesAreHonestAndMalformedInputIsSafe",
+            "profileShowRedactsConfigurationAndBodyAndExplainsSnapshot",
+            "twelveOperationsAndModeHelpAreDiscoverableWithoutLaunching"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.CliRuntimeContractTest",
+          "methods": [
+            "offlineToolsNeverDiscoverMcpAndMissingDatabaseIsNotAnEmptyList",
+            "liveToolsAndProfileSnapshotsFollowLoadedDefinitionsThenRefreshAfterRestart",
+            "jsonChatAndReadonlyPaginationKeepHttpIdentityAndHistoricalRowsAfterDelete",
+            "failureAndPauseExitCodesRemainStructured",
+            "actualProcessJsonOutputIsSeparateFromBootLogsAndLightQueriesStayOffline",
+            "actualSixtySecondCliDeadlineReportsUnknownAndNeverDispatchesLateTool",
+            "actualRecordFailureIsExitSevenAndPublicOutputRetainsUncertaintyAndCorrectionFlags",
+            "mcpToolsComeFromActualRegistrationWithoutRediscoveryOrStaleSnapshots",
+            "callerDeadlineIncludesBlockedAdmissionAndFinalRecord"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.AdminPageContractTest",
+          "methods": [
+            "adminEntryAndModulesAreServedByTheRealBackend",
+            "pausedWorkspaceStillServesTheConsoleAndRealIncident"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.CrossProcessAcceptanceIT",
+          "methods": [
+            "historyMemoryAuditsScheduleAndEmptySnapshotsSurviveDistinctJvms",
+            "realNotifyAcceptedOnceWithBrokenFaultEvidenceRequiresHttpRecoveryAfterProcessRestart",
+            "httpAdmissionRecordFailureStopsAllIoAcrossRestartUntilExplicitRecovery"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.PublishedOpenApiTest",
+          "methods": [
+            "generatedOpenApiDescribesAllOperationsAndPublicSchemas",
+            "metadataFollowsActualRecordsAndGenericEnvelope"
+          ]
+        }
+      ]
+    },
+    "us5-cli-process": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.CliCommandsIT",
+          "methods": [
+            "twelveOperationsShareTheWorkspaceAndArchiveWithoutDeletingHistory",
+            "processExitCodesDistinguishConfigurationMissingFailureAndPause",
+            "distributionWaitsRealSixtySecondsAndNeverExecutesTheLateTool"
+          ]
+        }
+      ]
+    },
+    "kernel-local": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.KernelLocalIT",
+          "methods": [
+            "examplesHaveTheRequiredBusinessResources",
+            "actualCliHttpAndAutomaticCronSharePreferencesAndPersistentAudits",
+            "sourceFailuresAcrossThreeAgentsStayVisibleWithoutNotifications",
+            "rejectedAndUnknownNotificationsNeverReplayOrClaimSuccess",
+            "missingReferenceEmptyNewsAndIncompleteGithubNeverFabricateReports",
+            "deniedHttpAndScriptHaveNoExternalOrProcessSideEffects",
+            "actualScriptFailureAndAgentBodyReloadUseTheSameRuntime",
+            "memoryWriteFailureCannotClaimThePreferenceWasSaved",
+            "trustedScriptRefusesToForwardCredentialToAlternateSource"
+          ]
+        }
+      ]
+    },
+    "kernel-soak-harness": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.SoakHarnessTest",
+          "methods": [
+            "acceptanceProfileRequiresTheFullLoadAndDuration",
+            "shortRunsAndWeakerThresholdsCannotBecomeAcceptance",
+            "timingOnlyDeductsBoundedExternalWaitAndKeepsTheMaximum",
+            "shortHarnessUsesOneHundredRealSessionsAndCompleteSqliteAuditWithoutClaimingSoak",
+            "ingressQueueCannotDisappearOutsideTheServletBoundary"
+          ]
+        }
+      ]
+    },
+    "kernel-soak": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.KernelSoakIT",
+          "methods": [
+            "tenAgentsOneHundredSessionsRunFourHoursWithCompleteAudit"
+          ]
+        }
+      ]
+    },
+    "kernel-timing": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.runtime.RuntimeTimingTest",
+          "methods": [
+            "nestedSegmentsRetainWallTimeAndExplicitWorkerPropagation",
+            "disabledAndBrokenObserversCannotChangeExecutionOrLeakScope"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "timingRetainsQueueWaitReadAndDurableCommit"
+          ]
+        }
+      ]
+    },
+    "kernel-diagnostic": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.SoakDiagnosticIT",
+          "methods": [
+            "realisticShortProfileRetainsAllSegmentsAndCompleteAudit"
+          ]
+        }
+      ]
+    },
+    "kernel-history": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "boundedHistoryPreservesSequenceIncompleteTurnsOpaqueAndRestart",
+            "historyQueryWorkDoesNotGrowWithArchivedTurns"
+          ]
+        }
+      ]
+    },
+    "kernel-batching": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "queuedWritesPublishOnlyAfterSharedCommitAndRollbackTogether",
+            "successfulQueuedWritesAreVisibleTogetherBeforeAcknowledgement",
+            "queueRemainsBoundedBeforeWriterThreadStarts",
+            "writerStartFailurePausesAndCompletesCallerWithoutRunningAction"
+          ]
+        }
+      ]
+    },
+    "kernel-transport": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "methods": [
+            "reusesConnectionsWithoutSharingTimeoutsOrClosingConcurrentCalls"
+          ]
+        }
+      ]
+    },
+    "kernel-session-concurrency": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.session.SessionContractTest",
+          "methods": [
+            "blockedSessionStorageDoesNotSerializeOtherSessionAdmission"
+          ]
+        }
+      ]
+    },
+    "kernel-hot-writes": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "terminalExecutionCannotBeRevivedAndCompletionSurvivesRepeatedSave"
+          ]
+        }
+      ]
+    },
+    "kernel-short-gate": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ShortPerformanceGateIT",
+          "methods": [
+            "everyShortProfileTaskMeetsFiftyMillisecondsWithFullAudit"
+          ]
+        }
+      ]
+    },
+    "kernel-writer-probe": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.WriteCoordinatorPerformanceIT",
+          "methods": [
+            "hundredCallersRetainQueueAndFullCommitCosts"
+          ]
+        }
+      ]
+    },
+    "kernel-active-batch": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "arrivalsDuringActiveWriteShareCommitAndFailureBoundary",
+            "admittedWriteSettlesBeforeTimeoutOrInterruptedCallerReturns"
+          ]
+        }
+      ]
+    },
+    "kernel-provider-resources": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "methods": [
+            "requestWrappersDoNotAllocateUnownedTransportThreads",
+            "requestBodySerializationDoesNotAllocatePerCallPlatformWorkers"
+          ]
+        }
+      ]
+    },
+    "kernel-redactor": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.security.RedactorConcurrencyTest",
+          "methods": [
+            "concurrentRegistrationPublishesEverySecretWithoutChangingProjection"
+          ]
+        }
+      ]
+    },
+    "kernel-redactor-probe": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.security.RedactorConcurrencyTest",
+          "methods": [
+            "hundredConcurrentAuditProjectionsRetainAllWaitingTime"
+          ]
+        }
+      ]
+    },
+    "kernel-lease-read": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.SessionReadContractTest",
+          "methods": [
+            "exclusiveLeaseReadsSequenceOnceAndResumesFromSqliteAfterRestart",
+            "hotProjectionsAvoidManagedContextsAndClosedStorageNeverLooksEmpty"
+          ]
+        }
+      ]
+    },
+    "kernel-reader-probe": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.SessionReadPerformanceIT",
+          "methods": [
+            "hundredSessionReadersIncludeConnectionWaitAndMaterialization"
+          ]
+        }
+      ]
+    },
+    "kernel-writer-isolation": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.WriterIsolationTest",
+          "methods": [
+            "physicalWriterProgressDoesNotDependOnVirtualThreadCarrierAvailability"
+          ]
+        }
+      ]
+    },
+    "kernel-http-read": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.HttpReadPathTest",
+          "methods": [
+            "messageLookupUsesMeasuredPoolAndPreservesIdentityMissingAndPauseErrors",
+            "persistentToolLoopCoalescesZeroIoPostStepWritesWhileKeepingStartedBoundaries"
+          ]
+        }
+      ]
+    },
+    "kernel-tool-transport": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.HttpTransportReuseTest",
+          "methods": [
+            "connectionsAreReusedAndOneDeadlineNeverClosesAnotherRequest",
+            "boundedSharedPoolCanAdmitOneHundredIndependentRequests"
+          ]
+        }
+      ]
+    },
+    "kernel-memory-read": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-memory",
+          "class": "io.github.oryxlabs.oryxos.memory.backend.MarkdownReadConcurrencyTest",
+          "methods": [
+            "stalledSnapshotReaderDoesNotBlockOtherReadersOrAtomicPublication"
+          ]
+        }
+      ]
+    },
+    "kernel-evidence-log": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.EvidenceLogTest",
+          "methods": [
+            "waitingForEvidenceDoesNotOccupyTheOnlyVirtualCarrier",
+            "everyRecordIsSynchronousCompleteAndWriteFailureIsVisible"
+          ]
+        }
+      ]
+    },
+    "kernel-provider-timing": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "methods": [
+            "transportTimingSeparatesEncodingHeadersAndBodyWithoutChangingReplies",
+            "hundredConcurrentCallsEncodeInlineWithContentLengthAndReuseApiInstance",
+            "concurrentWarmupPrewarmsIdleRouteConnectionsForBurstReuse"
+          ]
+        }
+      ]
+    },
+    "kernel-group-timing": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.PersistentStorageContractTest",
+          "methods": [
+            "groupTimingRetainsAnotherMembersWorkUntilTheSharedCommit",
+            "tricklingArrivalsDoNotHoldInitialBatchMemberBeyondBoundedAbsorptionWindow",
+            "concurrentReadersNeverStarveSoleWriterWithinFourConnectionPool",
+            "sessionAppendAndFinishTurnReuseStatementsWithinBatch",
+            "connectionsDisableSynchronousWalAutocheckpointToKeepCommitsBounded"
+          ]
+        }
+      ]
+    },
+    "kernel-provider-probe": {
+      "mode": "soak",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderConcurrencyProbeIT",
+          "methods": [
+            "hundredProviderCallersKeepSerializationTransportAndResumptionCosts"
+          ]
+        }
+      ]
+    },
+    "kernel-external-isolation": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.ExternalFixtureIsolationTest",
+          "methods": [
+            "partialExternalRequestBodyCannotStarveTheRuntimeCarrier",
+            "evidenceWriterCannotStarveTheRuntimeCarrier"
+          ]
+        }
+      ]
+    },
+    "kernel-http-completion": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.HttpCompletionResumptionTest",
+          "methods": [
+            "inFlightHttpExecutionDoesNotKeepDispatchWorkerParkedInHandleAwait",
+            "hotExecutionIdentifiersAvoidSynchronizedRandomUuid",
+            "hotRuntimePathsAvoidSynchronizedMonitorsAndDirectAsyncCompletionSetsContentLength"
+          ]
+        }
+      ]
+    }
+  }
+}

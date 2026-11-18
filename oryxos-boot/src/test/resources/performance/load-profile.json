@@ -1,0 +1,16 @@
+{
+  "agents": 10,
+  "sessions": 100,
+  "durationSeconds": 120,
+  "warmupClients": 10,
+  "warmupRounds": 2,
+  "modelDelayMillis": 10000,
+  "toolDelayMillis": 5000,
+  "clientThinkMillis": 0,
+  "creationProbeIntervalSeconds": 60,
+  "heartbeatSeconds": 30,
+  "historyTurns": 4,
+  "maxInternalMillis": 50,
+  "sessionCreateP99Millis": 200,
+  "description": "100 independent closed-loop clients evenly distributed across 10 Agents; each task uses model/tool/model, with real SQLite and all production audits. Warmup is reported separately. No percentile substitute for the per-task maximum."
+}

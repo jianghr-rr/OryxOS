@@ -1,0 +1,20 @@
+{
+  "mem0Version": "2.2.1",
+  "sourceCommit": "94c3fe9f238f3dbf29c9ce98643bd71eb13077cd",
+  "sourceUrl": "https://codeload.github.com/mem0ai/mem0/tar.gz/94c3fe9f238f3dbf29c9ce98643bd71eb13077cd",
+  "sourceSha256": "0529671008cfa497329439a334d51fd12d24bd664bcdc53f9195c4a10ab63ad7",
+  "requirementsSha256": "ccfed4f6b6e8c1c2a59b7e57772c94652cc1dca52eaa9cf7be4a0fccca6b4daf",
+  "platform": "linux/amd64",
+  "images": {
+    "library/python": {
+      "tag": "3.12-slim-bookworm",
+      "digest": "sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df"
+    },
+    "pgvector/pgvector": {
+      "tag": "0.8.1-pg17",
+      "digest": "sha256:3e8b3adfd27b5707128f60956f62a793c3c9326ea8cfaf0eab7adccb5d700b21"
+    }
+  },
+  "applicationDigest": null,
+  "status": "APPLICATION_BUILD_UNVERIFIED_DOCKER_DAEMON_UNAVAILABLE"
+}

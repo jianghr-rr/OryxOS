@@ -1,0 +1,724 @@
+{
+  "status": "PASS",
+  "localOnly": true,
+  "checks": [
+    {
+      "name": "没有用户标识时禁运行；本地夹具标记可见",
+      "result": "PASS"
+    },
+    {
+      "name": "用户标识可保存且发往后端",
+      "result": "PASS"
+    },
+    {
+      "name": "共享CORE/ARCHIVAL记忆来自实际落库且HTML作为文本",
+      "result": "PASS"
+    },
+    {
+      "name": "会话分页、筛选、历史更早页无丢失",
+      "result": "PASS"
+    },
+    {
+      "name": "空数据与错误分开，跳至主内容不切换视图",
+      "result": "PASS"
+    },
+    {
+      "name": "手动执行只发一次POST，实际JSON/落库与页面一致",
+      "result": "PASS"
+    },
+    {
+      "name": "刷新及重新打开只GET，不重复写入",
+      "result": "PASS"
+    },
+    {
+      "name": "已纠正成功仍保留原始失败和纠正关联",
+      "result": "PASS"
+    },
+    {
+      "name": "UNKNOWN不显示全部成功且不重发",
+      "result": "PASS"
+    },
+    {
+      "name": "定时启停以实际结果为准，停用任务可手动运行并查历史",
+      "result": "PASS"
+    },
+    {
+      "name": "加载/失败/重新查询与离开视图竞态",
+      "result": "PASS"
+    },
+    {
+      "name": "真实记录故障暂停、资料不完整、明确确认恢复且不重放",
+      "result": "PASS"
+    }
+  ],
+  "evidence": {
+    "requests": [
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/info",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/memory",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/memory",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20&cursor=W3Nlc3Npb25zLCBudWxsLCBudWxsLCBudWxsLCBudWxsXQo5ZThkYmIyNC02ZTI4LTQ0ZTItYWE5MS00NzgxY2YyOWIzNmU",
+        "path": "/api/v1/sessions",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=100",
+        "path": "/api/v1/sessions",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "userId=browser-review&limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "userId=browser-review&limit=100",
+        "path": "/api/v1/sessions",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=100",
+        "path": "/api/v1/sessions/48a54003-2fe5-4909-81b8-629ee5339ca9",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=100",
+        "path": "/api/v1/sessions/5090ff18-e3af-4dad-9659-c149fd3a9b61",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=100",
+        "path": "/api/v1/sessions/f224599f-ecdb-4f3a-a735-95875052558b",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/sessions/5090ff18-e3af-4dad-9659-c149fd3a9b61",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20&beforeSeq=5",
+        "path": "/api/v1/sessions/5090ff18-e3af-4dad-9659-c149fd3a9b61",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "userId=no-such-user&limit=20",
+        "path": "/api/v1/sessions",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/executions/3078b6d5-1961-4794-95d0-5dd3a0640f65",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=100",
+        "path": "/api/v1/executions",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/info",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/executions/11521084-a29c-4945-92d2-9278a39f1922",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "PUT",
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/enabled",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/schedules",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "PUT",
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/enabled",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/schedules",
+        "user": ""
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/schedules/local%3Adaily/run",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/schedules/local%3Adaily/executions",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/schedules",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "limit=20",
+        "path": "/api/v1/profiles",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/agents/local/invoke",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "POST",
+        "query": "",
+        "path": "/api/v1/runtime/recover",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": "browser-review"
+      },
+      {
+        "method": "GET",
+        "query": "",
+        "path": "/api/v1/runtime/state",
+        "user": ""
+      }
+    ],
+    "label": "LOCAL TEST ONLY — not real provider/notification acceptance",
+    "effects": 3,
+    "models": 23
+  },
+  "apiDatabaseComparison": {
+    "localOnly": true,
+    "runtime": {
+      "workspaceId": "6a42a9a6-a371-4c47-bb34-f4c17331bb6d",
+      "state": "READY",
+      "storageWritable": true,
+      "incidentId": null,
+      "safeReason": null,
+      "inFlightCount": 0,
+      "recoveryRequired": false
+    },
+    "apiEqualsSQLite": true,
+    "database": {
+      "executions": 19,
+      "sessions": 31,
+      "llmCalls": 23,
+      "tools": [
+        {
+          "tool_call_id": "memory-seed",
+          "status": "SUCCESS",
+          "side_effect_state": "CONFIRMED",
+          "resolution_status": "NOT_APPLICABLE",
+          "correction_of_call_id": null,
+          "resolved_by_call_id": null
+        },
+        {
+          "tool_call_id": "memory-seed",
+          "status": "SUCCESS",
+          "side_effect_state": "CONFIRMED",
+          "resolution_status": "NOT_APPLICABLE",
+          "correction_of_call_id": null,
+          "resolved_by_call_id": null
+        },
+        {
+          "tool_call_id": "bad-params",
+          "status": "ERROR",
+          "side_effect_state": "NONE",
+          "resolution_status": "RESOLVED",
+          "correction_of_call_id": null,
+          "resolved_by_call_id": "fixed-params"
+        },
+        {
+          "tool_call_id": "fixed-params",
+          "status": "SUCCESS",
+          "side_effect_state": "CONFIRMED",
+          "resolution_status": "NOT_APPLICABLE",
+          "correction_of_call_id": "bad-params",
+          "resolved_by_call_id": null
+        },
+        {
+          "tool_call_id": "unknown-effect",
+          "status": "UNKNOWN",
+          "side_effect_state": "UNKNOWN",
+          "resolution_status": "UNRESOLVED",
+          "correction_of_call_id": null,
+          "resolved_by_call_id": null
+        },
+        {
+          "tool_call_id": "record-failure-effect",
+          "status": "UNKNOWN",
+          "side_effect_state": "UNKNOWN",
+          "resolution_status": "UNRESOLVED",
+          "correction_of_call_id": null,
+          "resolved_by_call_id": null
+        }
+      ]
+    },
+    "specialExecutions": [
+      {
+        "id": "11521084-a29c-4945-92d2-9278a39f1922",
+        "sessionId": "922b0ff8-e13c-4cb4-9691-330930c2eed2",
+        "identity": {
+          "channel": "http",
+          "userId": "browser-review",
+          "agentName": "local"
+        },
+        "scheduleId": null,
+        "status": "SUCCEEDED",
+        "stopReason": "FINAL_REPLY",
+        "recordingStatus": "COMPLETE",
+        "inFlightCount": 0,
+        "content": "成功；过程中有已纠正的工具错误。\n本地验证回复：纠正参数验证\n<img src=x onerror=alert(1)>（应按纯文本显示）",
+        "hasToolErrors": true,
+        "startedAt": "2026-11-13T09:45:04.847071Z",
+        "deadlineAt": "2026-11-13T09:46:04.847071Z",
+        "finishedAt": "2026-11-13T09:45:05.067700Z",
+        "llmCalls": [
+          {
+            "attemptId": "95b8bbec-d63d-46a1-811a-bbda8dd06dce",
+            "iteration": 1,
+            "providerName": "local",
+            "model": "actual-fixture-model",
+            "status": "SUCCESS",
+            "durationMs": 21,
+            "inputTokens": null,
+            "outputTokens": null,
+            "errorCode": null
+          },
+          {
+            "attemptId": "6bc3eaa9-c348-483b-9bb6-38507eba908d",
+            "iteration": 2,
+            "providerName": "local",
+            "model": "actual-fixture-model",
+            "status": "SUCCESS",
+            "durationMs": 14,
+            "inputTokens": null,
+            "outputTokens": null,
+            "errorCode": null
+          },
+          {
+            "attemptId": "5a62cf89-84e8-4717-a87f-cdaed5a28ff9",
+            "iteration": 3,
+            "providerName": "local",
+            "model": "actual-fixture-model",
+            "status": "SUCCESS",
+            "durationMs": 22,
+            "inputTokens": null,
+            "outputTokens": null,
+            "errorCode": null
+          }
+        ],
+        "toolAttempts": [
+          {
+            "attemptId": "89d67fb7-3341-423d-9147-4d9d2eeb39f5",
+            "toolCallId": "bad-params",
+            "name": "http_post",
+            "attempt": 1,
+            "outcome": "ERROR",
+            "sideEffectState": "NONE",
+            "durationMs": 0,
+            "safeResult": "Arguments do not match the tool schema; invalid fields: /jsonBody",
+            "errorCode": "INVALID_ARGUMENTS",
+            "resolutionStatus": "RESOLVED",
+            "correctionOfCallId": null,
+            "resolvedByCallId": "fixed-params"
+          },
+          {
+            "attemptId": "ed7e5140-3e9c-4826-8acd-d8331e6347c1",
+            "toolCallId": "fixed-params",
+            "name": "http_post",
+            "attempt": 1,
+            "outcome": "SUCCESS",
+            "sideEffectState": "CONFIRMED",
+            "durationMs": 79,
+            "safeResult": "status=200\nlocal test receipt",
+            "errorCode": null,
+            "resolutionStatus": "NOT_APPLICABLE",
+            "correctionOfCallId": "bad-params",
+            "resolvedByCallId": null
+          }
+        ],
+        "hasUnresolvedToolErrors": false,
+        "timezone": "Asia/Shanghai"
+      },
+      {
+        "id": "236be8be-17bb-41c9-be93-dcfa9afa65fe",
+        "sessionId": "2d826e44-2b03-4225-8271-72714e8b68aa",
+        "identity": {
+          "channel": "http",
+          "userId": "browser-review",
+          "agentName": "local"
+        },
+        "scheduleId": null,
+        "status": "PARTIAL_RECORDING_FAILURE",
+        "stopReason": "RECORDING_FAILURE",
+        "recordingStatus": "INCOMPLETE",
+        "inFlightCount": 0,
+        "content": "结果记录不完整，请先核查执行记录，不要自动重放。",
+        "hasToolErrors": false,
+        "startedAt": "2026-11-13T09:45:07.193166Z",
+        "deadlineAt": "2026-11-13T09:46:07.193166Z",
+        "finishedAt": "2026-11-13T09:45:07.323806Z",
+        "llmCalls": [
+          {
+            "attemptId": "b9a7cf34-23c5-42e5-b275-01d0513c834f",
+            "iteration": 1,
+            "providerName": "local",
+            "model": "actual-fixture-model",
+            "status": "SUCCESS",
+            "durationMs": 18,
+            "inputTokens": null,
+            "outputTokens": null,
+            "errorCode": null
+          }
+        ],
+        "toolAttempts": [
+          {
+            "attemptId": "789adeb5-4f37-43f2-b273-a814993b925d",
+            "toolCallId": "record-failure-effect",
+            "name": "http_post",
+            "attempt": 1,
+            "outcome": "UNKNOWN",
+            "sideEffectState": "UNKNOWN",
+            "durationMs": null,
+            "safeResult": "",
+            "errorCode": "UNCLEAN_SHUTDOWN",
+            "resolutionStatus": "UNRESOLVED",
+            "correctionOfCallId": null,
+            "resolvedByCallId": null
+          }
+        ],
+        "error": {
+          "code": "RECORDING_FAILURE",
+          "message": "Execution ended: PARTIAL_RECORDING_FAILURE",
+          "executionId": "236be8be-17bb-41c9-be93-dcfa9afa65fe",
+          "recordingStatus": "INCOMPLETE"
+        },
+        "hasUnresolvedToolErrors": false,
+        "timezone": "Asia/Shanghai"
+      },
+      {
+        "id": "3bb24802-d990-488a-b134-76b5891c2fab",
+        "sessionId": "6b41ec5d-0423-4d85-84a3-f0d6c77c0d5c",
+        "identity": {
+          "channel": "http",
+          "userId": "browser-review",
+          "agentName": "local"
+        },
+        "scheduleId": null,
+        "status": "PARTIAL",
+        "stopReason": "SIDE_EFFECT_UNCERTAIN",
+        "recordingStatus": "COMPLETE",
+        "inFlightCount": 0,
+        "content": "结果不确定，请先核查；本次执行已停止，未执行其余请求。",
+        "hasToolErrors": true,
+        "startedAt": "2026-11-13T09:45:05.290721Z",
+        "deadlineAt": "2026-11-13T09:46:05.290721Z",
+        "finishedAt": "2026-11-13T09:45:05.323826Z",
+        "llmCalls": [
+          {
+            "attemptId": "bc79c0df-4e98-4cc8-b782-f272da467b76",
+            "iteration": 1,
+            "providerName": "local",
+            "model": "actual-fixture-model",
+            "status": "SUCCESS",
+            "durationMs": 18,
+            "inputTokens": null,
+            "outputTokens": null,
+            "errorCode": null
+          }
+        ],
+        "toolAttempts": [
+          {
+            "attemptId": "3ffea787-cd99-406d-8c27-11a2223a0846",
+            "toolCallId": "unknown-effect",
+            "name": "http_post",
+            "attempt": 1,
+            "outcome": "UNKNOWN",
+            "sideEffectState": "UNKNOWN",
+            "durationMs": 3,
+            "safeResult": "POST result is unconfirmed; inspect before retrying",
+            "errorCode": "HTTP_CONNECTION",
+            "resolutionStatus": "UNRESOLVED",
+            "correctionOfCallId": null,
+            "resolvedByCallId": null
+          }
+        ],
+        "error": {
+          "code": "SIDE_EFFECT_UNCERTAIN",
+          "message": "Execution ended: PARTIAL",
+          "executionId": "3bb24802-d990-488a-b134-76b5891c2fab",
+          "recordingStatus": "COMPLETE"
+        },
+        "hasUnresolvedToolErrors": true,
+        "timezone": "Asia/Shanghai"
+      }
+    ]
+  },
+  "keyboard": {
+    "passed": true,
+    "steps": [
+      "Enter 激活导航",
+      "Enter 打开 local Agent 运行窗口",
+      "焦点进入任务文本框",
+      "Escape 关闭窗口且未提交",
+      "Enter 打开执行记录和已纠正错误详情"
+    ],
+    "localOnly": true
+  }
+}

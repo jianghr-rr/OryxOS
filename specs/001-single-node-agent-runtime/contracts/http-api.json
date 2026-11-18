@@ -1,0 +1,3493 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OryxOS 单机 Agent 内核 API",
+    "version": "1.0.0-design",
+    "description": "设计契约；19个HTTP操作已本地实现，T073/T093–T095整体出口仍未完成。基础十操作与管理查询/运行控制。无用户认证，限受信任本地/内网；X-Oryx-User-Id仅用于会话身份和操作记录。默认同源管理页，无通配CORS。完整错误语义见contracts/runtime.md与cli-admin.md。"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Sessions"
+    },
+    {
+      "name": "Agents"
+    },
+    {
+      "name": "Memory"
+    },
+    {
+      "name": "Tools"
+    },
+    {
+      "name": "Executions"
+    },
+    {
+      "name": "Schedules"
+    },
+    {
+      "name": "System"
+    }
+  ],
+  "paths": {
+    "/sessions": {
+      "post": {
+        "operationId": "post__sessions",
+        "summary": "创建HTTP会话",
+        "description": "channel固定http，X-Oryx-User-Id绑定用户；相同用户/Agent可有多个会话。",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "创建HTTP会话",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSession"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get__sessions",
+        "summary": "分页列出工作区会话",
+        "description": "分页列出工作区会话",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "name": "agentName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Agent名称"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "用户筛选"
+            }
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "http",
+                "cli",
+                "scheduler"
+              ]
+            }
+          },
+          {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页列出工作区会话",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions/{id}/messages": {
+      "post": {
+        "operationId": "post__sessions_id_messages",
+        "summary": "继续会话并同步等待结果",
+        "description": "校验会话channel=http及用户匹配；60秒截止后不启动新调用。错误执行结果保留执行ID，不能自动重发。 有副作用动作结果UNKNOWN立即结束本次执行，不再调用模型或工具；参数错误只有经引擎核实纠正后才允许返回带警告的成功。",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "继续会话并同步等待结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "MESSAGE_TOO_LARGE：UTF-8消息超过32768字节",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EXECUTION_FAILED：迭代上限或未能完成；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "EXECUTION_TIMEOUT：停止新动作，已发出动作可能未知；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions/{id}": {
+      "get": {
+        "operationId": "get__sessions_id",
+        "summary": "查询会话与最近历史",
+        "description": "受信任工作区只读查询，可查看CLI或定时历史；只返回脱敏消息，按seq升序展示最新一页，nextBeforeSeq读取更早历史。身份分组不是认证。",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "beforeSeq",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询会话与最近历史",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionHistoryEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete__sessions_id",
+        "summary": "归档会话并保留数据",
+        "description": "不删除数据；校验http身份匹配；有活跃本地执行返回409，已归档重复操作返回当前归档状态。",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "归档会话并保留数据",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/{name}/invoke": {
+      "post": {
+        "operationId": "post__agents_name_invoke",
+        "summary": "以空对话一次性调用Agent",
+        "description": "创建独立ONE_SHOT会话，按HTTP身份执行；结束及收尾后归档；不自动续接旧会话。 有副作用动作结果UNKNOWN立即结束本次执行，不再调用模型或工具；参数错误只有经引擎核实纠正后才允许返回带警告的成功。",
+        "tags": [
+          "Agents"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "以空对话一次性调用Agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "MESSAGE_TOO_LARGE：UTF-8消息超过32768字节",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EXECUTION_FAILED：迭代上限或未能完成；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "EXECUTION_TIMEOUT：停止新动作，已发出动作可能未知；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "operationId": "get__profiles",
+        "summary": "列出已定义Agent与可用性",
+        "description": "列出已定义Agent与可用性",
+        "tags": [
+          "Agents"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "列出已定义Agent与可用性",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/memory": {
+      "get": {
+        "operationId": "get__memory",
+        "summary": "查询工作区共享长期记忆",
+        "description": "CORE全量，ARCHIVAL分页；不按用户或Agent过滤，不公开失败/未知写入为已保存事实。",
+        "tags": [
+          "Memory"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询工作区共享长期记忆",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryViewEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools": {
+      "get": {
+        "operationId": "get__tools",
+        "summary": "查询工具描述与可用性",
+        "description": "查询工具描述与可用性",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "agentName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "可选Agent过滤"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询工具描述与可用性",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "get__health",
+        "summary": "查询存活和执行就绪状态",
+        "description": "live与ready分开；非READY返回503，仍表示诊断服务可用。",
+        "tags": [
+          "System"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "查询存活和执行就绪状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "live=true但ready=false，返回Health数据和不可执行状态。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "operationId": "get__info",
+        "summary": "查询脱敏运行信息",
+        "description": "查询脱敏运行信息",
+        "tags": [
+          "System"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "查询脱敏运行信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/executions": {
+      "get": {
+        "operationId": "get__executions",
+        "summary": "分页查询执行与状态",
+        "description": "分页查询执行与状态",
+        "tags": [
+          "Executions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "name": "agentName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Agent名称"
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "UUID",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页查询执行与状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/executions/{id}": {
+      "get": {
+        "operationId": "get__executions_id",
+        "summary": "查询执行、模型与工具尝试",
+        "description": "返回可核查实际动作和recordingStatus；数据库故障时尽可能返回内存/故障标记中的已知状态并标INCOMPLETE，无法查询则明确失败，不返回假空数据。",
+        "tags": [
+          "Executions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询执行、模型与工具尝试",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedules": {
+      "get": {
+        "operationId": "get__schedules",
+        "summary": "列出定时定义与运行状态",
+        "description": "列出定时定义与运行状态",
+        "tags": [
+          "Schedules"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "name": "agentName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Agent名称"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "列出定时定义与运行状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchedulePageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedules/{id}/enabled": {
+      "put": {
+        "operationId": "put__schedules_id_enabled",
+        "summary": "设置定时任务启停状态",
+        "description": "只改运行enabled，不改文件cron/timezone/message。存储故障期间拒绝写状态，不假装生效。",
+        "tags": [
+          "Schedules"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设置定时任务启停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnabledInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedules/{id}/run": {
+      "post": {
+        "operationId": "post__schedules_id_run",
+        "summary": "立即手动执行定时任务",
+        "description": "使用文件任务内容、http调用者身份及60秒截止；停用时仍可执行，不改变enabled，与自动触发共用防重叠锁；工作区暂停时拒绝。 有副作用动作结果UNKNOWN立即结束本次执行，不再调用模型或工具；参数错误只有经引擎核实纠正后才允许返回带警告的成功。",
+        "tags": [
+          "Schedules"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "立即手动执行定时任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EXECUTION_FAILED：迭代上限或未能完成；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "EXECUTION_TIMEOUT：停止新动作，已发出动作可能未知；data为执行快照",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ExecutionEnvelope"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedules/{id}/executions": {
+      "get": {
+        "operationId": "get__schedules_id_executions",
+        "summary": "查询调度执行与跳过历史",
+        "description": "查询调度执行与跳过历史",
+        "tags": [
+          "Schedules"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "资源标识"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询调度执行与跳过历史",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleEventPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runtime/state": {
+      "get": {
+        "operationId": "get__runtime_state",
+        "summary": "查询工作区闸门与故障",
+        "description": "诊断在存储故障时使用可用内存、fault/run标记及可读数据库，返回currentIncident中的受影响执行、已知/未知动作及记录缺口。不调用模型或工具；详情不完整时明确detailsComplete=false，不能把空数组当成没有动作。",
+        "tags": [
+          "System"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "查询工作区闸门与故障",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeStateEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runtime/recover": {
+      "post": {
+        "operationId": "post__runtime_recover",
+        "summary": "维护者确认修复并恢复新执行",
+        "description": "核对incidentId、明确确认、存储可写和无未收尾本地调用；写恢复记录后开闸。不重放、不补跑。自动变可写或重启不能代替此操作。允许维护者确认确实无法补齐的缺口，不要求detailsComplete=true；必须持久化核对说明并保留缺失记录事实。",
+        "tags": [
+          "System"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "维护者确认修复并恢复新执行",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeStateEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_INPUT / INVALID_CONFIG：参数或格式错误，无对应动作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND：资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_BUSY / SESSION_ARCHIVED / SESSION_IDENTITY_MISMATCH / SESSION_MODEL_CHANGED / AGENT_UNAVAILABLE / SCHEDULE_BUSY / RECOVERY_NOT_READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR / STORAGE_UNAVAILABLE / PARTIAL_RECORDING_FAILURE：记录失败含执行ID、部分结果与暂停状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "PROVIDER_UNAVAILABLE / EXECUTION_PAUSED / OVERLOADED / MEMORY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoverInput"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "UserId": {
+        "name": "X-Oryx-User-Id",
+        "in": "header",
+        "required": true,
+        "description": "稳定用户分组标识，不是认证令牌；必须非空，拒绝控制字符",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 100
+        }
+      },
+      "Cursor": {
+        "name": "cursor",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    },
+    "schemas": {
+      "ErrorDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "不包含秘密的说明"
+          },
+          "executionId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid",
+            "nullable": true
+          },
+          "recordingStatus": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "INCOMPLETE",
+              "UNKNOWN"
+            ],
+            "nullable": true
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "Identity": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "channel",
+          "userId",
+          "agentName"
+        ],
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "http",
+              "cli",
+              "scheduler"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "description": "分组标识，不是认证"
+          },
+          "agentName": {
+            "type": "string",
+            "description": "Agent名称"
+          }
+        }
+      },
+      "CreateSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "agentName"
+        ],
+        "properties": {
+          "agentName": {
+            "type": "string",
+            "description": "已加载Agent名称",
+            "minLength": 1
+          }
+        }
+      },
+      "MessageInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "content"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "非空文本；UTF-8编码不得超过32768字节",
+            "minLength": 1,
+            "maxLength": 32768
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "identity",
+          "kind",
+          "status",
+          "providerName",
+          "model",
+          "createdAt",
+          "archivedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/Identity"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "CONVERSATION",
+              "ONE_SHOT"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ]
+          },
+          "providerName": {
+            "type": "string",
+            "description": "创建时模型服务"
+          },
+          "model": {
+            "type": "string",
+            "description": "创建时模型"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "archivedAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "PublicMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "seq",
+          "executionId",
+          "turnId",
+          "role",
+          "content",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "seq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "executionId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "turnId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ASSISTANT",
+              "TOOL"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "description": "脱敏正文；不返回providerOpaque"
+          },
+          "toolCalls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "arguments"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "供应商call id"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "工具名"
+                },
+                "arguments": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "toolCallId": {
+            "type": "string",
+            "description": "配对call id",
+            "nullable": true
+          },
+          "toolOutcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "ERROR",
+              "DENIED",
+              "UNKNOWN",
+              "NOT_EXECUTED"
+            ],
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          }
+        }
+      },
+      "SessionHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session",
+          "messages",
+          "nextBeforeSeq"
+        ],
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/Session"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicMessage"
+            }
+          },
+          "nextBeforeSeq": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        }
+      },
+      "ToolAttempt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attemptId",
+          "toolCallId",
+          "name",
+          "attempt",
+          "outcome",
+          "sideEffectState",
+          "durationMs",
+          "safeResult",
+          "errorCode",
+          "resolutionStatus",
+          "correctionOfCallId",
+          "resolvedByCallId"
+        ],
+        "properties": {
+          "attemptId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "toolCallId": {
+            "type": "string",
+            "description": "工具请求id"
+          },
+          "name": {
+            "type": "string",
+            "description": "工具全名"
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "STARTED",
+              "SUCCESS",
+              "ERROR",
+              "DENIED",
+              "UNKNOWN",
+              "NOT_EXECUTED"
+            ]
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "NONE",
+              "CONFIRMED",
+              "UNKNOWN"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "safeResult": {
+            "type": "string",
+            "description": "脱敏结果"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "错误码",
+            "nullable": true
+          },
+          "resolutionStatus": {
+            "type": "string",
+            "enum": [
+              "NOT_APPLICABLE",
+              "UNRESOLVED",
+              "RESOLVED"
+            ],
+            "description": "错误是否经引擎核实解决；不改写原outcome"
+          },
+          "correctionOfCallId": {
+            "type": "string",
+            "description": "本次调用纠正的同execution原工具call id；仅引擎可建立",
+            "nullable": true
+          },
+          "resolvedByCallId": {
+            "type": "string",
+            "description": "实际成功并解决该错误的同execution工具call id",
+            "nullable": true
+          }
+        }
+      },
+      "LlmAttempt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attemptId",
+          "iteration",
+          "providerName",
+          "model",
+          "status",
+          "durationMs",
+          "inputTokens",
+          "outputTokens",
+          "errorCode"
+        ],
+        "properties": {
+          "attemptId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "iteration": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "providerName": {
+            "type": "string",
+            "description": "实际服务"
+          },
+          "model": {
+            "type": "string",
+            "description": "实际模型"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "STARTED",
+              "SUCCESS",
+              "ERROR",
+              "UNKNOWN"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "inputTokens": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "outputTokens": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "错误码",
+            "nullable": true
+          }
+        }
+      },
+      "Execution": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sessionId",
+          "identity",
+          "status",
+          "recordingStatus",
+          "inFlightCount",
+          "hasToolErrors",
+          "startedAt",
+          "deadlineAt",
+          "hasUnresolvedToolErrors",
+          "timezone"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/Identity"
+          },
+          "scheduleId": {
+            "type": "string",
+            "description": "agent:localId",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "SUCCEEDED",
+              "PARTIAL",
+              "FAILED",
+              "TIMED_OUT",
+              "PARTIAL_RECORDING_FAILURE",
+              "INTERRUPTED"
+            ]
+          },
+          "stopReason": {
+            "type": "string",
+            "description": "如DEADLINE、ITERATION_LIMIT、STORAGE_FAILURE、SIDE_EFFECT_UNCERTAIN；未知副作用终止后不再调用模型或工具",
+            "nullable": true
+          },
+          "recordingStatus": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "INCOMPLETE",
+              "UNKNOWN"
+            ]
+          },
+          "inFlightCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "content": {
+            "type": "string",
+            "description": "最终回复；不能覆盖动作证据",
+            "nullable": true
+          },
+          "hasToolErrors": {
+            "type": "boolean",
+            "description": "是否曾有工具失败；失败已纠正时仍为true"
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "deadlineAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "finishedAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "llmCalls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LlmAttempt"
+            }
+          },
+          "toolAttempts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolAttempt"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "hasUnresolvedToolErrors": {
+            "type": "boolean",
+            "description": "是否仍有未经引擎核实解决的工具错误；不可由模型自由文本清除"
+          },
+          "timezone": {
+            "type": "string",
+            "description": "创建执行时加载的工作区IANA业务时区"
+          }
+        },
+        "description": "SUCCEEDED允许保留已核实纠正的错误，此时hasToolErrors=true且hasUnresolvedToolErrors=false；未解决错误或未知副作用为PARTIAL。超时和记录故障优先采用各自终态。"
+      },
+      "Agent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "description",
+          "availability",
+          "providerName",
+          "model",
+          "tools",
+          "notificationTargets",
+          "scheduleIds",
+          "loadedRevision",
+          "bodyRevision",
+          "safeError"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "目录名"
+          },
+          "description": {
+            "type": "string",
+            "description": "说明"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "UNAVAILABLE"
+            ]
+          },
+          "providerName": {
+            "type": "string",
+            "description": "模型服务名"
+          },
+          "model": {
+            "type": "string",
+            "description": "模型"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "工具全名"
+            }
+          },
+          "notificationTargets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "名称；不返回URL/凭证"
+            }
+          },
+          "scheduleIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "调度id"
+            }
+          },
+          "loadedRevision": {
+            "type": "string",
+            "description": "配置哈希"
+          },
+          "bodyRevision": {
+            "type": "string",
+            "description": "当前正文哈希"
+          },
+          "safeError": {
+            "type": "string",
+            "description": "配置错误",
+            "nullable": true
+          }
+        }
+      },
+      "Tool": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "description",
+          "source",
+          "available",
+          "inputSchema",
+          "safeRetry"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "工具全名"
+          },
+          "description": {
+            "type": "string",
+            "description": "说明"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "BUILTIN",
+              "NATIVE",
+              "MCP"
+            ]
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "inputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "safeRetry": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MemoryEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scope",
+          "content",
+          "createdAt",
+          "sourceAgentName"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CORE",
+              "ARCHIVAL"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "description": "已确认原文或事实"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "sourceAgentName": {
+            "type": "string",
+            "description": "仅追踪，不隔离",
+            "nullable": true
+          }
+        }
+      },
+      "MemoryView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "backend",
+          "core",
+          "archival",
+          "nextCursor",
+          "sharedAcrossAgents"
+        ],
+        "properties": {
+          "backend": {
+            "type": "string",
+            "enum": [
+              "md",
+              "sqlite",
+              "mem0"
+            ]
+          },
+          "core": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemoryEntry"
+            }
+          },
+          "archival": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemoryEntry"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "归档分页游标",
+            "nullable": true
+          },
+          "sharedAcrossAgents": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "Schedule": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "agentName",
+          "cron",
+          "timezone",
+          "message",
+          "configuredPresent",
+          "enabled",
+          "nextRunAt",
+          "lastExecutionId",
+          "lastStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "agent:localId"
+          },
+          "agentName": {
+            "type": "string",
+            "description": "Agent"
+          },
+          "cron": {
+            "type": "string",
+            "description": "文件中的六字段cron"
+          },
+          "timezone": {
+            "type": "string",
+            "description": "IANA时区"
+          },
+          "message": {
+            "type": "string",
+            "description": "任务正文"
+          },
+          "configuredPresent": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "nextRunAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastExecutionId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid",
+            "nullable": true
+          },
+          "lastStatus": {
+            "type": "string",
+            "description": "上次状态",
+            "nullable": true
+          }
+        }
+      },
+      "ScheduleEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scheduleId",
+          "executionId",
+          "triggerKind",
+          "status",
+          "reason",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "scheduleId": {
+            "type": "string",
+            "description": "调度id"
+          },
+          "executionId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid",
+            "nullable": true
+          },
+          "triggerKind": {
+            "type": "string",
+            "enum": [
+              "SCHEDULED",
+              "MANUAL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DISPATCHED",
+              "SKIPPED_OVERLAP",
+              "SKIPPED_PAUSED",
+              "FAILED"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "原因",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          }
+        }
+      },
+      "EnabledInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RuntimeState": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "workspaceId",
+          "state",
+          "storageWritable",
+          "incidentId",
+          "safeReason",
+          "inFlightCount",
+          "recoveryRequired"
+        ],
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "PAUSED_RECORDING",
+              "CONFIGURATION_ERROR",
+              "STARTING"
+            ]
+          },
+          "storageWritable": {
+            "type": "boolean"
+          },
+          "incidentId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid",
+            "nullable": true
+          },
+          "safeReason": {
+            "type": "string",
+            "description": "故障说明",
+            "nullable": true
+          },
+          "inFlightCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recoveryRequired": {
+            "type": "boolean"
+          },
+          "currentIncident": {
+            "$ref": "#/components/schemas/IncidentDetail"
+          }
+        },
+        "description": "incidentId非null或state为PAUSED_RECORDING时必须返回currentIncident，且两者id相同；无当前故障时省略currentIncident。信息缺失通过detailsComplete=false表达，不能冒充空事实。"
+      },
+      "RecoverInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "incidentId",
+          "acknowledgeMissingRecords",
+          "notes"
+        ],
+        "properties": {
+          "incidentId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "acknowledgeMissingRecords": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "description": "维护者核对说明；不含秘密",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "live",
+          "ready",
+          "state"
+        ],
+        "properties": {
+          "live": {
+            "type": "boolean"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "string",
+            "description": "运行状态"
+          }
+        }
+      },
+      "Info": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "workspaceId",
+          "providerNames",
+          "agentCount",
+          "toolCount",
+          "memoryBackend",
+          "timezone"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": "项目版本"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "UUID",
+            "format": "uuid"
+          },
+          "providerNames": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "服务名"
+            }
+          },
+          "agentCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "toolCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "memoryBackend": {
+            "type": "string",
+            "enum": [
+              "md",
+              "sqlite",
+              "mem0"
+            ]
+          },
+          "timezone": {
+            "type": "string",
+            "description": "已加载的工作区IANA时区，默认Asia/Shanghai"
+          }
+        }
+      },
+      "SessionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Session"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "ExecutionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Execution"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "AgentPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Agent"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "ToolPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "SchedulePage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Schedule"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "ScheduleEventPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleEvent"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "分页游标",
+            "nullable": true
+          }
+        }
+      },
+      "ErrorEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "SessionEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Session"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "SessionHistoryEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SessionHistory"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "ExecutionEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Execution"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "AgentPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AgentPage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "ToolPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ToolPage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "SessionPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SessionPage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "ExecutionPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExecutionPage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "MemoryViewEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/MemoryView"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "SchedulePageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SchedulePage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "ScheduleEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Schedule"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "ScheduleEventPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ScheduleEventPage"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "RuntimeStateEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RuntimeState"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "HealthEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Health"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "InfoEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "timestamp",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "OK或稳定错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "脱敏说明"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Info"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "UTC时间",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "追踪ID"
+          }
+        }
+      },
+      "IncidentAction": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "故障诊断中的动作证据；未闭合STARTED映射为UNKNOWN，不伪造成功",
+        "required": [
+          "executionId",
+          "attemptId",
+          "toolCallId",
+          "kind",
+          "name",
+          "outcome",
+          "sideEffectState",
+          "safeSummary"
+        ],
+        "properties": {
+          "executionId": {
+            "type": "string",
+            "description": "可确认的所属执行；无法恢复时null",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "attemptId": {
+            "type": "string",
+            "description": "可确认的尝试记录；无法恢复时null",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "toolCallId": {
+            "type": "string",
+            "description": "工具调用ID；模型调用或无法恢复时null",
+            "nullable": true
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "MODEL",
+              "TOOL"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "可确认的模型服务或工具名；无法恢复时null",
+            "nullable": true
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "ERROR",
+              "DENIED",
+              "UNKNOWN",
+              "NOT_EXECUTED"
+            ]
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "NONE",
+              "CONFIRMED",
+              "UNKNOWN"
+            ]
+          },
+          "safeSummary": {
+            "type": "string",
+            "description": "基于可用证据的脱敏摘要；不推测是否送达"
+          }
+        }
+      },
+      "IncidentDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "当前故障核查资料；存储不可用时仍返回可证实的内存或标记证据，无依据的详情保持未知",
+        "required": [
+          "id",
+          "state",
+          "detectedAt",
+          "safeReason",
+          "affectedExecutionIds",
+          "knownActions",
+          "unknownActions",
+          "missingRecordSummary",
+          "evidenceSources",
+          "detailsComplete"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "应用生成的当前故障ID",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "ACKNOWLEDGED"
+            ]
+          },
+          "detectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "本故障检测或重建时间，不冒充丢失的原事件时间"
+          },
+          "safeReason": {
+            "type": "string",
+            "description": "脱敏故障原因"
+          },
+          "affectedExecutionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "已知受影响执行",
+              "format": "uuid"
+            },
+            "uniqueItems": true
+          },
+          "knownActions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentAction"
+            },
+            "description": "有证据确定结果的动作，可能成功、失败或未执行；不含UNKNOWN"
+          },
+          "unknownActions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentAction"
+            },
+            "description": "已发现但结果无法确认的动作，outcome必须为UNKNOWN"
+          },
+          "missingRecordSummary": {
+            "type": "string",
+            "description": "缺失记录与不可恢复范围；detailsComplete=false时必须非空"
+          },
+          "evidenceSources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MEMORY",
+                "FAULT_MARKER",
+                "RUN_MARKER",
+                "DATABASE"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "detailsComplete": {
+            "type": "boolean",
+            "description": "是否有足够证据还原本次故障涉及的动作和记录；false时空集合不表示没有动作"
+          }
+        }
+      }
+    }
+  }
+}

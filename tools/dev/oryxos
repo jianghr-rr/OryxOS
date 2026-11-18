@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if [[ ${BASH_SOURCE[0]} != "$0" ]]; then
+  printf 'Execute this script; do not source it.\n' >&2
+  return 2
+fi
+source "$(dirname -- "$0")/common.sh"
+oryx_jar="$oryx_repo/oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar"
+[[ -f "$oryx_jar" ]] || fail 'Build first: tools/dev/mvnw clean verify'
+# Keep the caller's cwd and explicit runtime secret references, but discard injected JVM options.
+exec /usr/bin/env -u JAVA_TOOL_OPTIONS -u JDK_JAVA_OPTIONS -u _JAVA_OPTIONS \
+  "$oryx_java/bin/java" "-Duser.home=$oryx_dev/home" "-Djava.io.tmpdir=$oryx_dev/tmp" \
+  -jar "$oryx_jar" "$@"

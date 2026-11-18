@@ -1,0 +1,27 @@
+{
+  "database": "real temporary SQLite, no H2",
+  "faults": [
+    "reject USER insert atomically",
+    "reject STARTED before IO",
+    "reject result after receiver accepted",
+    "fault marker also unwritable",
+    "unreadable database",
+    "unclean JVM halt with STARTED",
+    "late in-flight completion"
+  ],
+  "assertions": [
+    "pause every new action",
+    "no replay",
+    "same incident id",
+    "incomplete evidence remains explicit",
+    "manual acknowledgement required even after restart",
+    "history and audit survive process restart"
+  ],
+  "deferred": [],
+  "batch6": {
+    "crossProcessTests": "CrossProcessAcceptanceIT",
+    "realLocalNotify": "notify -> loopback webhook; one receipt, SQL result/incident rejection, blocked fault file, restart and explicit HTTP recovery without replay",
+    "beforeIo": "HTTP intent audit fails; model=0/notification=0; CLI paused exit 7; restart cannot clear pause",
+    "acceptance": "T093/T094/T095 passed; runtime OpenAPI 19 operations/44 schemas, packaged CLI and real browser; T073 local aggregate closed. External integration gaps remain in tasks.md."
+  }
+}

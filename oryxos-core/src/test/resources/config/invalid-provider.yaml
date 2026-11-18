@@ -1,0 +1,7 @@
+schema_version: 1
+providers:
+  invalid:
+    protocol: openai_chat_completions
+    endpoint: ftp://example.invalid
+    completions_path: /chat/completions
+    api_key: ${MISSING_KEY}
