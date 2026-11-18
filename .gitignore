@@ -33,3 +33,10 @@ __pycache__/
 .env.*
 *.tmp
 *.swp
+
+# Deployment secrets and private keys (never commit)
+secrets.local.yaml
+*.pem
+*.key
+.htpasswd
+*.htpasswd

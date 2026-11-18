@@ -1,0 +1,116 @@
+name: Deploy OryxOS to Tencent Cloud
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'oryxos-*/**'
+      - 'pom.xml'
+      - 'deploy/tencent-cloud/**'
+      - '.github/workflows/deploy-tencent-cloud.yml'
+  workflow_dispatch:
+    inputs:
+      sync_secrets:
+        description: 'Render secrets.local.yaml from GitHub Secrets (0600) on server'
+        required: false
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-tencent-cloud-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build, Verify & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build and run regression suite
+        run: ./mvnw -B -ntp verify
+
+      - name: Prepare release artifact & checksum
+        id: artifact
+        run: |
+          set -euo pipefail
+          SHORT_SHA="${GITHUB_SHA::7}"
+          VERSION="$(date -u +%Y%m%d%H%M%S)-${SHORT_SHA}"
+          mkdir -p /tmp/oryxos-release
+          cp oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar /tmp/oryxos-release/oryxos-boot.jar
+          (cd /tmp/oryxos-release && sha256sum oryxos-boot.jar > oryxos-boot.jar.sha256)
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure SSH client
+        env:
+          SSH_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+          SSH_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+          SSH_USER: ${{ secrets.TENCENT_SSH_USER }}
+          SSH_KEY: ${{ secrets.TENCENT_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          : "${SSH_HOST:?TENCENT_SSH_HOST secret is required}"
+          : "${SSH_USER:?TENCENT_SSH_USER secret is required}"
+          : "${SSH_KEY:?TENCENT_SSH_KEY secret is required}"
+          PORT="${SSH_PORT:-22}"
+          mkdir -p ~/.ssh
+          printf '%s\n' "${SSH_KEY}" > ~/.ssh/tencent_key
+          chmod 600 ~/.ssh/tencent_key
+          printf 'Host tencent\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/tencent_key\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n  ServerAliveInterval 30\n  ServerAliveCountMax 20\n  LogLevel ERROR\n' \
+            "${SSH_HOST}" "${PORT}" "${SSH_USER}" > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      - name: Render secrets.local.yaml (if configured)
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.sync_secrets }}
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          umask 077
+          if [ -n "${DEEPSEEK_API_KEY:-}" ] || [ -n "${FEISHU_WEBHOOK_URL:-}" ]; then
+            {
+              [ -n "${DEEPSEEK_API_KEY:-}" ] && printf 'DEEPSEEK_API_KEY: %s\n' "${DEEPSEEK_API_KEY}"
+              [ -n "${FEISHU_WEBHOOK_URL:-}" ] && printf 'FEISHU_WEBHOOK_URL: %s\n' "${FEISHU_WEBHOOK_URL}"
+            } > /tmp/oryxos-release/secrets.local.yaml
+            chmod 600 /tmp/oryxos-release/secrets.local.yaml
+          else
+            echo "No DEEPSEEK_API_KEY / FEISHU_WEBHOOK_URL secrets set; skipping secrets.local.yaml upload."
+          fi
+
+      - name: Upload artifact and switch release on server
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.artifact.outputs.version }}"
+          REMOTE_RELEASE_DIR="/opt/oryxos/releases/${VERSION}"
+
+          ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}'"
+          scp /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 "tencent:${REMOTE_RELEASE_DIR}/"
+          scp deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
+
+          if [ -f /tmp/oryxos-release/secrets.local.yaml ]; then
+            scp /tmp/oryxos-release/secrets.local.yaml "tencent:/tmp/secrets.local.yaml.incoming"
+            ssh tencent "sudo mv /tmp/secrets.local.yaml.incoming /var/lib/oryxos/workspace/secrets.local.yaml && sudo chown oryxos:oryxos /var/lib/oryxos/workspace/secrets.local.yaml && sudo chmod 0600 /var/lib/oryxos/workspace/secrets.local.yaml"
+          fi
+
+          ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
+
+      - name: Cleanup runner secrets and staging files
+        if: always()
+        run: |
+          rm -rf /tmp/oryxos-release ~/.ssh/tencent_key ~/.ssh/config

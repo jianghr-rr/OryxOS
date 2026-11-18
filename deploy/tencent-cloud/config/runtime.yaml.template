@@ -1,0 +1,37 @@
+# OryxOS 生产工作区配置模板（需复制为 /var/lib/oryxos/workspace/runtime.yaml）
+# 严禁在此文件写入真实密钥；敏感值统一通过 ${VAR_NAME} 引用环境变量或 0600 权限的 secrets.local.yaml。
+schema_version: 1
+timezone: Asia/Shanghai
+
+providers:
+  deepseek:
+    type: openai_compatible
+    base_url: https://api.deepseek.com
+    api_key: ${DEEPSEEK_API_KEY}
+    default_model: deepseek-chat
+
+notifications:
+  feishu:
+    type: feishu_webhook
+    webhook_url: ${FEISHU_WEBHOOK_URL}
+
+memory:
+  backend: md
+  archival_context_characters: 4000
+
+tools:
+  file:
+    allowed_read_paths:
+      - /var/lib/oryxos/workspace/output
+      - /var/lib/oryxos/workspace/memory
+    allowed_write_paths:
+      - /var/lib/oryxos/workspace/output
+  shell:
+    allowed_commands: []
+    allowed_script_paths: []
+    timeout_seconds: 20
+  http:
+    allowed_targets: []
+    connect_timeout_seconds: 5
+    read_timeout_seconds: 20
+    max_response_bytes: 65536

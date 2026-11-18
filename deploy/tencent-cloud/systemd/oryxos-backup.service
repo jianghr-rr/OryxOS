@@ -1,0 +1,10 @@
+[Unit]
+Description=OryxOS Workspace Online Backup
+After=oryxos.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/oryxos/bin/backup-workspace.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=oryxos-backup
