@@ -61,10 +61,21 @@ jobs:
           set -euo pipefail
           SHORT_SHA="${GITHUB_SHA::7}"
           VERSION="$(date -u +%Y%m%d%H%M%S)-${SHORT_SHA}"
-          mkdir -p /tmp/oryxos-release
-          cp oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar /tmp/oryxos-release/oryxos-boot.jar
+          rm -rf /tmp/oryxos-release
+          java -Djarmode=tools \
+            -jar oryxos-boot/target/oryxos-boot-1.0.0-SNAPSHOT.jar \
+            extract --destination /tmp/oryxos-release
           (cd /tmp/oryxos-release && sha256sum oryxos-boot.jar > oryxos-boot.jar.sha256)
+          ls -lh /tmp/oryxos-release/oryxos-boot.jar
+          du -sh /tmp/oryxos-release/lib
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload shared-lib artifact (for optional manual seed)
+        uses: actions/upload-artifact@v4
+        with:
+          name: oryxos-shared-lib
+          path: /tmp/oryxos-release/lib
+          retention-days: 1
 
       - name: Configure SSH client
         env:
@@ -114,7 +125,11 @@ jobs:
           echo "[deploy] Creating remote release dir ${REMOTE_RELEASE_DIR}..."
           ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}'"
 
-          echo "[deploy] Uploading JAR and checksum via legacy SCP (-O -C)..."
+          echo "[deploy] Syncing shared-lib via rsync..."
+          rsync -az --delete --partial --timeout=120 /tmp/oryxos-release/lib/ "tencent:/opt/oryxos/shared-lib/"
+
+          echo "[deploy] Linking shared-lib and uploading thin oryxos-boot.jar..."
+          ssh tencent "cp -al /opt/oryxos/shared-lib '${REMOTE_RELEASE_DIR}/lib'"
           scp -O -C /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 "tencent:${REMOTE_RELEASE_DIR}/"
           scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
 
