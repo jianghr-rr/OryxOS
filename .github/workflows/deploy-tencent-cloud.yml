@@ -42,7 +42,12 @@ jobs:
           cache: 'maven'
 
       - name: Build and run regression suite
-        run: ./mvnw -B -ntp verify
+        run: |
+          if command -v mvn >/dev/null 2>&1; then
+            mvn -B -ntp verify
+          else
+            ./mvnw -B -ntp verify
+          fi
 
       - name: Prepare release artifact & checksum
         id: artifact
