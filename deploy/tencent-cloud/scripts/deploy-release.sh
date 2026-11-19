@@ -94,6 +94,25 @@ if [[ ! -f "${RELEASE_DIR}/oryxos-boot.jar" || ! -f "${RELEASE_DIR}/oryxos-boot.
   fail "Missing oryxos-boot.jar or .sha256 in ${RELEASE_DIR}"
 fi
 
+# 0. Install bundled sync-workspace-config.sh and link shared-lib as root
+#    (avoids non-root fs.protected_hardlinks failures and keeps shared-lib owned by deploy user)
+if [[ -f "${RELEASE_DIR}/sync-workspace-config.sh" ]]; then
+  install -m 0750 -o root -g oryxos "${RELEASE_DIR}/sync-workspace-config.sh" "${SYNC_SCRIPT}"
+fi
+
+if [[ ! -d "${RELEASE_DIR}/lib" ]]; then
+  if [[ ! -d "${APP_ROOT}/shared-lib" ]]; then
+    fail "Missing both ${RELEASE_DIR}/lib and ${APP_ROOT}/shared-lib"
+  fi
+  SHARED_OWNER="$(stat -c '%u:%g' "${APP_ROOT}/shared-lib" 2>/dev/null || true)"
+  if [[ -n "${SHARED_OWNER}" ]]; then
+    chown -R "${SHARED_OWNER}" "${APP_ROOT}/shared-lib" || true
+  fi
+  chmod 0755 "${APP_ROOT}/shared-lib"
+  find "${APP_ROOT}/shared-lib" -type f -exec chmod 0644 {} +
+  cp -al "${APP_ROOT}/shared-lib" "${RELEASE_DIR}/lib"
+fi
+
 # 1. Verify artifact checksum before touching running service
 (cd -- "${RELEASE_DIR}" && sha256sum -c oryxos-boot.jar.sha256)
 
