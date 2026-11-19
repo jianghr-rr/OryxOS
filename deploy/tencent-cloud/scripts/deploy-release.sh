@@ -73,6 +73,12 @@ if [[ -n "${PREV_TARGET}" && -d "${PREV_TARGET}" && "${PREV_TARGET}" != "${RELEA
 fi
 ln -sfn "${RELEASE_DIR}" "${CURRENT_LINK}"
 
+# 4.5. Ensure workspace is initialized on first deploy (idempotent; never overwrites existing files)
+if [[ ! -f /var/lib/oryxos/workspace/workspace.json ]]; then
+  log "Initializing /var/lib/oryxos/workspace via init command..."
+  su -s /bin/bash oryxos -c "/opt/java/jdk-21/bin/java -jar '${RELEASE_DIR}/oryxos-boot.jar' --root /var/lib/oryxos/workspace init"
+fi
+
 # 5. Start new version and verify health; rollback automatically on failure
 log "Starting oryxos.service with ${RELEASE_DIR}..."
 if ! systemctl start oryxos || ! check_health; then
