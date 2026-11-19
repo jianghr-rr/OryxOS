@@ -41,6 +41,45 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
+      - name: Configure Maven mirror and HTTP retries
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<'EOF'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+            <profiles>
+              <profile>
+                <id>ci-maven-mirror</id>
+                <activation>
+                  <activeByDefault>true</activeByDefault>
+                </activation>
+                <repositories>
+                  <repository>
+                    <id>gcs-maven-central</id>
+                    <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </repository>
+                </repositories>
+                <pluginRepositories>
+                  <pluginRepository>
+                    <id>gcs-maven-central</id>
+                    <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </pluginRepository>
+                </pluginRepositories>
+                <properties>
+                  <aether.transport.http.retryHandler.count>5</aether.transport.http.retryHandler.count>
+                  <aether.transport.http.retryHandler.interval>5000</aether.transport.http.retryHandler.interval>
+                  <aether.transport.http.retryHandler.intervalMax>30000</aether.transport.http.retryHandler.intervalMax>
+                </properties>
+              </profile>
+            </profiles>
+          </settings>
+          EOF
+
       - name: Build and run regression suite
         run: |
           mkdir -p "${{ github.workspace }}/.oryxos-dev/evidence"
