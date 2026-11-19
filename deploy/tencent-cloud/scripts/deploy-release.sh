@@ -169,12 +169,15 @@ print_profiles_summary
 # 6. Prune old releases (keep current, previous, and latest KEEP_RELEASES)
 CURRENT_REAL="$(readlink -f "${CURRENT_LINK}" || true)"
 PREVIOUS_REAL="$(readlink -f "${PREVIOUS_LINK}" || true)"
+OLD_RELEASES=()
 mapfile -t OLD_RELEASES < <(ls -1dt "${RELEASES_ROOT}"/* 2>/dev/null | tail -n +"$((KEEP_RELEASES + 1))" || true)
-for rel in "${OLD_RELEASES[@]}"; do
-  rel_real="$(readlink -f "${rel}" || true)"
-  if [[ "${rel_real}" != "${CURRENT_REAL}" && "${rel_real}" != "${PREVIOUS_REAL}" ]]; then
-    rm -rf "${rel}"
-  fi
-done
+if [[ ${#OLD_RELEASES[@]} -gt 0 ]]; then
+  for rel in "${OLD_RELEASES[@]}"; do
+    rel_real="$(readlink -f "${rel}" || true)"
+    if [[ "${rel_real}" != "${CURRENT_REAL}" && "${rel_real}" != "${PREVIOUS_REAL}" ]]; then
+      rm -rf "${rel}"
+    fi
+  done
+fi
 
 log "Release ${RELEASE_DIR} active and healthy."
