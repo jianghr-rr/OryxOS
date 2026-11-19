@@ -9,8 +9,11 @@ APP_ROOT="/opt/oryxos"
 RELEASES_ROOT="${APP_ROOT}/releases"
 CURRENT_LINK="${APP_ROOT}/current"
 PREVIOUS_LINK="${APP_ROOT}/previous"
+WORKSPACE_DIR="/var/lib/oryxos/workspace"
+SYNC_SCRIPT="${APP_ROOT}/bin/sync-workspace-config.sh"
 HEALTH_URL="http://127.0.0.1:8080/api/v1/health"
 STATE_URL="http://127.0.0.1:8080/api/v1/runtime/state"
+PROFILES_URL="http://127.0.0.1:8080/api/v1/profiles"
 KEEP_RELEASES=5
 
 log() {
@@ -20,6 +23,45 @@ log() {
 fail() {
   printf '[deploy] ERROR: %s\n' "$*" >&2
   exit 1
+}
+
+sync_config_if_present() {
+  local target_release="$1"
+  if [[ -f "${target_release}/config/runtime.yaml.template" && -x "${SYNC_SCRIPT}" ]]; then
+    log "Syncing managed workspace config from ${target_release}/config..."
+    "${SYNC_SCRIPT}" "${target_release}/config" "${WORKSPACE_DIR}"
+  else
+    log "Skipping config sync (no ${target_release}/config/runtime.yaml.template or ${SYNC_SCRIPT})."
+  fi
+}
+
+print_profiles_summary() {
+  local payload
+  payload="$(curl -fsS "${PROFILES_URL}" 2>/dev/null || true)"
+  if [[ -z "${payload}" ]]; then
+    log "Unable to query ${PROFILES_URL} for Agent availability summary."
+    return 0
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    printf '%s' "${payload}" | python3 -c '
+import json, sys
+try:
+    data = json.load(sys.stdin).get("data", {})
+    items = data.get("items", [])
+    if not items:
+        print("[deploy] Loaded Agents: (none)")
+    for item in items:
+        name = item.get("name", "?")
+        avail = item.get("availability", "?")
+        err = item.get("safeError") or ""
+        suffix = f" ({err})" if err else ""
+        print(f"[deploy] Agent {name}: {avail}{suffix}")
+except Exception as exc:
+    print(f"[deploy] Could not parse profiles summary: {exc}")
+' || true
+  else
+    log "Profiles endpoint reachable; python3 unavailable for formatted summary."
+  fi
 }
 
 check_health() {
@@ -74,10 +116,13 @@ fi
 ln -sfn "${RELEASE_DIR}" "${CURRENT_LINK}"
 
 # 4.5. Ensure workspace is initialized on first deploy (idempotent; never overwrites existing files)
-if [[ ! -f /var/lib/oryxos/workspace/workspace.json ]]; then
-  log "Initializing /var/lib/oryxos/workspace via init command..."
-  su -s /bin/bash oryxos -c "/opt/java/jdk-21/bin/java -jar '${RELEASE_DIR}/oryxos-boot.jar' --root /var/lib/oryxos/workspace init"
+if [[ ! -f "${WORKSPACE_DIR}/workspace.json" ]]; then
+  log "Initializing ${WORKSPACE_DIR} via init command..."
+  su -s /bin/bash oryxos -c "/opt/java/jdk-21/bin/java -jar '${RELEASE_DIR}/oryxos-boot.jar' --root '${WORKSPACE_DIR}' init"
 fi
+
+# 4.6. Synchronize managed runtime.yaml & managed agents (preserves DB, memory, secrets, custom agents; removes default)
+sync_config_if_present "${RELEASE_DIR}"
 
 # 5. Start new version and verify health; rollback automatically on failure
 log "Starting oryxos.service with ${RELEASE_DIR}..."
@@ -89,6 +134,7 @@ if ! systemctl start oryxos || ! check_health; then
     log "Auto-rolling back to ${ROLLBACK_TARGET}..."
     systemctl stop oryxos || true
     ln -sfn "${ROLLBACK_TARGET}" "${CURRENT_LINK}"
+    sync_config_if_present "${ROLLBACK_TARGET}" || true
     systemctl start oryxos || true
     if check_health; then
       log "Auto-rollback succeeded; previous version restored."
@@ -98,6 +144,8 @@ if ! systemctl start oryxos || ! check_health; then
   fi
   exit 1
 fi
+
+print_profiles_summary
 
 # 6. Prune old releases (keep current, previous, and latest KEEP_RELEASES)
 CURRENT_REAL="$(readlink -f "${CURRENT_LINK}" || true)"

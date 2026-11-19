@@ -40,9 +40,31 @@
 - `TENCENT_SSH_USER`：具备 `sudo` 权限的部署用户名
 - `TENCENT_SSH_KEY`：SSH 私钥（对应公钥已加入服务器 `~/.ssh/authorized_keys`）
 - `DEEPSEEK_API_KEY`：DeepSeek API Key（用于渲染服务器 `0600` 的 `secrets.local.yaml`）
-- `FEISHU_WEBHOOK_URL`：飞书机器人 Webhook URL（用于定时推送）
+- `FEISHU_WEBHOOK_URL`：飞书机器人 Webhook URL（用于云端通知与播报）
 
 触发方式：推送到 `main` 分支（匹配 `oryxos-*/**`、`pom.xml`、`deploy/tencent-cloud/**` 或 workflow 文件），或在 GitHub Actions 页面手动触发 `Deploy OryxOS to Tencent Cloud`。
+
+---
+
+## 3.5 云端托管 Agent 与自动同步边界
+
+每次通过 CI/CD 发布新版本时，[deploy-release.sh](file:///Users/jianghaoran/github/OryxOS/deploy/tencent-cloud/scripts/deploy-release.sh) 会调用 [sync-workspace-config.sh](file:///Users/jianghaoran/github/OryxOS/deploy/tencent-cloud/scripts/sync-workspace-config.sh) 同步仓库中的托管配置快照：
+
+- **自动同步更新**：
+  - `/var/lib/oryxos/workspace/runtime.yaml`（来自 [runtime.yaml.template](file:///Users/jianghaoran/github/OryxOS/deploy/tencent-cloud/config/runtime.yaml.template)，自动配置 `deepseek` 模型服务并仅放行 `open.feishu.cn`、`api.open-meteo.com`、`geocoding-api.open-meteo.com` 的 HTTPS 443 出站访问）
+  - `/var/lib/oryxos/workspace/agents/weather/AGENT.md`（天气查询与飞书播报，纯手动触发、无自动定时任务）
+  - `/var/lib/oryxos/workspace/agents/feishu-notify/AGENT.md`（独立飞书群通知助手，纯手动触发、无自动定时任务）
+- **自动清理**：
+  - 首次初始化遗留的不可用占位目录 `/var/lib/oryxos/workspace/agents/default`
+- **严格保留不触碰**：
+  - `oryxos.db`、`oryxos.db-wal`、`oryxos.db-shm`、`memory/`、`output/`、`runtime/`、`workspace.json`
+  - `0600` 权限的 `secrets.local.yaml`
+  - 运维在服务器上自建的任何非托管 Agent 目录（非 `weather` / `feishu-notify` / `default`）
+
+### 发布后管理台手动验证
+1. 打开 `https://oryxos.curlyhair.cn/admin/#agents`，确认仅展示可用的 `weather` 与 `feishu-notify`（以及如有自建的自定义 Agent），且均显示为 `AVAILABLE`。
+2. 对 `feishu-notify` 发起一次手动运行（如发送一条测试消息到飞书群），确认飞书群收到消息且执行记录无明文密钥泄露。
+3. 对 `weather` 发起一次手动运行（如`查询今天上海天气并发送到飞书群`），确认 Open-Meteo 天气摘要正常返回且飞书群收到播报。
 
 ---
 

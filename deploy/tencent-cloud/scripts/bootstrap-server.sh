@@ -79,22 +79,21 @@ chmod 0750 "${APP_ROOT}/bin" "${WORKSPACE_DIR}" "${LOG_DIR}"
 chown root:root "${BACKUP_DIR}"
 chmod 0700 "${BACKUP_DIR}"
 
-# 5. Seed runtime.yaml only if missing (never overwrite existing production config)
-if [[ ! -f "${WORKSPACE_DIR}/runtime.yaml" ]]; then
-  cp "${DEPLOY_ROOT}/config/runtime.yaml.template" "${WORKSPACE_DIR}/runtime.yaml"
-  chown "${ORYX_USER}:${ORYX_GROUP}" "${WORKSPACE_DIR}/runtime.yaml"
-  chmod 0640 "${WORKSPACE_DIR}/runtime.yaml"
-  log "Seeded ${WORKSPACE_DIR}/runtime.yaml from template."
-fi
-
-# 6. Install operational scripts
+# 5. Install operational scripts
 log "Installing operational scripts to ${APP_ROOT}/bin..."
 cp "${SCRIPT_DIR}/deploy-release.sh" "${APP_ROOT}/bin/deploy-release.sh"
 cp "${SCRIPT_DIR}/rollback.sh" "${APP_ROOT}/bin/rollback.sh"
 cp "${SCRIPT_DIR}/backup-workspace.sh" "${APP_ROOT}/bin/backup-workspace.sh"
 cp "${SCRIPT_DIR}/restore-workspace.sh" "${APP_ROOT}/bin/restore-workspace.sh"
+cp "${SCRIPT_DIR}/sync-workspace-config.sh" "${APP_ROOT}/bin/sync-workspace-config.sh"
 chown root:"${ORYX_GROUP}" "${APP_ROOT}/bin/"*.sh
 chmod 0750 "${APP_ROOT}/bin/"*.sh
+
+# 6. Seed runtime.yaml and managed agents only if runtime.yaml is missing (never overwrite existing production config)
+if [[ ! -f "${WORKSPACE_DIR}/runtime.yaml" ]]; then
+  "${APP_ROOT}/bin/sync-workspace-config.sh" "${DEPLOY_ROOT}/config" "${WORKSPACE_DIR}"
+  log "Seeded ${WORKSPACE_DIR}/runtime.yaml and managed agents from template."
+fi
 
 # 7. Install systemd units & backup timer
 log "Installing systemd units..."

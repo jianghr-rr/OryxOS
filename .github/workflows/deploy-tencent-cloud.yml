@@ -70,6 +70,8 @@ jobs:
             extract --destination /tmp/oryxos-release
           mv /tmp/oryxos-release/oryxos-boot-*.jar /tmp/oryxos-release/oryxos-boot.jar
           (cd /tmp/oryxos-release && sha256sum oryxos-boot.jar > oryxos-boot.jar.sha256)
+          mkdir -p /tmp/oryxos-release/config
+          rsync -a --exclude='secrets.local.yaml*' deploy/tencent-cloud/config/ /tmp/oryxos-release/config/
           ls -lh /tmp/oryxos-release/oryxos-boot.jar
           du -sh /tmp/oryxos-release/lib
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -127,15 +129,16 @@ jobs:
 
           ls -lh /tmp/oryxos-release/oryxos-boot.jar
           echo "[deploy] Creating remote release dir ${REMOTE_RELEASE_DIR}..."
-          ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}'"
+          ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}/config' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}'"
 
           echo "[deploy] Syncing shared-lib via rsync..."
           rsync -az --delete --partial --timeout=120 /tmp/oryxos-release/lib/ "tencent:/opt/oryxos/shared-lib/"
 
-          echo "[deploy] Linking shared-lib and uploading thin oryxos-boot.jar..."
+          echo "[deploy] Linking shared-lib and uploading thin oryxos-boot.jar and config..."
           ssh tencent "cp -al /opt/oryxos/shared-lib '${REMOTE_RELEASE_DIR}/lib'"
+          rsync -az --delete --exclude='secrets.local.yaml*' --timeout=120 /tmp/oryxos-release/config/ "tencent:${REMOTE_RELEASE_DIR}/config/"
           scp -O -C /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 "tencent:${REMOTE_RELEASE_DIR}/"
-          scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
+          scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh deploy/tencent-cloud/scripts/sync-workspace-config.sh "tencent:/tmp/"
 
           if [ -f /tmp/oryxos-release/secrets.local.yaml ]; then
             echo "[deploy] Uploading secrets.local.yaml..."
@@ -144,7 +147,7 @@ jobs:
           fi
 
           echo "[deploy] Switching release and running health check..."
-          ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
+          ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && sudo install -m 0750 -o root -g oryxos /tmp/sync-workspace-config.sh /opt/oryxos/bin/sync-workspace-config.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh /tmp/sync-workspace-config.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
 
       - name: Cleanup runner secrets and staging files
         if: always()

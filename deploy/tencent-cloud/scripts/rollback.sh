@@ -6,6 +6,8 @@ set -euo pipefail
 APP_ROOT="/opt/oryxos"
 CURRENT_LINK="${APP_ROOT}/current"
 PREVIOUS_LINK="${APP_ROOT}/previous"
+WORKSPACE_DIR="/var/lib/oryxos/workspace"
+SYNC_SCRIPT="${APP_ROOT}/bin/sync-workspace-config.sh"
 HEALTH_URL="http://127.0.0.1:8080/api/v1/health"
 
 if [[ "$(id -u)" -ne 0 ]]; then
@@ -29,6 +31,11 @@ systemctl stop oryxos || true
 
 ln -sfn "${TARGET}" "${CURRENT_LINK}"
 printf '[rollback] Switched current -> %s\n' "${TARGET}"
+
+if [[ -f "${TARGET}/config/runtime.yaml.template" && -x "${SYNC_SCRIPT}" ]]; then
+  printf '[rollback] Synchronizing workspace config from %s/config...\n' "${TARGET}"
+  "${SYNC_SCRIPT}" "${TARGET}/config" "${WORKSPACE_DIR}"
+fi
 
 systemctl start oryxos
 for i in $(seq 1 30); do
