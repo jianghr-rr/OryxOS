@@ -354,14 +354,7 @@ public final class SessionManager implements SessionHistoryPort {
         long seq = nextSequence();
         store.append(
             new SessionMessage(
-                Uuids.v4(),
-                session.id(),
-                execution,
-                turn,
-                seq,
-                message,
-                outcome,
-                time.instant()));
+                Uuids.v4(), session.id(), execution, turn, seq, message, outcome, time.instant()));
         var pendingEntry = new PendingMessage(turn, message);
         // Advance sequence optimistically across multi-append coalesced windows, rolling back
         // immediately if the buffered transaction rolls back or is discarded.
@@ -442,9 +435,11 @@ public final class SessionManager implements SessionHistoryPort {
             List<ChatMessage> hotRecent = null;
             hot.lock.lock();
             try {
-              if (hot.fullHistoryKnown || (hot.loadedMaxTurns > 0 && maxTurns <= hot.loadedMaxTurns)) {
+              if (hot.fullHistoryKnown
+                  || (hot.loadedMaxTurns > 0 && maxTurns <= hot.loadedMaxTurns)) {
                 int skip = Math.max(0, hot.completedTurns.size() - maxTurns);
-                var list = new ArrayList<ChatMessage>(Math.min(maxTurns, hot.completedTurns.size()) * 4);
+                var list =
+                    new ArrayList<ChatMessage>(Math.min(maxTurns, hot.completedTurns.size()) * 4);
                 int idx = 0;
                 for (var t : hot.completedTurns) {
                   if (idx++ >= skip) list.addAll(t.messages());

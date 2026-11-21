@@ -38,13 +38,11 @@ public final class ProcessPolicy {
     timeout = SafeYaml.positive(rules.getOrDefault("timeout_seconds", 20), "shell timeout");
     var values = new HashMap<String, String>();
     SafeYaml.map(rules.getOrDefault("env", Map.of()), "shell env")
-        .forEach(
-            (k, v) -> {
-              if (!k.matches("[A-Za-z_][A-Za-z0-9_]*")
-                  || Set.of("PATH", "HOME", "TMPDIR").contains(k))
-                throw OryxError.configuration("shell env name");
-              values.put(k, secrets.resolve(SafeYaml.text(v, "shell env reference")));
-            });
+        .forEach((k, v) -> {
+          if (!k.matches("[A-Za-z_][A-Za-z0-9_]*") || Set.of("PATH", "HOME", "TMPDIR").contains(k))
+            throw OryxError.configuration("shell env name");
+          values.put(k, secrets.resolve(SafeYaml.text(v, "shell env reference")));
+        });
     extra = Map.copyOf(values);
   }
 

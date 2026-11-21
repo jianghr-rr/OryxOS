@@ -37,50 +37,49 @@ class SessionReadPerformanceIT {
       var seeds = new ArrayList<Future<?>>();
       for (int client = 0; client < 100; client++)
         seeds.add(
-            callers.submit(
-                () -> {
-                  UUID sid = UUID.randomUUID();
-                  var session =
-                      new Session(
-                          sid,
-                          "cli",
-                          "alice",
-                          "agent",
-                          "p",
-                          "m",
-                          Session.Kind.CONVERSATION,
-                          Session.Status.ACTIVE,
-                          Instant.now());
-                  for (int turn = 0; turn < 5; turn++) {
-                    var execution = SessionReadContractTest.execution(sid);
-                    sessions.begin(
-                        session,
-                        turn == 0,
-                        execution.snapshot(0),
-                        new SessionMessage(
-                            UUID.randomUUID(),
-                            sid,
-                            execution.id(),
-                            execution.turnId(),
-                            turn * 2 + 1,
-                            ChatMessage.user("request " + turn),
-                            null,
-                            Instant.now()),
-                        executions);
-                    sessions.append(
-                        new SessionMessage(
-                            UUID.randomUUID(),
-                            sid,
-                            execution.id(),
-                            execution.turnId(),
-                            turn * 2 + 2,
-                            SessionReadContractTest.assistant("response ".repeat(128)),
-                            null,
-                            Instant.now()));
-                    sessions.finishTurn(sid, execution.turnId());
-                    turns.put(sid, execution.turnId());
-                  }
-                }));
+            callers.submit(() -> {
+              UUID sid = UUID.randomUUID();
+              var session =
+                  new Session(
+                      sid,
+                      "cli",
+                      "alice",
+                      "agent",
+                      "p",
+                      "m",
+                      Session.Kind.CONVERSATION,
+                      Session.Status.ACTIVE,
+                      Instant.now());
+              for (int turn = 0; turn < 5; turn++) {
+                var execution = SessionReadContractTest.execution(sid);
+                sessions.begin(
+                    session,
+                    turn == 0,
+                    execution.snapshot(0),
+                    new SessionMessage(
+                        UUID.randomUUID(),
+                        sid,
+                        execution.id(),
+                        execution.turnId(),
+                        turn * 2 + 1,
+                        ChatMessage.user("request " + turn),
+                        null,
+                        Instant.now()),
+                    executions);
+                sessions.append(
+                    new SessionMessage(
+                        UUID.randomUUID(),
+                        sid,
+                        execution.id(),
+                        execution.turnId(),
+                        turn * 2 + 2,
+                        SessionReadContractTest.assistant("response ".repeat(128)),
+                        null,
+                        Instant.now()));
+                sessions.finishTurn(sid, execution.turnId());
+                turns.put(sid, execution.turnId());
+              }
+            }));
       for (var seed : seeds) seed.get(20, TimeUnit.SECONDS);
       var ids = List.copyOf(turns.keySet());
       for (int i = 0; i < 20; i++) read(sessions, ids.get(i), turns.get(ids.get(i)));
@@ -89,18 +88,16 @@ class SessionReadPerformanceIT {
         var jobs = new ArrayList<Future<?>>();
         for (var sid : ids)
           jobs.add(
-              callers.submit(
-                  () -> {
-                    start.await();
-                    var spans = new ArrayList<RuntimeTiming.Segment>();
-                    long begin = System.nanoTime();
-                    try (var timing = RuntimeTiming.bind(spans::add)) {
-                      read(sessions, sid, turns.get(sid));
-                    }
-                    samples.add(
-                        Map.of("elapsedNanos", System.nanoTime() - begin, "segments", spans));
-                    return null;
-                  }));
+              callers.submit(() -> {
+                start.await();
+                var spans = new ArrayList<RuntimeTiming.Segment>();
+                long begin = System.nanoTime();
+                try (var timing = RuntimeTiming.bind(spans::add)) {
+                  read(sessions, sid, turns.get(sid));
+                }
+                samples.add(Map.of("elapsedNanos", System.nanoTime() - begin, "segments", spans));
+                return null;
+              }));
         start.countDown();
         for (var job : jobs) job.get(10, TimeUnit.SECONDS);
       }

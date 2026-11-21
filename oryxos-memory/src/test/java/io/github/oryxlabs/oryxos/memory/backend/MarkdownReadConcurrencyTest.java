@@ -43,10 +43,9 @@ class MarkdownReadConcurrencyTest {
         var other = workers.submit(() -> store.browse(MemoryEntry.Scope.CORE));
         assertEquals("original", other.get(2, TimeUnit.SECONDS).getFirst().rawContent());
         var write =
-            workers.submit(
-                () ->
-                    new MarkdownMemoryStore(f.workspace, f.id, f.lock)
-                        .save("published", MemoryEntry.Scope.CORE, f.context("second-writer")));
+            workers.submit(() ->
+                new MarkdownMemoryStore(f.workspace, f.id, f.lock)
+                    .save("published", MemoryEntry.Scope.CORE, f.context("second-writer")));
         assertTrue(write.get(2, TimeUnit.SECONDS).confirmed());
         assertEquals(2, store.load(MemoryEntry.Scope.CORE, f.context("fresh-reader")).size());
       } finally {

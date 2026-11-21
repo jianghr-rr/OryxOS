@@ -28,11 +28,10 @@ public final class JpaSessionStore implements SessionStore {
   }
 
   public void create(Session session) {
-    writes.writeImmediate(
-        em -> {
-          insert(em, session);
-          return null;
-        });
+    writes.writeImmediate(em -> {
+      insert(em, session);
+      return null;
+    });
   }
 
   public void begin(
@@ -67,17 +66,15 @@ public final class JpaSessionStore implements SessionStore {
       writes.deferOrWrite(action, null, null);
       if (onCommit != null || onRollback != null) {
         io.github.oryxlabs.oryxos.core.execution.RecordingScope.onCoalescedOutcome(
-            onCommit != null ? onCommit : () -> {},
-            onRollback != null ? onRollback : () -> {});
+            onCommit != null ? onCommit : () -> {}, onRollback != null ? onRollback : () -> {});
       }
       return;
     }
     try {
-      writes.writeImmediate(
-          em -> {
-            action.accept(em);
-            return null;
-          });
+      writes.writeImmediate(em -> {
+        action.accept(em);
+        return null;
+      });
       if (onCommit != null) onCommit.run();
     } catch (RuntimeException error) {
       if (onRollback != null) onRollback.run();
@@ -147,29 +144,28 @@ public final class JpaSessionStore implements SessionStore {
 
   public Session find(UUID id) {
     var raw =
-        query(
-            connection -> {
-              try (var sql =
-                  connection.prepareStatement(
-                      "select channel,user_id,agent_name,provider_name,model,kind,status,created_at,archived_at"
-                          + " from sessions where id=? and workspace_id=?")) {
-                sql.setString(1, id.toString());
-                sql.setString(2, workspace.toString());
-                try (var row = sql.executeQuery()) {
-                  if (!row.next()) return null;
-                  return new RawSession(
-                      row.getString(1),
-                      row.getString(2),
-                      row.getString(3),
-                      row.getString(4),
-                      row.getString(5),
-                      row.getString(6),
-                      row.getString(7),
-                      row.getString(8),
-                      row.getString(9));
-                }
-              }
-            });
+        query(connection -> {
+          try (var sql =
+              connection.prepareStatement(
+                  "select channel,user_id,agent_name,provider_name,model,kind,status,created_at,archived_at"
+                      + " from sessions where id=? and workspace_id=?")) {
+            sql.setString(1, id.toString());
+            sql.setString(2, workspace.toString());
+            try (var row = sql.executeQuery()) {
+              if (!row.next()) return null;
+              return new RawSession(
+                  row.getString(1),
+                  row.getString(2),
+                  row.getString(3),
+                  row.getString(4),
+                  row.getString(5),
+                  row.getString(6),
+                  row.getString(7),
+                  row.getString(8),
+                  row.getString(9));
+            }
+          }
+        });
     if (raw == null) return null;
     try {
       return new Session(
@@ -189,23 +185,21 @@ public final class JpaSessionStore implements SessionStore {
   }
 
   public void archive(UUID id, Instant at) {
-    writes.write(
-        em -> {
-          var e = require(em, id);
-          e.status = "ARCHIVED";
-          e.archivedAt = at.toString();
-          var attrs = StoredSql.batchAttributes();
-          if (attrs != null) attrs.remove(new BatchContextKey(workspace, id));
-          return null;
-        });
+    writes.write(em -> {
+      var e = require(em, id);
+      e.status = "ARCHIVED";
+      e.archivedAt = at.toString();
+      var attrs = StoredSql.batchAttributes();
+      if (attrs != null) attrs.remove(new BatchContextKey(workspace, id));
+      return null;
+    });
   }
 
   public List<SessionMessage> messages(UUID id) {
-    return writes.read(
-        em -> {
-          require(em, id);
-          return messages(em, id);
-        });
+    return writes.read(em -> {
+      require(em, id);
+      return messages(em, id);
+    });
   }
 
   private static List<SessionMessage> messages(EntityManager em, UUID id) {
@@ -222,30 +216,28 @@ public final class JpaSessionStore implements SessionStore {
 
   @Override
   public long lastSequence(UUID id) {
-    return query(
-        connection -> {
-          try (var sql =
-              connection.prepareStatement(
-                  "select (select coalesce(max(m.seq),0) from messages m where m.session_id=s.id)"
-                      + " from sessions s where s.id=? and s.workspace_id=?")) {
-            sql.setString(1, id.toString());
-            sql.setString(2, workspace.toString());
-            try (var row = sql.executeQuery()) {
-              if (!row.next()) throw new IllegalArgumentException("Session not in this workspace");
-              return row.getLong(1);
-            }
-          }
-        });
+    return query(connection -> {
+      try (var sql =
+          connection.prepareStatement(
+              "select (select coalesce(max(m.seq),0) from messages m where m.session_id=s.id)"
+                  + " from sessions s where s.id=? and s.workspace_id=?")) {
+        sql.setString(1, id.toString());
+        sql.setString(2, workspace.toString());
+        try (var row = sql.executeQuery()) {
+          if (!row.next()) throw new IllegalArgumentException("Session not in this workspace");
+          return row.getLong(1);
+        }
+      }
+    });
   }
 
   @Override
   public List<SessionMessage> turnMessages(UUID id, UUID turn) {
     var rows =
-        query(
-            connection -> {
-              requireContext(connection, id);
-              return selectedRawMessages(connection, id, List.of(turn.toString()));
-            });
+        query(connection -> {
+          requireContext(connection, id);
+          return selectedRawMessages(connection, id, List.of(turn.toString()));
+        });
     return decodeMessages(id, rows);
   }
 
@@ -253,28 +245,27 @@ public final class JpaSessionStore implements SessionStore {
   public SessionHistoryPort.History history(UUID id, UUID current, int maxTurns) {
     if (maxTurns < 1) throw new IllegalArgumentException("Positive turn limit required");
     var raw =
-        query(
-            connection -> {
-              requireContext(connection, id);
-              var completed = new LinkedHashSet<String>();
-              try (var sql =
-                  connection.prepareStatement(
-                      "select m.turn_id from messages m where m.session_id=? and m.role='USER'"
-                          + " and m.turn_id<>? and exists (select e.id from executions e"
-                          + " where e.turn_id=m.turn_id and e.session_id=? and e.turn_complete=1)"
-                          + " order by m.seq desc limit ?")) {
-                sql.setString(1, id.toString());
-                sql.setString(2, current.toString());
-                sql.setString(3, id.toString());
-                sql.setInt(4, maxTurns);
-                try (var rows = sql.executeQuery()) {
-                  while (rows.next()) completed.add(rows.getString(1));
-                }
-              }
-              var selected = new ArrayList<>(completed);
-              selected.add(current.toString());
-              return new RawHistory(completed, selectedRawMessages(connection, id, selected));
-            });
+        query(connection -> {
+          requireContext(connection, id);
+          var completed = new LinkedHashSet<String>();
+          try (var sql =
+              connection.prepareStatement(
+                  "select m.turn_id from messages m where m.session_id=? and m.role='USER'"
+                      + " and m.turn_id<>? and exists (select e.id from executions e"
+                      + " where e.turn_id=m.turn_id and e.session_id=? and e.turn_complete=1)"
+                      + " order by m.seq desc limit ?")) {
+            sql.setString(1, id.toString());
+            sql.setString(2, current.toString());
+            sql.setString(3, id.toString());
+            sql.setInt(4, maxTurns);
+            try (var rows = sql.executeQuery()) {
+              while (rows.next()) completed.add(rows.getString(1));
+            }
+          }
+          var selected = new ArrayList<>(completed);
+          selected.add(current.toString());
+          return new RawHistory(completed, selectedRawMessages(connection, id, selected));
+        });
     try {
       var messages = decodeMessages(id, raw.messages());
       var completed =
@@ -357,21 +348,20 @@ public final class JpaSessionStore implements SessionStore {
   }
 
   public Set<UUID> completedTurns(UUID id) {
-    return writes.read(
-        em -> {
-          require(em, id);
-          return new HashSet<>(
-              em
-                  .createQuery(
-                      "select e.turnId from ExecutionEntity e where e.sessionId=:id and"
-                          + " e.turnComplete=1",
-                      String.class)
-                  .setParameter("id", id.toString())
-                  .getResultList()
-                  .stream()
-                  .map(UUID::fromString)
-                  .toList());
-        });
+    return writes.read(em -> {
+      require(em, id);
+      return new HashSet<>(
+          em
+              .createQuery(
+                  "select e.turnId from ExecutionEntity e where e.sessionId=:id and"
+                      + " e.turnComplete=1",
+                  String.class)
+              .setParameter("id", id.toString())
+              .getResultList()
+              .stream()
+              .map(UUID::fromString)
+              .toList());
+    });
   }
 
   public void append(SessionMessage m) {
@@ -467,26 +457,25 @@ public final class JpaSessionStore implements SessionStore {
   }
 
   public void finishTurn(UUID id, UUID turn) {
-    writes.writeImmediate(
-        em -> {
-          requireContext(em, id);
-          var messages =
-              StoredSql.query(
-                  em,
-                  SELECT_TURN_CONTENT,
-                  rows -> {
-                    var values = new ArrayList<ChatMessage>();
-                    while (rows.next())
-                      values.add(StoredJson.read(rows.getString(1), Content.class).message());
-                    return values;
-                  },
-                  id.toString(),
-                  turn.toString());
-          HistorySelector.paired(messages);
-          int n = StoredSql.update(em, FINISH_TURN, id.toString(), turn.toString());
-          if (n != 1) throw new IllegalStateException("Missing execution");
-          return null;
-        });
+    writes.writeImmediate(em -> {
+      requireContext(em, id);
+      var messages =
+          StoredSql.query(
+              em,
+              SELECT_TURN_CONTENT,
+              rows -> {
+                var values = new ArrayList<ChatMessage>();
+                while (rows.next())
+                  values.add(StoredJson.read(rows.getString(1), Content.class).message());
+                return values;
+              },
+              id.toString(),
+              turn.toString());
+      HistorySelector.paired(messages);
+      int n = StoredSql.update(em, FINISH_TURN, id.toString(), turn.toString());
+      if (n != 1) throw new IllegalStateException("Missing execution");
+      return null;
+    });
   }
 
   @Override

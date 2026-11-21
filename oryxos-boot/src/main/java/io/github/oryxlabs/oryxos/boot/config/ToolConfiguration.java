@@ -120,6 +120,12 @@ public class ToolConfiguration {
   CheckedAgents checkedAgents(
       ProviderConfiguration.LoadedAgents agents, ToolRegistryPort tools, McpClientManager mcp) {
     return new CheckedAgents(
-        agents.catalog() == null ? null : agents.catalog().validateTools(tools, mcp::available).validateSchedules(org.springframework.scheduling.support.CronExpression::isValidExpression));
+        agents.catalog() == null
+            ? null
+            : agents
+                .catalog()
+                .validateTools(tools, mcp::available)
+                .validateSchedules(
+                    org.springframework.scheduling.support.CronExpression::isValidExpression));
   }
 }

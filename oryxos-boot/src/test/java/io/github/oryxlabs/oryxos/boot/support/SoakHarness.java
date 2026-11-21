@@ -172,7 +172,7 @@ public final class SoakHarness implements AutoCloseable {
       Files.createDirectories(path.getParent());
       Files.writeString(
           path,
-          """
+"""
 ---
 schema_version: 1
 name: agent-%02d
@@ -550,20 +550,18 @@ Local controlled performance fixture only. Fetch the current request token once,
     for (int i = 0; i < (acceptance || diagnostic ? 10 : 1); i++) {
       int client = i;
       warmup.add(
-          clients.submit(
-              () -> {
-                try {
-                  UUID session = create(client, true, "warmup");
-                  for (int round = 0; round < (acceptance || diagnostic ? 2 : 1); round++)
-                    turn(client, session, round, true, 0);
-                  require(
-                      call("DELETE", "/sessions/" + session, null, "warm-" + client).status()
-                          == 200,
-                      "warmup archive failed");
-                } catch (Exception e) {
-                  throw new CompletionException(e);
-                }
-              }));
+          clients.submit(() -> {
+            try {
+              UUID session = create(client, true, "warmup");
+              for (int round = 0; round < (acceptance || diagnostic ? 2 : 1); round++)
+                turn(client, session, round, true, 0);
+              require(
+                  call("DELETE", "/sessions/" + session, null, "warm-" + client).status() == 200,
+                  "warmup archive failed");
+            } catch (Exception e) {
+              throw new CompletionException(e);
+            }
+          }));
     }
     for (var f : warmup) f.get(150, TimeUnit.SECONDS);
     phase = "CREATE_100_SESSIONS";
@@ -573,15 +571,14 @@ Local controlled performance fixture only. Fetch the current request token once,
     for (int i = 0; i < 100; i++) {
       int client = i;
       created.add(
-          clients.submit(
-              () -> {
-                try {
-                  creationBarrier.await();
-                  sessions[client] = create(client, false, "load-client");
-                } catch (Exception e) {
-                  throw new CompletionException(e);
-                }
-              }));
+          clients.submit(() -> {
+            try {
+              creationBarrier.await();
+              sessions[client] = create(client, false, "load-client");
+            } catch (Exception e) {
+              throw new CompletionException(e);
+            }
+          }));
     }
     creationBarrier.countDown();
     for (var f : created) f.get(120, TimeUnit.SECONDS);
@@ -595,26 +592,25 @@ Local controlled performance fixture only. Fetch the current request token once,
     for (int i = 0; i < 100; i++) {
       int client = i;
       workers.add(
-          clients.submit(
-              () -> {
-                try {
-                  start.await();
-                  int round = 0;
-                  long previousEnd = 0;
-                  do {
-                    turn(client, sessions[client], round++, false, previousEnd);
-                    previousEnd = System.nanoTime();
-                  } while (!stop.get() && System.nanoTime() < steadyEnd);
-                } catch (Throwable e) {
-                  violation(
-                      "client "
-                          + client
-                          + " stopped: "
-                          + e.getClass().getSimpleName()
-                          + ": "
-                          + e.getMessage());
-                }
-              }));
+          clients.submit(() -> {
+            try {
+              start.await();
+              int round = 0;
+              long previousEnd = 0;
+              do {
+                turn(client, sessions[client], round++, false, previousEnd);
+                previousEnd = System.nanoTime();
+              } while (!stop.get() && System.nanoTime() < steadyEnd);
+            } catch (Throwable e) {
+              violation(
+                  "client "
+                      + client
+                      + " stopped: "
+                      + e.getClass().getSimpleName()
+                      + ": "
+                      + e.getMessage());
+            }
+          }));
     }
     monitor.scheduleAtFixedRate(
         () -> {
@@ -633,25 +629,24 @@ Local controlled performance fixture only. Fetch the current request token once,
         acceptance || diagnostic ? 30 : 1,
         TimeUnit.SECONDS);
     var probes =
-        clients.submit(
-            () -> {
-              int n = 0;
-              try {
-                while (!stop.get() && System.nanoTime() < steadyEnd) {
-                  Thread.sleep(acceptance || diagnostic ? 60000 : 1000);
-                  if (stop.get() || System.nanoTime() >= steadyEnd) break;
-                  int client = 100 + n++;
-                  UUID id = create(client, false, "creation-under-load");
-                  require(
-                      call("DELETE", "/sessions/" + id, null, "client-" + client).status() == 200,
-                      "probe archive failed");
-                }
-              } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-              } catch (Exception e) {
-                violation("creation probe stopped: " + e.getMessage());
-              }
-            });
+        clients.submit(() -> {
+          int n = 0;
+          try {
+            while (!stop.get() && System.nanoTime() < steadyEnd) {
+              Thread.sleep(acceptance || diagnostic ? 60000 : 1000);
+              if (stop.get() || System.nanoTime() >= steadyEnd) break;
+              int client = 100 + n++;
+              UUID id = create(client, false, "creation-under-load");
+              require(
+                  call("DELETE", "/sessions/" + id, null, "client-" + client).status() == 200,
+                  "probe archive failed");
+            }
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+          } catch (Exception e) {
+            violation("creation probe stopped: " + e.getMessage());
+          }
+        });
     start.countDown();
     // Even metric violations do not truncate the required observation period.
     while (!stop.get() && System.nanoTime() < steadyEnd)
@@ -696,7 +691,7 @@ Local controlled performance fixture only. Fetch the current request token once,
       }
       var seen = new HashSet<String>();
       String sql =
-          """
+"""
 SELECT e.*, coalesce(l.n,0) ln, coalesce(l.ok,0) lok, coalesce(t.n,0) tn, coalesce(t.ok,0) tok, coalesce(m.n,0) mn
 FROM executions e
 LEFT JOIN (SELECT execution_id,count(*) n,sum(status='SUCCEEDED') ok FROM llm_calls GROUP BY execution_id) l ON l.execution_id=e.id

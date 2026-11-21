@@ -215,14 +215,13 @@ class CliRuntimeContractTest {
       long started = System.nanoTime();
       try {
         var task =
-            worker.submit(
-                () ->
-                    new io.github.oryxlabs.oryxos.channel.cli.CliChannelAdapter(service)
-                        .chat(
-                            new io.github.oryxlabs.oryxos.core.runtime.ChatOptions(
-                                "local", "u", null, true),
-                            new StringReader("hello\n/quit\n"),
-                            new PrintWriter(out)));
+            worker.submit(() ->
+                new io.github.oryxlabs.oryxos.channel.cli.CliChannelAdapter(service)
+                    .chat(
+                        new io.github.oryxlabs.oryxos.core.runtime.ChatOptions(
+                            "local", "u", null, true),
+                        new StringReader("hello\n/quit\n"),
+                        new PrintWriter(out)));
         assertEquals(6, task.get(65, java.util.concurrent.TimeUnit.SECONDS));
         long millis =
             java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started);
@@ -428,31 +427,28 @@ class CliRuntimeContractTest {
                   org.mockito.ArgumentMatchers.any(),
                   org.mockito.ArgumentMatchers.anyLong(),
                   org.mockito.ArgumentMatchers.any()))
-          .thenAnswer(
-              call -> {
-                java.util.function.Consumer<
-                        io.github.oryxlabs.oryxos.core.agent.AgentService.Handle>
-                    observer = call.getArgument(5);
-                observer.accept(handle);
-                if (admission) {
-                  entered.countDown();
-                  assertTrue(release.await(5, java.util.concurrent.TimeUnit.SECONDS));
-                }
-                return handle;
-              });
+          .thenAnswer(call -> {
+            java.util.function.Consumer<io.github.oryxlabs.oryxos.core.agent.AgentService.Handle>
+                observer = call.getArgument(5);
+            observer.accept(handle);
+            if (admission) {
+              entered.countDown();
+              assertTrue(release.await(5, java.util.concurrent.TimeUnit.SECONDS));
+            }
+            return handle;
+          });
       org.mockito.Mockito.when(handle.await())
-          .thenAnswer(
-              call -> {
-                try {
-                  if (!admission) {
-                    entered.countDown();
-                    assertTrue(release.await(5, java.util.concurrent.TimeUnit.SECONDS));
-                  }
-                  return execution.snapshot(0);
-                } finally {
-                  settled.countDown();
-                }
-              });
+          .thenAnswer(call -> {
+            try {
+              if (!admission) {
+                entered.countDown();
+                assertTrue(release.await(5, java.util.concurrent.TimeUnit.SECONDS));
+              }
+              return execution.snapshot(0);
+            } finally {
+              settled.countDown();
+            }
+          });
       var time =
           new io.github.oryxlabs.oryxos.core.runtime.TimeSource() {
             int reads;

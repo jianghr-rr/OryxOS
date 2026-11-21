@@ -52,27 +52,25 @@ public final class JpaExecutionStore implements ExecutionStore {
   }
 
   public Execution.Snapshot find(UUID id) {
-    return writes.read(
-        em -> {
-          var e = em.find(ExecutionEntity.class, id.toString());
-          return e == null ? null : snapshot(e);
-        });
+    return writes.read(em -> {
+      var e = em.find(ExecutionEntity.class, id.toString());
+      return e == null ? null : snapshot(e);
+    });
   }
 
   public List<Execution.Snapshot> list(UUID sessionId, int limit) {
-    return writes.read(
-        em -> {
-          var query =
-              em.createQuery(
-                  "select e from ExecutionEntity e"
-                      + (sessionId == null ? "" : " where e.sessionId=:session")
-                      + " order by e.startedAt desc,e.id",
-                  ExecutionEntity.class);
-          if (sessionId != null) query.setParameter("session", sessionId.toString());
-          return query.setMaxResults(Math.max(1, Math.min(100, limit))).getResultList().stream()
-              .map(JpaExecutionStore::snapshot)
-              .toList();
-        });
+    return writes.read(em -> {
+      var query =
+          em.createQuery(
+              "select e from ExecutionEntity e"
+                  + (sessionId == null ? "" : " where e.sessionId=:session")
+                  + " order by e.startedAt desc,e.id",
+              ExecutionEntity.class);
+      if (sessionId != null) query.setParameter("session", sessionId.toString());
+      return query.setMaxResults(Math.max(1, Math.min(100, limit))).getResultList().stream()
+          .map(JpaExecutionStore::snapshot)
+          .toList();
+    });
   }
 
   public static final class Prepared {

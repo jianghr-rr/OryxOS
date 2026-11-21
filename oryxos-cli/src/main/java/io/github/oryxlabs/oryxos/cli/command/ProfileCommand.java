@@ -153,15 +153,13 @@ public final class ProfileCommand {
       Object v, io.github.oryxlabs.oryxos.core.security.Redactor r) {
     if (v instanceof Map<?, ?> m) {
       var result = new LinkedHashMap<String, Object>();
-      m.forEach(
-          (k, value) ->
-              result.put(
-                  r.redact(k.toString()),
-                  k.toString()
-                          .matches(
-                              "(?i).*(secret|password|token|api.?key|authorization|headers|url).*")
-                      ? "[REDACTED]"
-                      : publicConfiguration(value, r)));
+      m.forEach((k, value) ->
+          result.put(
+              r.redact(k.toString()),
+              k.toString()
+                      .matches("(?i).*(secret|password|token|api.?key|authorization|headers|url).*")
+                  ? "[REDACTED]"
+                  : publicConfiguration(value, r)));
       return result;
     }
     if (v instanceof List<?> l) return l.stream().map(x -> publicConfiguration(x, r)).toList();

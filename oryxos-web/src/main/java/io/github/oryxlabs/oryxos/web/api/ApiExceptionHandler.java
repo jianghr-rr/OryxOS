@@ -20,25 +20,25 @@ public class ApiExceptionHandler {
       case "NOT_FOUND" -> 404;
       case "MESSAGE_TOO_LARGE" -> 413;
       case "SESSION_BUSY",
-              "SESSION_ARCHIVED",
-              "SESSION_IDENTITY_MISMATCH",
-              "SESSION_MODEL_CHANGED",
-              "AGENT_UNAVAILABLE",
-              "SCHEDULE_BUSY",
-              "RECOVERY_NOT_READY" ->
+          "SESSION_ARCHIVED",
+          "SESSION_IDENTITY_MISMATCH",
+          "SESSION_MODEL_CHANGED",
+          "AGENT_UNAVAILABLE",
+          "SCHEDULE_BUSY",
+          "RECOVERY_NOT_READY" ->
           409;
       case "INVALID_INPUT", "INVALID_CONFIG", "CONFIGURATION_ERROR" -> 400;
       case "DEADLINE", "EXECUTION_TIMEOUT", "PROVIDER_TIMEOUT" -> 504;
       case "EXECUTION_FAILED", "ITERATION_LIMIT" -> 422;
       case "EXECUTION_PAUSED",
-              "OVERLOADED",
-              "MEMORY_UNAVAILABLE",
-              "RUNTIME_NOT_READY",
-              "RECOVERY_UNAVAILABLE",
-              "PROVIDER_UNAVAILABLE",
-              "PROVIDER_REJECTED",
-              "PROVIDER_PROTOCOL",
-              "PROVIDER_AUTHENTICATION" ->
+          "OVERLOADED",
+          "MEMORY_UNAVAILABLE",
+          "RUNTIME_NOT_READY",
+          "RECOVERY_UNAVAILABLE",
+          "PROVIDER_UNAVAILABLE",
+          "PROVIDER_REJECTED",
+          "PROVIDER_PROTOCOL",
+          "PROVIDER_AUTHENTICATION" ->
           503;
       default -> code.startsWith("PROVIDER_") ? 503 : 500;
     };

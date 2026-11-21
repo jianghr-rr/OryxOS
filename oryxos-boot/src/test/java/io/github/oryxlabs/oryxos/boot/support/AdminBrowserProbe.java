@@ -51,39 +51,38 @@ public final class AdminBrowserProbe {
         evidenceFilter() {
       var bean =
           new org.springframework.boot.web.servlet.FilterRegistrationBean<jakarta.servlet.Filter>();
-      bean.setFilter(
-          (req, res, chain) -> {
-            var r = (jakarta.servlet.http.HttpServletRequest) req;
-            if (r.getRequestURI().startsWith("/api/v1/")) {
-              requests.add(
-                  Map.of(
-                      "method",
-                      r.getMethod(),
-                      "path",
-                      r.getRequestURI(),
-                      "query",
-                      Objects.toString(r.getQueryString(), ""),
-                      "user",
-                      Objects.toString(r.getHeader("X-Oryx-User-Id"), "")));
-              if (r.getMethod().equals("GET") && r.getRequestURI().equals("/api/v1/profiles")) {
-                try {
-                  Thread.sleep(queryDelay);
-                } catch (InterruptedException e) {
-                  Thread.currentThread().interrupt();
-                }
-                if (queryFailure) {
-                  var h = (jakarta.servlet.http.HttpServletResponse) res;
-                  h.setStatus(503);
-                  h.setContentType("application/json");
-                  h.getWriter()
-                      .write(
-                          "{\"code\":\"LOCAL_TEST_QUERY_FAILURE\",\"message\":\"本地验证：受控查询失败\",\"data\":null}");
-                  return;
-                }
-              }
+      bean.setFilter((req, res, chain) -> {
+        var r = (jakarta.servlet.http.HttpServletRequest) req;
+        if (r.getRequestURI().startsWith("/api/v1/")) {
+          requests.add(
+              Map.of(
+                  "method",
+                  r.getMethod(),
+                  "path",
+                  r.getRequestURI(),
+                  "query",
+                  Objects.toString(r.getQueryString(), ""),
+                  "user",
+                  Objects.toString(r.getHeader("X-Oryx-User-Id"), "")));
+          if (r.getMethod().equals("GET") && r.getRequestURI().equals("/api/v1/profiles")) {
+            try {
+              Thread.sleep(queryDelay);
+            } catch (InterruptedException e) {
+              Thread.currentThread().interrupt();
             }
-            chain.doFilter(req, res);
-          });
+            if (queryFailure) {
+              var h = (jakarta.servlet.http.HttpServletResponse) res;
+              h.setStatus(503);
+              h.setContentType("application/json");
+              h.getWriter()
+                  .write(
+                      "{\"code\":\"LOCAL_TEST_QUERY_FAILURE\",\"message\":\"本地验证：受控查询失败\",\"data\":null}");
+              return;
+            }
+          }
+        }
+        chain.doFilter(req, res);
+      });
       return bean;
     }
   }
@@ -322,12 +321,11 @@ public final class AdminBrowserProbe {
             + root);
     Runtime.getRuntime()
         .addShutdownHook(
-            new Thread(
-                () -> {
-                  context.close();
-                  recipient.stop(0);
-                  fixture.close();
-                }));
+            new Thread(() -> {
+              context.close();
+              recipient.stop(0);
+              fixture.close();
+            }));
     new CountDownLatch(1).await();
   }
 }

@@ -99,60 +99,58 @@ public final class MarkdownMemoryStore implements LongTermMemoryStore {
               List.of());
       entries.add(entry);
       return ctx.dispatcher()
-          .call(
-              () -> {
-                Path temporary = null;
-                boolean publicationAttempted = false;
+          .call(() -> {
+            Path temporary = null;
+            boolean publicationAttempted = false;
+            try {
+              Path file = path();
+              if (!Files.exists(file.getParent(), LinkOption.NOFOLLOW_LINKS))
+                Files.createDirectory(file.getParent());
+              path();
+              temporary = Files.createTempFile(file.getParent(), ".memory-", ".tmp");
+              try (var channel = FileChannel.open(temporary, StandardOpenOption.WRITE)) {
+                ByteBuffer bytes = StandardCharsets.UTF_8.encode(codec.encode(id, entries));
+                while (bytes.hasRemaining()) channel.write(bytes);
+                channel.force(true);
+              }
+              ctx.dispatcher().check();
+              path();
+              publicationAttempted = true;
+              Files.move(
+                  temporary,
+                  file,
+                  StandardCopyOption.ATOMIC_MOVE,
+                  StandardCopyOption.REPLACE_EXISTING);
+              try (var directory = FileChannel.open(file.getParent(), StandardOpenOption.READ)) {
+                directory.force(true);
+              }
+              return new WriteReceipt(
+                  entry.id(),
+                  true,
+                  WriteReceipt.ProjectionState.NOT_REQUIRED,
+                  MemoryEntry.WriteStatus.CONFIRMED,
+                  "Original memory saved");
+            } catch (OryxError e) {
+              throw e;
+            } catch (Exception e) {
+              return new WriteReceipt(
+                  entry.id(),
+                  publicationAttempted ? null : false,
+                  publicationAttempted
+                      ? WriteReceipt.ProjectionState.UNKNOWN
+                      : WriteReceipt.ProjectionState.FAILED,
+                  publicationAttempted
+                      ? MemoryEntry.WriteStatus.UNKNOWN
+                      : MemoryEntry.WriteStatus.FAILED,
+                  "Memory write could not be confirmed; inspect before retrying");
+            } finally {
+              if (temporary != null)
                 try {
-                  Path file = path();
-                  if (!Files.exists(file.getParent(), LinkOption.NOFOLLOW_LINKS))
-                    Files.createDirectory(file.getParent());
-                  path();
-                  temporary = Files.createTempFile(file.getParent(), ".memory-", ".tmp");
-                  try (var channel = FileChannel.open(temporary, StandardOpenOption.WRITE)) {
-                    ByteBuffer bytes = StandardCharsets.UTF_8.encode(codec.encode(id, entries));
-                    while (bytes.hasRemaining()) channel.write(bytes);
-                    channel.force(true);
-                  }
-                  ctx.dispatcher().check();
-                  path();
-                  publicationAttempted = true;
-                  Files.move(
-                      temporary,
-                      file,
-                      StandardCopyOption.ATOMIC_MOVE,
-                      StandardCopyOption.REPLACE_EXISTING);
-                  try (var directory =
-                      FileChannel.open(file.getParent(), StandardOpenOption.READ)) {
-                    directory.force(true);
-                  }
-                  return new WriteReceipt(
-                      entry.id(),
-                      true,
-                      WriteReceipt.ProjectionState.NOT_REQUIRED,
-                      MemoryEntry.WriteStatus.CONFIRMED,
-                      "Original memory saved");
-                } catch (OryxError e) {
-                  throw e;
-                } catch (Exception e) {
-                  return new WriteReceipt(
-                      entry.id(),
-                      publicationAttempted ? null : false,
-                      publicationAttempted
-                          ? WriteReceipt.ProjectionState.UNKNOWN
-                          : WriteReceipt.ProjectionState.FAILED,
-                      publicationAttempted
-                          ? MemoryEntry.WriteStatus.UNKNOWN
-                          : MemoryEntry.WriteStatus.FAILED,
-                      "Memory write could not be confirmed; inspect before retrying");
-                } finally {
-                  if (temporary != null)
-                    try {
-                      Files.deleteIfExists(temporary);
-                    } catch (java.io.IOException ignored) {
-                    }
+                  Files.deleteIfExists(temporary);
+                } catch (java.io.IOException ignored) {
                 }
-              });
+            }
+          });
     }
   }
 

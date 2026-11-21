@@ -18,11 +18,10 @@ public final class FileAccessPolicy {
   private List<Path> roots(List<String> values) {
     return values.stream()
         .map(v -> root.resolve(v).normalize())
-        .peek(
-            p -> {
-              if (!p.startsWith(root))
-                throw OryxError.configuration("file allowlist outside workspace");
-            })
+        .peek(p -> {
+          if (!p.startsWith(root))
+            throw OryxError.configuration("file allowlist outside workspace");
+        })
         .toList();
   }
 

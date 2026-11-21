@@ -54,11 +54,10 @@ public final class Mem0MemoryStore implements LongTermMemoryStore {
             core ? MemoryEntry.WriteStatus.CONFIRMED : MemoryEntry.WriteStatus.PREPARED,
             List.of());
     ctx.dispatcher()
-        .call(
-            () -> {
-              records.insert(entry);
-              return null;
-            });
+        .call(() -> {
+          records.insert(entry);
+          return null;
+        });
     if (core)
       return new WriteReceipt(
           id,

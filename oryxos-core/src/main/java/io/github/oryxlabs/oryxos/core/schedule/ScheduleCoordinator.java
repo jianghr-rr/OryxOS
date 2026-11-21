@@ -67,17 +67,16 @@ public final class ScheduleCoordinator implements AutoCloseable {
 
   public List<View> list() {
     return store.states().stream()
-        .map(
-            s -> {
-              var last = s.lastExecutionId() == null ? null : executions.find(s.lastExecutionId());
-              var history = store.history(s.id(), 1, null);
-              String status = history.isEmpty() ? null : history.getFirst().status().name();
-              if (!history.isEmpty() && history.getFirst().executionId() != null) {
-                var outcome = executions.find(history.getFirst().executionId());
-                if (outcome != null) status = outcome.status().name();
-              } else if (history.isEmpty() && last != null) status = last.status().name();
-              return new View(s, definitions.get(s.id()), nextRunAt(s.id()), status);
-            })
+        .map(s -> {
+          var last = s.lastExecutionId() == null ? null : executions.find(s.lastExecutionId());
+          var history = store.history(s.id(), 1, null);
+          String status = history.isEmpty() ? null : history.getFirst().status().name();
+          if (!history.isEmpty() && history.getFirst().executionId() != null) {
+            var outcome = executions.find(history.getFirst().executionId());
+            if (outcome != null) status = outcome.status().name();
+          } else if (history.isEmpty() && last != null) status = last.status().name();
+          return new View(s, definitions.get(s.id()), nextRunAt(s.id()), status);
+        })
         .toList();
   }
 

@@ -59,15 +59,14 @@ public final class StatusCommand implements Callable<Integer> {
             + status.unavailableProviders()
             + "\nAgent configurations (current files; running process retains startup snapshot):\n"
             + status.agents().stream()
-                .map(
-                    a ->
-                        a.name()
-                            + ": "
-                            + a.code()
-                            + " — "
-                            + a.safeMessage()
-                            + "; notify channels: "
-                            + a.notifyChannels())
+                .map(a ->
+                    a.name()
+                        + ": "
+                        + a.code()
+                        + " — "
+                        + a.safeMessage()
+                        + "; notify channels: "
+                        + a.notifyChannels())
                 .collect(java.util.stream.Collectors.joining("\n"))
             + "\n"
             + "Execution/database health: NOT_CHECKED by this light query; inspect /api/v1/health"

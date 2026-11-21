@@ -17,43 +17,41 @@ public final class JpaScheduleStore implements ScheduleStore {
   }
 
   public void reconcile(List<ScheduleDefinition> definitions, Instant now) {
-    writes.write(
-        em -> {
-          var existing =
-              em.createQuery("from ScheduleStateEntity", ScheduleStateEntity.class).getResultList();
-          var current = new HashMap<String, ScheduleStateEntity>();
-          for (var e : existing) {
-            current.put(e.id, e);
-            e.configuredPresent = 0L;
-            e.updatedAt = text(now);
-          }
-          for (var d : definitions) {
-            var e = current.get(d.id());
-            boolean fresh = e == null;
-            if (fresh) {
-              e = new ScheduleStateEntity();
-              e.id = d.id();
-              e.agentName = d.agentName();
-              e.enabled = d.initiallyEnabled() ? 1L : 0L;
-            }
-            e.definitionHash = d.definitionHash();
-            e.configuredPresent = 1L;
-            e.updatedAt = text(now);
-            if (fresh) em.persist(e);
-          }
-          return null;
-        });
+    writes.write(em -> {
+      var existing =
+          em.createQuery("from ScheduleStateEntity", ScheduleStateEntity.class).getResultList();
+      var current = new HashMap<String, ScheduleStateEntity>();
+      for (var e : existing) {
+        current.put(e.id, e);
+        e.configuredPresent = 0L;
+        e.updatedAt = text(now);
+      }
+      for (var d : definitions) {
+        var e = current.get(d.id());
+        boolean fresh = e == null;
+        if (fresh) {
+          e = new ScheduleStateEntity();
+          e.id = d.id();
+          e.agentName = d.agentName();
+          e.enabled = d.initiallyEnabled() ? 1L : 0L;
+        }
+        e.definitionHash = d.definitionHash();
+        e.configuredPresent = 1L;
+        e.updatedAt = text(now);
+        if (fresh) em.persist(e);
+      }
+      return null;
+    });
   }
 
   public List<ScheduleState> states() {
-    return writes.read(
-        em ->
-            em
-                .createQuery("from ScheduleStateEntity order by id", ScheduleStateEntity.class)
-                .getResultList()
-                .stream()
-                .map(JpaScheduleStore::state)
-                .toList());
+    return writes.read(em ->
+        em
+            .createQuery("from ScheduleStateEntity order by id", ScheduleStateEntity.class)
+            .getResultList()
+            .stream()
+            .map(JpaScheduleStore::state)
+            .toList());
   }
 
   public ScheduleState find(String id) {
@@ -61,36 +59,34 @@ public final class JpaScheduleStore implements ScheduleStore {
   }
 
   public ScheduleState setEnabled(String id, boolean enabled, Instant now) {
-    return writes.write(
-        em -> {
-          var e = em.find(ScheduleStateEntity.class, id);
-          if (e == null) throw new IllegalStateException("Schedule state is missing");
-          e.enabled = enabled ? 1L : 0L;
-          e.updatedAt = text(now);
-          return state(e);
-        });
+    return writes.write(em -> {
+      var e = em.find(ScheduleStateEntity.class, id);
+      if (e == null) throw new IllegalStateException("Schedule state is missing");
+      e.enabled = enabled ? 1L : 0L;
+      e.updatedAt = text(now);
+      return state(e);
+    });
   }
 
   public void record(ScheduleEvent event) {
-    writes.write(
-        em -> {
-          var e = new ScheduleEventEntity();
-          e.id = event.id().toString();
-          e.scheduleId = event.scheduleId();
-          e.executionId = event.executionId() == null ? null : event.executionId().toString();
-          e.triggerKind = event.triggerKind().name();
-          e.scheduledFor = text(event.scheduledFor());
-          e.status = event.status().name();
-          e.reason = event.reason();
-          e.createdAt = text(event.createdAt());
-          em.persist(e);
-          if (e.executionId != null) {
-            var s = em.find(ScheduleStateEntity.class, e.scheduleId);
-            s.lastExecutionId = e.executionId;
-            s.updatedAt = e.createdAt;
-          }
-          return null;
-        });
+    writes.write(em -> {
+      var e = new ScheduleEventEntity();
+      e.id = event.id().toString();
+      e.scheduleId = event.scheduleId();
+      e.executionId = event.executionId() == null ? null : event.executionId().toString();
+      e.triggerKind = event.triggerKind().name();
+      e.scheduledFor = text(event.scheduledFor());
+      e.status = event.status().name();
+      e.reason = event.reason();
+      e.createdAt = text(event.createdAt());
+      em.persist(e);
+      if (e.executionId != null) {
+        var s = em.find(ScheduleStateEntity.class, e.scheduleId);
+        s.lastExecutionId = e.executionId;
+        s.updatedAt = e.createdAt;
+      }
+      return null;
+    });
   }
 
   public List<ScheduleEvent> history(String id, int limit, UUID beforeId) {
@@ -99,33 +95,29 @@ public final class JpaScheduleStore implements ScheduleStore {
     var before =
         beforeId == null
             ? null
-            : writes.read(
-                em -> {
-                  var found = em.find(ScheduleEventEntity.class, beforeId.toString());
-                  return found == null ? null : event(found);
-                });
+            : writes.read(em -> {
+              var found = em.find(ScheduleEventEntity.class, beforeId.toString());
+              return found == null ? null : event(found);
+            });
     if (beforeId != null && (before == null || !before.scheduleId().equals(id)))
       throw new OryxError("INVALID_INPUT", "History cursor does not belong to this schedule");
-    return writes.read(
-        em -> {
-          var q =
-              em.createQuery(
-                      "from ScheduleEventEntity e where e.scheduleId=:id"
-                          + (before == null
-                              ? ""
-                              : " and (e.createdAt<:before or (e.createdAt=:before and"
-                                  + " e.id<:cursor))")
-                          + " order by e.createdAt desc,e.id desc",
-                      ScheduleEventEntity.class)
-                  .setParameter("id", id);
-          if (before != null) {
-            q.setParameter("before", text(before.createdAt()));
-            q.setParameter("cursor", before.id().toString());
-          }
-          return q.setMaxResults(limit).getResultList().stream()
-              .map(JpaScheduleStore::event)
-              .toList();
-        });
+    return writes.read(em -> {
+      var q =
+          em.createQuery(
+                  "from ScheduleEventEntity e where e.scheduleId=:id"
+                      + (before == null
+                          ? ""
+                          : " and (e.createdAt<:before or (e.createdAt=:before and"
+                              + " e.id<:cursor))")
+                      + " order by e.createdAt desc,e.id desc",
+                  ScheduleEventEntity.class)
+              .setParameter("id", id);
+      if (before != null) {
+        q.setParameter("before", text(before.createdAt()));
+        q.setParameter("cursor", before.id().toString());
+      }
+      return q.setMaxResults(limit).getResultList().stream().map(JpaScheduleStore::event).toList();
+    });
   }
 
   private static ScheduleState state(ScheduleStateEntity e) {

@@ -89,90 +89,84 @@ public final class SanitizedStdioTransport extends StdioClientTransport {
   @Override
   public Mono<Void> connect(
       Function<Mono<McpSchema.JSONRPCMessage>, Mono<McpSchema.JSONRPCMessage>> handler) {
-    return Mono.fromRunnable(
-        () -> {
-          try {
-            var command = new ArrayList<String>();
-            command.add(params.getCommand());
-            command.addAll(params.getArgs());
-            child = getProcessBuilder().command(command).start();
-            pipes.submit(
-                () -> {
-                  try (var input = child.getInputStream()) {
-                    String line;
-                    while (!closing && (line = readLine(input, 1048576)) != null) {
-                      var node = json.readTree(line);
-                      if (node.path("result").path("tools").isArray())
-                        for (var tool : node.path("result").path("tools")) {
-                          schemaCheck.accept(tool.path("inputSchema").toString());
-                          if (tool.hasNonNull("outputSchema"))
-                            schemaCheck.accept(tool.path("outputSchema").toString());
-                        }
-                      handler
-                          .apply(Mono.just(McpSchema.deserializeJsonRpcMessage(mapper, line)))
-                          .subscribe(
-                              v -> {},
-                              e -> {
-                                failed = true;
-                              });
-                    }
-                    if (!closing) failed = true;
-                  } catch (Exception e) {
-                    failed = true;
-                  }
-                });
-            pipes.submit(
-                () -> {
-                  try (var input = child.getErrorStream()) {
-                    var capture = new ByteArrayOutputStream();
-                    byte[] buf = new byte[4096];
-                    int count;
-                    while ((count = input.read(buf)) != -1) {
-                      int keep = Math.min(count, Math.max(0, 65536 - capture.size()));
-                      capture.write(buf, 0, keep);
-                    }
-                    stderr = redactor.redact(capture.toString(StandardCharsets.UTF_8));
-                  } catch (IOException e) {
-                    stderr = "MCP stderr could not be read";
-                  }
-                });
-          } catch (IOException e) {
+    return Mono.fromRunnable(() -> {
+      try {
+        var command = new ArrayList<String>();
+        command.add(params.getCommand());
+        command.addAll(params.getArgs());
+        child = getProcessBuilder().command(command).start();
+        pipes.submit(() -> {
+          try (var input = child.getInputStream()) {
+            String line;
+            while (!closing && (line = readLine(input, 1048576)) != null) {
+              var node = json.readTree(line);
+              if (node.path("result").path("tools").isArray())
+                for (var tool : node.path("result").path("tools")) {
+                  schemaCheck.accept(tool.path("inputSchema").toString());
+                  if (tool.hasNonNull("outputSchema"))
+                    schemaCheck.accept(tool.path("outputSchema").toString());
+                }
+              handler
+                  .apply(Mono.just(McpSchema.deserializeJsonRpcMessage(mapper, line)))
+                  .subscribe(
+                      v -> {},
+                      e -> {
+                        failed = true;
+                      });
+            }
+            if (!closing) failed = true;
+          } catch (Exception e) {
             failed = true;
-            throw new IllegalStateException("MCP process could not start");
           }
         });
+        pipes.submit(() -> {
+          try (var input = child.getErrorStream()) {
+            var capture = new ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+            int count;
+            while ((count = input.read(buf)) != -1) {
+              int keep = Math.min(count, Math.max(0, 65536 - capture.size()));
+              capture.write(buf, 0, keep);
+            }
+            stderr = redactor.redact(capture.toString(StandardCharsets.UTF_8));
+          } catch (IOException e) {
+            stderr = "MCP stderr could not be read";
+          }
+        });
+      } catch (IOException e) {
+        failed = true;
+        throw new IllegalStateException("MCP process could not start");
+      }
+    });
   }
 
   @Override
   public Mono<Void> sendMessage(McpSchema.JSONRPCMessage message) {
-    return Mono.fromRunnable(
-        () -> {
-          synchronized (writes) {
-            if (closing || failed || child == null || !child.isAlive())
-              throw new IllegalStateException("MCP transport unavailable");
-            Supplier<Void> send =
-                () -> {
-                  try {
-                    byte[] data =
-                        (mapper.writeValueAsString(message) + "\n")
-                            .getBytes(StandardCharsets.UTF_8);
-                    if (data.length > 1048576) throw new IOException();
-                    if (message instanceof McpSchema.JSONRPCRequest r
-                        && r.method().equals("tools/call")) calls.incrementAndGet();
-                    child.getOutputStream().write(data);
-                    child.getOutputStream().flush();
-                    return null;
-                  } catch (Exception e) {
-                    failed = true;
-                    throw new IllegalStateException("MCP protocol write failed");
-                  }
-                };
-            var ctx = active;
-            if (ctx != null && message instanceof McpSchema.JSONRPCRequest)
-              ctx.dispatcher().call(send);
-            else send.get();
-          }
-        });
+    return Mono.fromRunnable(() -> {
+      synchronized (writes) {
+        if (closing || failed || child == null || !child.isAlive())
+          throw new IllegalStateException("MCP transport unavailable");
+        Supplier<Void> send =
+            () -> {
+              try {
+                byte[] data =
+                    (mapper.writeValueAsString(message) + "\n").getBytes(StandardCharsets.UTF_8);
+                if (data.length > 1048576) throw new IOException();
+                if (message instanceof McpSchema.JSONRPCRequest r
+                    && r.method().equals("tools/call")) calls.incrementAndGet();
+                child.getOutputStream().write(data);
+                child.getOutputStream().flush();
+                return null;
+              } catch (Exception e) {
+                failed = true;
+                throw new IllegalStateException("MCP protocol write failed");
+              }
+            };
+        var ctx = active;
+        if (ctx != null && message instanceof McpSchema.JSONRPCRequest) ctx.dispatcher().call(send);
+        else send.get();
+      }
+    });
   }
 
   public void active(ExecutionContext context) {
@@ -197,30 +191,29 @@ public final class SanitizedStdioTransport extends StdioClientTransport {
 
   @Override
   public Mono<Void> closeGracefully() {
-    return Mono.defer(
-        () -> {
-          closing = true;
-          boolean graceful = true;
-          if (child != null) {
-            child.destroy();
-            try {
-              graceful = child.waitFor(300, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-              Thread.currentThread().interrupt();
-              graceful = false;
-            }
-            closeConfirmed = ShellTool.terminate(child);
-          }
-          pipes.shutdownNow();
-          final boolean ok = graceful && closeConfirmed;
-          return super.closeGracefully()
-              .then(
-                  ok
-                      ? Mono.empty()
-                      : Mono.error(
-                          new IllegalStateException(
-                              "MCP graceful close failed; forced cleanup attempted")));
-        });
+    return Mono.defer(() -> {
+      closing = true;
+      boolean graceful = true;
+      if (child != null) {
+        child.destroy();
+        try {
+          graceful = child.waitFor(300, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          graceful = false;
+        }
+        closeConfirmed = ShellTool.terminate(child);
+      }
+      pipes.shutdownNow();
+      final boolean ok = graceful && closeConfirmed;
+      return super.closeGracefully()
+          .then(
+              ok
+                  ? Mono.empty()
+                  : Mono.error(
+                      new IllegalStateException(
+                          "MCP graceful close failed; forced cleanup attempted")));
+    });
   }
 
   @Override

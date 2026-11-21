@@ -84,7 +84,8 @@ public final class StoredSql {
     }
   }
 
-  private static void bindValues(PreparedStatement statement, Object... values) throws SQLException {
+  private static void bindValues(PreparedStatement statement, Object... values)
+      throws SQLException {
     try (var timing = RuntimeTiming.measure("db.statement.bind")) {
       statement.clearParameters();
       for (int i = 0; i < values.length; i++) statement.setObject(i + 1, values[i]);

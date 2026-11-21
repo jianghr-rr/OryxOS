@@ -55,14 +55,13 @@ class CliOperationsTest {
       assertTrue(
           paths
               .filter(Files::isRegularFile)
-              .anyMatch(
-                  p -> {
-                    try {
-                      return Files.readString(p).equals(original);
-                    } catch (IOException e) {
-                      throw new UncheckedIOException(e);
-                    }
-                  }));
+              .anyMatch(p -> {
+                try {
+                  return Files.readString(p).equals(original);
+                } catch (IOException e) {
+                  throw new UncheckedIOException(e);
+                }
+              }));
     }
     assertEquals(3, run("profile", "show", "researcher"));
   }

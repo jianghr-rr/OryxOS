@@ -24,24 +24,21 @@ public final class WriterCarrierProbe {
       writes.write(
           em -> StoredSql.update(em, "create table carrier_probe (id integer primary key)"));
       var pinned =
-          Thread.startVirtualThread(
-              () -> {
-                synchronized (MONITOR) {
-                  entered.countDown();
-                  try {
-                    release.await();
-                  } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                  }
-                }
-              });
+          Thread.startVirtualThread(() -> {
+            synchronized (MONITOR) {
+              entered.countDown();
+              try {
+                release.await();
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+            }
+          });
       try {
         if (!entered.await(5, TimeUnit.SECONDS)) throw new AssertionError("Pin setup failed");
         var result =
-            caller.submit(
-                () ->
-                    writes.write(
-                        em -> StoredSql.update(em, "insert into carrier_probe values (1)")));
+            caller.submit(() ->
+                writes.write(em -> StoredSql.update(em, "insert into carrier_probe values (1)")));
         try {
           if (result.get(1, TimeUnit.SECONDS) != 1) throw new AssertionError("Write missing");
         } catch (TimeoutException e) {

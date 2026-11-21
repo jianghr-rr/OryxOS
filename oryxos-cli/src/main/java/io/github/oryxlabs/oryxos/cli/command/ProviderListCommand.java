@@ -21,19 +21,18 @@ public final class ProviderListCommand implements Callable<Integer> {
     var items =
         current.runtime().providers().values().stream()
             .sorted(java.util.Comparator.comparing(p -> p.name()))
-            .map(
-                p ->
-                    CliOutput.fields(
-                        "name",
-                        current.redactor().redact(p.name()),
-                        "protocol",
-                        p.protocol(),
-                        "configured",
-                        p.available(),
-                        "connectivity",
-                        "NOT_PROBED",
-                        "safeError",
-                        p.available() ? null : current.redactor().redact(p.error().safeMessage())))
+            .map(p ->
+                CliOutput.fields(
+                    "name",
+                    current.redactor().redact(p.name()),
+                    "protocol",
+                    p.protocol(),
+                    "configured",
+                    p.available(),
+                    "connectivity",
+                    "NOT_PROBED",
+                    "safeError",
+                    p.available() ? null : current.redactor().redact(p.error().safeMessage())))
             .toList();
     parent.result(
         CliOutput.fields("source", "CURRENT_FILES", "items", items),

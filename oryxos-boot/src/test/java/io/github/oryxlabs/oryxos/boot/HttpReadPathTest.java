@@ -83,11 +83,10 @@ class HttpReadPathTest {
       for (var name : List.of("db.read.connection", "db.read.query"))
         assertTrue(
             span.segments.stream()
-                .anyMatch(
-                    s ->
-                        s.name().equals(name)
-                            && s.startNanos() >= lookup.get().startNanos()
-                            && s.endNanos() <= lookup.get().endNanos()),
+                .anyMatch(s ->
+                    s.name().equals(name)
+                        && s.startNanos() >= lookup.get().startNanos()
+                        && s.endNanos() <= lookup.get().endNanos()),
             "HTTP admission must reuse the measured runtime pool: " + name);
     }
   }
@@ -113,7 +112,9 @@ class HttpReadPathTest {
           n -> {
             if (n == 1) {
               observedAtModel1.set(
-                  queryCount(fixture.workspace.database(), "SELECT count(*) FROM llm_calls WHERE status='STARTED'"));
+                  queryCount(
+                      fixture.workspace.database(),
+                      "SELECT count(*) FROM llm_calls WHERE status='STARTED'"));
             } else if (n == 2) {
               observedToolSuccessAtModel2.set(
                   queryCount(
@@ -161,9 +162,7 @@ class HttpReadPathTest {
       }
       assertEquals(1, observedAtModel1.get(), "llm_calls(STARTED) must commit before model 1 IO");
       assertEquals(
-          1,
-          observedLlm1SucceededAtTool.get(),
-          "llm_calls(SUCCEEDED) must commit before tool IO");
+          1, observedLlm1SucceededAtTool.get(), "llm_calls(SUCCEEDED) must commit before tool IO");
       assertEquals(
           1,
           observedToolStartedAtTool.get(),
@@ -186,7 +185,8 @@ class HttpReadPathTest {
       long readCount = span.segments.stream().filter(s -> s.name().equals("db.read")).count();
       assertTrue(
           readCount <= 1,
-          () -> "Hot session cache should issue <= 1 db.read call per steady turn, got " + readCount);
+          () ->
+              "Hot session cache should issue <= 1 db.read call per steady turn, got " + readCount);
       assertEquals(
           1,
           queryCount(

@@ -118,10 +118,7 @@ public final class HttpExecutionAdapter implements AutoCloseable {
     Consumer<ResponseEntity<?>> completeDirect =
         entity -> writeDirect(async, response, asyncClosed, entity);
     dispatchAsync(
-        request,
-        completeDirect,
-        error -> completeDirect.accept(errors.response(error)),
-        operation);
+        request, completeDirect, error -> completeDirect.accept(errors.response(error)), operation);
   }
 
   private void writeDirect(

@@ -26,19 +26,18 @@ public final class NotificationTargetResolver {
       var local = new LinkedHashMap<String, Target>();
       agent
           .notifications()
-          .forEach(
-              (name, n) -> {
-                var headers = new LinkedHashMap<String, String>();
-                n.headerReferences().forEach((k, v) -> headers.put(k, secrets.resolve(v)));
-                local.put(
-                    name,
-                    new Target(
-                        secrets.resolve(n.urlReference()),
-                        Map.copyOf(headers),
-                        n.payload(),
-                        n.acknowledgement(),
-                        n.defaultTarget()));
-              });
+          .forEach((name, n) -> {
+            var headers = new LinkedHashMap<String, String>();
+            n.headerReferences().forEach((k, v) -> headers.put(k, secrets.resolve(v)));
+            local.put(
+                name,
+                new Target(
+                    secrets.resolve(n.urlReference()),
+                    Map.copyOf(headers),
+                    n.payload(),
+                    n.acknowledgement(),
+                    n.defaultTarget()));
+          });
       all.put(agent.name(), Map.copyOf(local));
     }
     targets = Map.copyOf(all);

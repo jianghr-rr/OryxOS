@@ -197,26 +197,22 @@ class KernelLocalIT {
                 .toList();
         assertTrue(
             queries.stream()
-                .allMatch(
-                    q ->
-                        q.contains("sort=stars")
-                            && q.contains("order=desc")
-                            && q.contains("per_page=3")));
+                .allMatch(q ->
+                    q.contains("sort=stars")
+                        && q.contains("order=desc")
+                        && q.contains("per_page=3")));
         assertTrue(
             queries.stream()
-                .anyMatch(
-                    q ->
-                        q.contains(
-                            "created:" + KernelFixture.today() + ".." + KernelFixture.today())));
+                .anyMatch(q ->
+                    q.contains("created:" + KernelFixture.today() + ".." + KernelFixture.today())));
         assertTrue(
             queries.stream()
-                .anyMatch(
-                    q ->
-                        q.contains(
-                            "created:"
-                                + LocalDate.parse(KernelFixture.today()).withDayOfMonth(1)
-                                + ".."
-                                + KernelFixture.today())));
+                .anyMatch(q ->
+                    q.contains(
+                        "created:"
+                            + LocalDate.parse(KernelFixture.today()).withDayOfMonth(1)
+                            + ".."
+                            + KernelFixture.today())));
         assertTrue(
             queries.stream().anyMatch(q -> q.contains("topic:artificial-intelligence pushed:")));
         assertTrue(

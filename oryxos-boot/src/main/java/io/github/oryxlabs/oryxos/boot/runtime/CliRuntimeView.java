@@ -85,10 +85,9 @@ final class CliRuntimeView {
       } finally {
         Files.deleteIfExists(temporary);
       }
-      context.addApplicationListener(
-          event -> {
-            if (event instanceof ContextClosedEvent) clear(workspace);
-          });
+      context.addApplicationListener(event -> {
+        if (event instanceof ContextClosedEvent) clear(workspace);
+      });
     } catch (Exception error) {
       throw new OryxError("QUERY_UNAVAILABLE", "Cannot publish safe CLI registry snapshot");
     }

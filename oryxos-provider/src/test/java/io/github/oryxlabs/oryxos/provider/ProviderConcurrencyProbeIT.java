@@ -89,26 +89,24 @@ class ProviderConcurrencyProbeIT {
           for (int caller = 0; caller < 100; caller++) {
             String token = "probe-" + round + "-" + caller;
             pending.add(
-                workers.submit(
-                    () -> {
-                      release.await();
-                      var spans = new ConcurrentLinkedQueue<RuntimeTiming.Segment>();
-                      long start = System.nanoTime();
-                      try (var timing = RuntimeTiming.bind(spans::add)) {
-                        assertEquals(
-                            token,
-                            provider
-                                .call(ProviderContractTest.request("probe", token))
-                                .assistantMessage()
-                                .content());
-                      }
-                      long total = System.nanoTime() - start;
-                      var wait = waits.get(token);
-                      long external =
-                          Math.min(wait.end() - wait.start(), TimeUnit.MILLISECONDS.toNanos(150));
-                      return new Sample(
-                          token, total, external, total - external, List.copyOf(spans));
-                    }));
+                workers.submit(() -> {
+                  release.await();
+                  var spans = new ConcurrentLinkedQueue<RuntimeTiming.Segment>();
+                  long start = System.nanoTime();
+                  try (var timing = RuntimeTiming.bind(spans::add)) {
+                    assertEquals(
+                        token,
+                        provider
+                            .call(ProviderContractTest.request("probe", token))
+                            .assistantMessage()
+                            .content());
+                  }
+                  long total = System.nanoTime() - start;
+                  var wait = waits.get(token);
+                  long external =
+                      Math.min(wait.end() - wait.start(), TimeUnit.MILLISECONDS.toNanos(150));
+                  return new Sample(token, total, external, total - external, List.copyOf(spans));
+                }));
           }
           release.countDown();
           for (var call : pending) samples.add(call.get(10, TimeUnit.SECONDS));

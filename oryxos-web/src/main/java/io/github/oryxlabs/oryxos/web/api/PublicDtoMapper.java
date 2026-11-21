@@ -54,12 +54,11 @@ public final class PublicDtoMapper {
         m.role().name(),
         text(m.content()),
         m.toolCalls().stream()
-            .map(
-                c ->
-                    new ContractDtos.PublicMessageToolCallsItem(
-                        safe(c.id()),
-                        text(c.name() == null ? c.wireName() : c.name()),
-                        arguments(c.argumentsJson())))
+            .map(c ->
+                new ContractDtos.PublicMessageToolCallsItem(
+                    safe(c.id()),
+                    text(c.name() == null ? c.wireName() : c.name()),
+                    arguments(c.argumentsJson())))
             .toList(),
         safe(m.toolCallId()),
         s.toolOutcome() == null ? null : s.toolOutcome().name(),
@@ -258,15 +257,14 @@ public final class PublicDtoMapper {
 
   public Map<String, Object> safeMap(Map<String, Object> source) {
     var result = new LinkedHashMap<String, Object>();
-    source.forEach(
-        (k, v) -> {
-          if (!Set.of("providerOpaque", "provider_opaque", "reasoning_content").contains(k))
-            result.put(
-                safe(k),
-                k.matches("(?i)(authorization|api[_-]?key|token|password)")
-                    ? "[REDACTED]"
-                    : safeValue(v));
-        });
+    source.forEach((k, v) -> {
+      if (!Set.of("providerOpaque", "provider_opaque", "reasoning_content").contains(k))
+        result.put(
+            safe(k),
+            k.matches("(?i)(authorization|api[_-]?key|token|password)")
+                ? "[REDACTED]"
+                : safeValue(v));
+    });
     return result;
   }
 

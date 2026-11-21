@@ -31,6 +31,7 @@ public final class AgentService implements AutoCloseable {
       else INLINE_WORKER.set(previous);
     }
   }
+
   private final WorkspaceHandle workspace;
   private final AgentCatalog agents;
   private final SessionManager sessions;
@@ -128,10 +129,9 @@ public final class AgentService implements AutoCloseable {
     var names =
         new ToolNameMap(
             tools.available(agent).stream()
-                .map(
-                    t ->
-                        new ToolNameMap.Entry(
-                            t.name(), ToolNameMap.wireName(t.name()), t.serverId(), t.remoteName()))
+                .map(t ->
+                    new ToolNameMap.Entry(
+                        t.name(), ToolNameMap.wireName(t.name()), t.serverId(), t.remoteName()))
                 .toList());
     permit.beginExecution();
     SessionManager.Lease lease;
@@ -350,10 +350,9 @@ public final class AgentService implements AutoCloseable {
     public boolean whenFinished(
         java.util.function.BiConsumer<Execution.Snapshot, Boolean> onResult, Runnable onSettled) {
       settled.whenComplete((snapshot, error) -> onSettled.run());
-      result.whenComplete(
-          (snapshot, error) -> {
-            if (error == null) onResult.accept(snapshot, waitExpired);
-          });
+      result.whenComplete((snapshot, error) -> {
+        if (error == null) onResult.accept(snapshot, waitExpired);
+      });
       return true;
     }
 
@@ -374,16 +373,19 @@ public final class AgentService implements AutoCloseable {
     }
 
     public void expireIfDue() {
-      context.execution().withLock(() -> {
-        if (context.deadline().expired() && !result.isDone()) {
-          waitExpired = true;
-          context.stop();
-          if (context.execution().status() == Execution.Status.RUNNING) context.expire();
-          context.execution().recordingPending();
-          // No storage IO on this callback: a slow store must not postpone the caller's timeout.
-          result.complete(context.snapshot());
-        }
-      });
+      context
+          .execution()
+          .withLock(() -> {
+            if (context.deadline().expired() && !result.isDone()) {
+              waitExpired = true;
+              context.stop();
+              if (context.execution().status() == Execution.Status.RUNNING) context.expire();
+              context.execution().recordingPending();
+              // No storage IO on this callback: a slow store must not postpone the caller's
+              // timeout.
+              result.complete(context.snapshot());
+            }
+          });
     }
   }
 

@@ -77,17 +77,15 @@ public class WebApiConfiguration {
             .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .featuresToDisable(
                 MapperFeature.ALLOW_COERCION_OF_SCALARS, DeserializationFeature.ACCEPT_FLOAT_AS_INT)
-            .postConfigurer(
-                mapper -> {
-                  var text =
-                      mapper.coercionConfigFor(
-                          com.fasterxml.jackson.databind.type.LogicalType.Textual);
-                  for (var shape :
-                      java.util.List.of(
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Integer,
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Float,
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Boolean))
-                    text.setCoercion(shape, com.fasterxml.jackson.databind.cfg.CoercionAction.Fail);
-                });
+            .postConfigurer(mapper -> {
+              var text =
+                  mapper.coercionConfigFor(com.fasterxml.jackson.databind.type.LogicalType.Textual);
+              for (var shape :
+                  java.util.List.of(
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Integer,
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Float,
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Boolean))
+                text.setCoercion(shape, com.fasterxml.jackson.databind.cfg.CoercionAction.Fail);
+            });
   }
 }

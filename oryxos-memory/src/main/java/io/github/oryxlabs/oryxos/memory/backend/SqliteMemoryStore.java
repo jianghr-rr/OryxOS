@@ -48,16 +48,15 @@ public final class SqliteMemoryStore implements LongTermMemoryStore {
             MemoryEntry.WriteStatus.CONFIRMED,
             List.of());
     return ctx.dispatcher()
-        .call(
-            () -> {
-              records.insert(entry);
-              return new WriteReceipt(
-                  entry.id(),
-                  true,
-                  WriteReceipt.ProjectionState.NOT_REQUIRED,
-                  MemoryEntry.WriteStatus.CONFIRMED,
-                  "Original memory saved");
-            });
+        .call(() -> {
+          records.insert(entry);
+          return new WriteReceipt(
+              entry.id(),
+              true,
+              WriteReceipt.ProjectionState.NOT_REQUIRED,
+              MemoryEntry.WriteStatus.CONFIRMED,
+              "Original memory saved");
+        });
   }
 
   public List<MemoryEntry> recall(String query, ExecutionContext ctx) {
