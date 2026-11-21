@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<!--
+  Every <suppress> must be preceded by a comment containing "reason:" and "registered: YYYY-MM-DD";
+  tools/dev/quality-gate.py rejects entries without them. Legacy findings belong in
+  config/quality/baseline.json, not here.
+-->
+<suppressions>
+</suppressions>

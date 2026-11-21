@@ -5,12 +5,15 @@ set -euo pipefail
 # Usage: sudo bash deploy-release.sh <release_dir>
 
 RELEASE_DIR="${1:-}"
-APP_ROOT="/opt/oryxos"
+# ORYXOS_SYNC_ROOT prefixes local paths for tests only; production leaves it unset.
+APP_ROOT="${ORYXOS_SYNC_ROOT:-}/opt/oryxos"
 RELEASES_ROOT="${APP_ROOT}/releases"
 CURRENT_LINK="${APP_ROOT}/current"
 PREVIOUS_LINK="${APP_ROOT}/previous"
-WORKSPACE_DIR="/var/lib/oryxos/workspace"
+WORKSPACE_DIR="${ORYXOS_SYNC_ROOT:-}/var/lib/oryxos/workspace"
 SYNC_SCRIPT="${APP_ROOT}/bin/sync-workspace-config.sh"
+SERVER_SYNC_SCRIPT="${APP_ROOT}/bin/sync-server-config.sh"
+HEALTH_ATTEMPTS="${ORYXOS_HEALTH_ATTEMPTS:-30}"
 HEALTH_URL="http://127.0.0.1:8080/api/v1/health"
 STATE_URL="http://127.0.0.1:8080/api/v1/runtime/state"
 PROFILES_URL="http://127.0.0.1:8080/api/v1/profiles"
@@ -64,9 +67,17 @@ except Exception as exc:
   fi
 }
 
+run_server_sync() {
+  if [[ ! -x "${SERVER_SYNC_SCRIPT}" ]]; then
+    printf '[deploy] ERROR: %s is missing\n' "${SERVER_SYNC_SCRIPT}" >&2
+    return 1
+  fi
+  "${SERVER_SYNC_SCRIPT}" "$@"
+}
+
 check_health() {
   local i
-  for i in $(seq 1 30); do
+  for i in $(seq 1 "${HEALTH_ATTEMPTS}"); do
     if curl -fsS -o /dev/null "${HEALTH_URL}"; then
       local state_body
       state_body="$(curl -fsS "${STATE_URL}" 2>/dev/null || true)"
@@ -80,6 +91,30 @@ check_health() {
     sleep 2
   done
   return 1
+}
+
+# Restore the previous release, including the OryxOS drop-in that belongs to it (FR-020a).
+auto_rollback() {
+  if [[ ! -L "${PREVIOUS_LINK}" ]]; then
+    log "No previous release to roll back to."
+    return 1
+  fi
+  ROLLBACK_TARGET="$(readlink -f "${PREVIOUS_LINK}")"
+  log "Auto-rolling back to ${ROLLBACK_TARGET}..."
+  systemctl stop oryxos || true
+  ln -sfn "${ROLLBACK_TARGET}" "${CURRENT_LINK}"
+  sync_config_if_present "${ROLLBACK_TARGET}" || true
+  if [[ -d "${ROLLBACK_TARGET}/server-config" ]]; then
+    run_server_sync oryxos-dropin "${ROLLBACK_TARGET}/server-config" || true
+  else
+    run_server_sync oryxos-dropin --restore || true
+  fi
+  systemctl start oryxos || true
+  if check_health; then
+    log "Auto-rollback succeeded; previous version restored."
+  else
+    log "CRITICAL: Auto-rollback also failed health check!"
+  fi
 }
 
 if [[ "$(id -u)" -ne 0 ]]; then
@@ -98,6 +133,9 @@ fi
 #    (avoids non-root fs.protected_hardlinks failures and keeps shared-lib owned by deploy user)
 if [[ -f "${RELEASE_DIR}/sync-workspace-config.sh" ]]; then
   install -m 0750 -o root -g oryxos "${RELEASE_DIR}/sync-workspace-config.sh" "${SYNC_SCRIPT}"
+fi
+if [[ -f "${RELEASE_DIR}/sync-server-config.sh" ]]; then
+  install -m 0750 -o root -g root "${RELEASE_DIR}/sync-server-config.sh" "${SERVER_SYNC_SCRIPT}"
 fi
 
 if [[ ! -d "${RELEASE_DIR}/lib" ]]; then
@@ -143,28 +181,33 @@ fi
 # 4.6. Synchronize managed runtime.yaml & managed agents (preserves DB, memory, secrets, custom agents; removes default)
 sync_config_if_present "${RELEASE_DIR}"
 
+# 4.7. Synchronize the OryxOS systemd drop-in before start. The old service is already stopped and
+#      current points at the new release, so a failure must roll back instead of exiting.
+if [[ -d "${RELEASE_DIR}/server-config" ]]; then
+  if ! run_server_sync oryxos-dropin "${RELEASE_DIR}/server-config"; then
+    log "Drop-in sync failed; restoring previous drop-in and rolling back."
+    run_server_sync oryxos-dropin --restore || true
+    auto_rollback || true
+    exit 1
+  fi
+fi
+
 # 5. Start new version and verify health; rollback automatically on failure
 log "Starting oryxos.service with ${RELEASE_DIR}..."
 if ! systemctl start oryxos || ! check_health; then
   log "New release failed health check! Printing recent logs:"
   journalctl -u oryxos -n 100 --no-pager || true
-  if [[ -L "${PREVIOUS_LINK}" ]]; then
-    ROLLBACK_TARGET="$(readlink -f "${PREVIOUS_LINK}")"
-    log "Auto-rolling back to ${ROLLBACK_TARGET}..."
-    systemctl stop oryxos || true
-    ln -sfn "${ROLLBACK_TARGET}" "${CURRENT_LINK}"
-    sync_config_if_present "${ROLLBACK_TARGET}" || true
-    systemctl start oryxos || true
-    if check_health; then
-      log "Auto-rollback succeeded; previous version restored."
-    else
-      log "CRITICAL: Auto-rollback also failed health check!"
-    fi
-  fi
+  auto_rollback || true
   exit 1
 fi
 
 print_profiles_summary
+
+# 5.1. Monitoring config follows a healthy release; its failure never rolls OryxOS back.
+MONITORING_FAILED=0
+if [[ -d "${RELEASE_DIR}/server-config" ]]; then
+  run_server_sync monitoring "${RELEASE_DIR}/server-config" || MONITORING_FAILED=1
+fi
 
 # 6. Prune old releases (keep current, previous, and latest KEEP_RELEASES)
 CURRENT_REAL="$(readlink -f "${CURRENT_LINK}" || true)"
@@ -178,6 +221,11 @@ if [[ ${#OLD_RELEASES[@]} -gt 0 ]]; then
       rm -rf "${rel}"
     fi
   done
+fi
+
+if [[ ${MONITORING_FAILED} -ne 0 ]]; then
+  printf '[deploy] ERROR: monitoring sync failed; OryxOS release kept\n' >&2
+  exit 1
 fi
 
 log "Release ${RELEASE_DIR} active and healthy."

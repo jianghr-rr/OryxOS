@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Alibaba Java Coding Guidelines (P3C) mapped onto PMD 7 built-in rules (plan D-1, confirmed 2026-11-21).
+  com.alibaba.p3c:p3c-pmd 2.1.1 is bound to PMD 6.15 and cannot parse Java 16+ syntax used here.
+  Three groups are covered: coding conventions, concurrency, exception handling (FR-012).
+  Layout rules are intentionally absent: Google format owns layout.
+  Each reference is annotated with the P3C rule(s) it stands for; unmapped P3C rules are listed at the end.
+-->
+<ruleset name="OryxOS Alibaba P3C (PMD 7 mapping)"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>P3C coding conventions, concurrency and exception handling mapped to PMD 7.</description>
+
+  <!-- Coding conventions / naming: ClassNamingShouldBeCamel, MethodNamingShouldBeLowerCamel,
+       ConstantFieldShouldBeUpperCase, LowerCamelCaseVariableNaming -->
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/MethodNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/FieldNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions"/>
+
+  <!-- Coding conventions / control flow and OOP: NeedBrace, SwitchStatement (default branch),
+       EqualsAvoidNull / WrapperTypeEquality -->
+  <rule ref="category/java/codestyle.xml/ControlStatementBraces"/>
+  <rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch"/>
+  <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
+  <rule ref="category/java/errorprone.xml/UseEqualsToCompareStrings"/>
+
+  <!-- Coding conventions / logging: no System.out/err, no printStackTrace -->
+  <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
+  <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
+
+  <!-- Concurrency: ThreadPoolCreation -->
+  <rule name="OryxThreadPoolCreation"
+        language="java"
+        message="Create thread pools with ThreadPoolExecutor or virtual threads, not Executors fixed/cached/single/scheduled/work-stealing factories (P3C ThreadPoolCreation)"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>P3C ThreadPoolCreation: bounded queues and explicit naming must be visible at the creation site. Virtual-thread executors are allowed.</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+        <value><![CDATA[
+//MethodCall[@MethodName = ('newFixedThreadPool', 'newCachedThreadPool', 'newSingleThreadExecutor',
+                            'newScheduledThreadPool', 'newSingleThreadScheduledExecutor', 'newWorkStealingPool')]
+            [TypeExpression/ClassType[@SimpleName = 'Executors']]
+]]></value>
+      </property>
+    </properties>
+  </rule>
+
+  <!-- Concurrency: DoubleCheckedLocking, singleton safety, static SimpleDateFormat, Thread.run, notifyAll -->
+  <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
+  <rule ref="category/java/multithreading.xml/NonThreadSafeSingleton"/>
+  <rule ref="category/java/multithreading.xml/UnsynchronizedStaticFormatter"/>
+  <rule ref="category/java/multithreading.xml/DontCallThreadRun"/>
+  <rule ref="category/java/multithreading.xml/UseNotifyAllInsteadOfNotify"/>
+
+  <!-- Exception handling: empty catch, return/throw in finally, catching NPE/Throwable,
+       raw exception types, lost cause -->
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock"/>
+  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock"/>
+  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
+  <rule ref="category/java/errorprone.xml/AvoidCatchingNPE"/>
+  <rule ref="category/java/errorprone.xml/AvoidCatchingThrowable"/>
+  <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes"/>
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
+
+  <!--
+    Gaps (P3C rules without a faithful PMD 7 equivalent; not enforced, see docs/EngineeringBaseline.md):
+    - AbstractClassShouldStartWithAbstract, ExceptionClassShouldEndWithException, TestClassShouldEndWithTest
+    - AvoidManuallyCreateThread, ThreadShouldSetName, AvoidUseTimer, LockShouldWithTryFinally
+    - ServiceOrDaoClassShouldEndWithImpl, BooleanPropertyShouldNotStartWithIs, PackageNaming (covered by Checkstyle PackageName)
+    - Comment rules (class author/date tags) – superseded by Google Javadoc checks at info level
+  -->
+</ruleset>

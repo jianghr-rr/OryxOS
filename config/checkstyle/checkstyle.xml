@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  Google Java Style checks (Checkstyle 14.4.0), reduced to the non-layout subset.
+  Layout (indentation, wrapping, whitespace, import order, line length) is owned solely by
+  Spotless + google-java-format; those modules are intentionally absent so the two tools never
+  contradict each other (FR-013). Javadoc modules report at "info" and never block.
+  Blocking is decided by tools/dev/quality-gate.py: severity >= warning, main code, not in baseline.
+-->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="severity" value="warning"/>
+  <property name="fileExtensions" value="java"/>
+
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+
+  <module name="TreeWalker">
+    <module name="OuterTypeFilename"/>
+    <module name="OneTopLevelClass"/>
+    <module name="AvoidStarImport"/>
+    <module name="AvoidEscapedUnicodeCharacters">
+      <property name="allowEscapesForControlCharacters" value="true"/>
+      <property name="allowByTailComment" value="true"/>
+      <property name="allowNonPrintableEscapes" value="true"/>
+    </module>
+    <module name="NeedBraces"/>
+    <module name="EmptyBlock">
+      <property name="option" value="TEXT"/>
+      <property name="tokens" value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+    </module>
+    <module name="EmptyCatchBlock">
+      <property name="exceptionVariableName" value="expected|ignored"/>
+    </module>
+    <module name="OneStatementPerLine"/>
+    <module name="MultipleVariableDeclarations"/>
+    <module name="ArrayTypeStyle"/>
+    <module name="MissingSwitchDefault"/>
+    <module name="FallThrough"/>
+    <module name="UpperEll"/>
+    <module name="ModifierOrder"/>
+    <module name="NoFinalizer"/>
+    <module name="OverloadMethodsDeclarationOrder"/>
+
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+    </module>
+    <module name="TypeName"/>
+    <module name="MemberName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="ParameterName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="LambdaParameterName">
+      <property name="format" value="^([a-z][a-zA-Z0-9]*|_)$"/>
+    </module>
+    <module name="CatchParameterName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="LocalVariableName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="PatternVariableName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="RecordComponentName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="MethodName">
+      <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+    <module name="ClassTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+    </module>
+    <module name="RecordTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+    </module>
+    <module name="MethodTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+    </module>
+    <module name="InterfaceTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+    </module>
+    <module name="AbbreviationAsWordInName">
+      <property name="ignoreFinal" value="false"/>
+      <property name="allowedAbbreviationLength" value="0"/>
+    </module>
+
+    <module name="InvalidJavadocPosition">
+      <property name="severity" value="info"/>
+    </module>
+    <module name="AtclauseOrder">
+      <property name="severity" value="info"/>
+    </module>
+    <module name="NonEmptyAtclauseDescription">
+      <property name="severity" value="info"/>
+    </module>
+    <module name="SummaryJavadoc">
+      <property name="severity" value="info"/>
+    </module>
+    <module name="JavadocParagraph">
+      <property name="severity" value="info"/>
+    </module>
+    <module name="MissingJavadocType">
+      <property name="severity" value="info"/>
+      <property name="scope" value="protected"/>
+    </module>
+    <module name="MissingJavadocMethod">
+      <property name="severity" value="info"/>
+      <property name="scope" value="public"/>
+      <property name="minLineCount" value="2"/>
+      <property name="allowMissingPropertyJavadoc" value="true"/>
+    </module>
+  </module>
+</module>

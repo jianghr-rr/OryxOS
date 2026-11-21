@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Usage: tools/dev/quality-baseline --init | --prune | --check-shrink <git-ref>
+# --init/--prune read the reports left by a preceding `tools/dev/mvnw clean verify`.
+set -euo pipefail
+if [[ ${BASH_SOURCE[0]} != "$0" ]]; then
+  printf 'Execute this script; do not source it.\n' >&2
+  return 2
+fi
+dev_dir=$(cd -- "$(dirname -- "$0")" && pwd -P)
+exec /usr/bin/python3 -I "$dev_dir/quality-gate.py" --repo "$dev_dir/../.." baseline "$@"

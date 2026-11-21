@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Every <Match> must be preceded by a comment containing "reason:" and "registered: YYYY-MM-DD".
+  Security findings that are correct by design are registered individually (class + bug pattern)
+  after triage; everything else goes to config/quality/baseline.json.
+-->
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/3.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <!-- reason: records and defensive-copy-free immutable value types produce systematic false positives; registered: 2026-11-21 -->
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+  </Match>
+</FindBugsFilter>
