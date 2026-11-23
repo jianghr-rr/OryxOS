@@ -42,7 +42,7 @@
 - `DEEPSEEK_API_KEY`：DeepSeek API Key（用于渲染服务器 `0600` 的 `secrets.local.yaml`）
 - `FEISHU_WEBHOOK_URL`：飞书机器人 Webhook URL（用于云端通知与播报）
 
-触发方式：推送到 `main` 分支（匹配 `oryxos-*/**`、`pom.xml`、`deploy/tencent-cloud/**`、`config/**`、`tools/dev/**`、`.mvn/**`、`.editorconfig` 或相关 workflow 文件），或在 GitHub Actions 页面手动触发 `Deploy OryxOS to Tencent Cloud`。部署工作流先运行质量门禁 `Full Verify`，通过后才使用门禁产出的 JAR 发布，门禁规则见 [EngineeringBaseline.md](EngineeringBaseline.md)。
+触发方式：推送到 `main` 分支（匹配 `oryxos-*/**`、`pom.xml`、`deploy/tencent-cloud/**`、`config/**`、`tools/dev/**`、`.mvn/**`、`.editorconfig` 或相关 workflow 文件），或在 GitHub Actions 页面以 `main` 为目标手动触发 `Deploy OryxOS to Tencent Cloud`。从其他分支手动触发时两个 job 都会被跳过，不会部署未经 PR 合入的代码；无论哪种触发方式，同一时间只运行一次部署。部署工作流先运行质量门禁 `Full Verify`，通过后才使用门禁产出的 JAR 发布，门禁规则见 [EngineeringBaseline.md](EngineeringBaseline.md)。
 
 依赖漏洞扫描工作流 `Dependency Scan` 另外需要 Secret `NVD_API_KEY`，它不在部署链上。
 

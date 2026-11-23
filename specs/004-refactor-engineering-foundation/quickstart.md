@@ -87,7 +87,7 @@ sudo bash deploy/tencent-cloud/scripts/install-monitoring.sh --dist-dir /root/or
 | 5.6 | `ls -l /var/log/oryxos/ && du -sh /var/log/oryxos` | 有 `oryxos.json`；总量 ≤ 1GB；重启主机后旧文件仍在 |
 | 5.7 | 合入一次只改看板 JSON 的提交 | 部署日志显示 `monitoring: grafana changed, restarted`，Prometheus 未重启 |
 | 5.8 | 比对 `/opt/oryxos/monitoring-config/server-config.sha256` 与本地 `sha256sum` 结果 | 100% 一致（SC-007） |
-| 5.9 | 在验证分支故意写错 `prometheus.yml` 并部署 | OryxOS 已切到新版本且健康；监控链接回到原配置；部署工作流失败并指出 `promtool` 错误 |
+| 5.9 | 在服务器上把当前发布的 `server-config` 复制到临时目录，故意写错其中的 `prometheus.yml`，再执行 `sudo /opt/oryxos/bin/sync-server-config.sh monitoring <临时目录>/server-config`。部署工作流只允许在 `main` 上运行，不通过验证分支部署坏配置 | 脚本以退出码 1 结束并指出 `promtool` 错误；`/opt/oryxos/monitoring-config/current` 链接、清单文件以及 Prometheus/Grafana 的启动时间都不变；OryxOS 保持健康。"监控同步排在 OryxOS 健康检查之后"由 `deploy-release.sh` 的执行顺序和 `tools/dev/test_sync_server_config.py` 覆盖 |
 | 5.10 | `journalctl -u oryxos -o cat \| grep '^{' \| python3 -c 'import sys,json;[print(json.loads(l)["message"]) for l in sys.stdin if json.loads(l)["level"]=="ERROR"]'` | 可按级别过滤 journal 中的 JSON 日志（启动诊断可读性说明） |
 | 5.11 | `systemctl show oryxos -p MemoryCurrent`，与重构前的 417MB 对比 | 记录指标采集与 JSON 编码带来的增量 |
 

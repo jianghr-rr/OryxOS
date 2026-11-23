@@ -1,6 +1,7 @@
 {
   "uid": "oryxos-jvm-http",
   "title": "OryxOS JVM & HTTP",
+  "description": "OryxOS 单机进程的 JVM 内存、GC、线程与 HTTP 请求指标",
   "tags": ["oryxos"],
   "timezone": "browser",
   "schemaVersion": 39,

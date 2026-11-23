@@ -274,7 +274,7 @@
 
 - [X] T074 在干净检出上执行 `time ./tools/dev/mvnw clean verify`，确认全部测试分组数不少于 T001、`PublishedOpenApiTest` 零差异、`Quality gate PASS`、额外耗时 ≤ 3 分钟（SC-001、SC-002、SC-005），结果写入 `evidence/final-verify.md`
 - [X] T075 [P] 扫描本次新增或修改的所有文件，确认没有真实密钥、Webhook、IP、域名或主机名（FR-025）：用 `rg -n` 检查 IPv4、`https://`，以及从 `deploy/tencent-cloud/nginx/oryxos-baota-vhost.conf.tpl` 现有 `server_name` 中读出的生产域名（检索时从文件读取，不把域名写进任何新文件或命令记录），并逐条确认命中项都是占位或文档示例
-- [ ] T076 [P] 在服务器上记录 OryxOS 的 `MemoryCurrent`，与重构前的 417MB 对比，把指标采集与 JSON 编码带来的增量写入 `evidence/US2-server.md`（quickstart 5.11）
+- [x] T076 [P] 在服务器上记录 OryxOS 的 `MemoryCurrent`，与重构前的 417MB 对比，把指标采集与 JSON 编码带来的增量写入 `evidence/US2-server.md`（quickstart 5.11）
 - [X] T077 运行 `/speckit-analyze` 检查 spec、plan、tasks 的一致性，并对照 SC-001–SC-009 逐条记录“已验证 / 未验证及原因”，写入 `evidence/acceptance-summary.md`
 
 ---

@@ -48,7 +48,34 @@
 
 服务器现有站点用的 Basic Auth 文件是 `/www/server/nginx/conf/oryxos.htpasswd`，与 nginx 模板原写的 `/www/server/panel/vhost/htpasswd/oryxos.htpasswd` 不同。新增的 `/grafana/`、`/prometheus/` 沿用实际文件，模板和 `contracts/server-config.md` 已改为实际路径。`location /` 中已加入 `proxy_set_header X-Request-ID $request_id;`。
 
-## 待完成
+## 新版本部署后复查（2026-11-23 17:30 前后）
 
-- 新版本部署后（T063）：`oryxos` 目标变为 up；`/var/log/oryxos/oryxos.json` 开始写入；记录 OryxOS 的 `MemoryCurrent` 并与 417MB 对比（T076）。
-- 观察 24 小时后再记录两个服务的 `total_rss`，以及看板中 24 小时曲线的采样间隔（SC-009）。
+运行版本为 `/opt/oryxos/releases/20261123090650-5626ac4/`（PR #3 合入后的部署，Run 14 的 sudo 问题已修复）。维护者在服务器上执行只读命令，输出由本次会话判定。
+
+| # | 检查 | 结果 | 结论 |
+| --- | --- | --- | --- |
+| 5.3 | `api/v1/targets` | `oryxos` 与 `prometheus` 均为 `up` | 通过（此前 `oryxos` 为 down） |
+| 5.6 | `/var/log/oryxos/` | 出现 `oryxos.json`（8336 字节），首行为 logstash 格式 JSON，`message` 以 `Starting OryxOsApplication` 开头；目录合计 16K | 写入通过，`prod` drop-in 已生效；"重启主机后旧文件仍在"未验证 |
+| 5.10 | 按级别过滤 journal 中的 JSON 日志 | 解析正常，近 1 小时只有 2 条 WARN：SpringDoc 提示 `/v3/api-docs` 与 `/swagger-ui.html` 默认开启 | 通过；这两个地址在公网已被 nginx 返回 403，WARN 属既有行为，见下文"遗留" |
+| — | `/actuator/health`（本机） | `{"status":"UP","groups":["liveness","readiness"]}` | 通过（SC-004 服务器本机部分） |
+| — | traceId 检索（SC-003 服务器部分） | 10 个指向不存在会话的请求，`traceId` 两两不同，在 `oryxos.json` 中各命中 1 次 | 10/10 通过 |
+
+### 内存（T076、SC-009）
+
+口径与上文一致：cgroup v1 的 `MemoryCurrent` 含文件页缓存，常驻内存以 `memory.stat` 的 `total_rss` 为准。
+
+| 服务 | `total_rss` | `total_cache` | `total_swap` | `MemoryCurrent` |
+| --- | --- | --- | --- | --- |
+| oryxos | 440242176（419.8 MiB） | 52842496 | 0 | 499187712（476.1 MiB） |
+| prometheus | 31387648（29.9 MiB） | 14520320 | 0 | 47759360 |
+| grafana | 228790272（218.2 MiB） | 186900480 | 270336 | 434040832 |
+
+- **SC-009**：Prometheus 与 Grafana 的 `total_rss` 合计 248.1 MiB（260.2MB），在 768MB 以内。Grafana 有 264KB swap，量很小，24 小时复测时继续观察。
+- **T076**：重构前只记录了 `MemoryCurrent`（417MB），没有 `total_rss`，因此只能按同一口径比较：现为 476.1 MiB，比重构前多约 59MB（约 14%）；其中包含日志文件写入带来的页缓存（`total_cache` 约 50MB，可回收）。现在的真实常驻内存为 419.8 MiB。JVM 堆上限 `-Xmx768m` 未变。读数取自部署后约 30 分钟，24 小时复测时一并记录。
+
+## 遗留
+
+- 观察 24 小时后再记录三个服务的 `total_rss`，以及看板中 24 小时曲线的采样间隔（SC-009、5.5）。
+- 认证后打开 Grafana 看板，确认 JVM 与 HTTP 面板已有数据（5.5）。
+- 重启主机后确认 `/var/log/oryxos/` 中的旧日志仍在（5.6）。
+- SpringDoc 在 prod 下仍开启 `/v3/api-docs` 与 `/swagger-ui.html`，每次启动打 2 条 WARN。公网已被 nginx 屏蔽，本机仍可访问；是否在 prod 关闭 Swagger UI 需另行决定（`PublishedOpenApiTest` 依赖 `/v3/api-docs`，不能一并关闭）。

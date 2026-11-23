@@ -22,19 +22,23 @@ on:
         type: boolean
         default: true
 
+# One server, one deploy at a time regardless of the triggering ref.
 concurrency:
-  group: deploy-tencent-cloud-${{ github.ref }}
+  group: deploy-tencent-cloud
   cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
+  # Manual dispatch from other branches would bypass branch protection.
   quality:
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/quality-gate.yml
 
   build-and-deploy:
     name: Deploy
+    if: github.ref == 'refs/heads/main'
     needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 45
