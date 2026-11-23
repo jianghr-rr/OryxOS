@@ -76,7 +76,7 @@
 | --- | --- | --- | --- |
 | `.github/workflows/quality-gate.yml` | `pull_request`；除 `main` 外分支的 `push`；被部署工作流 `workflow_call` | **`Full Verify`** | 阻断合并；在部署链上阻断部署 |
 | `.github/workflows/dependency-scan.yml` | `pull_request`；每日 `schedule`；`workflow_dispatch` | **`Dependency Scan`** | 阻断合并；不在部署链上 |
-| `.github/workflows/deploy-tencent-cloud.yml` | `main` 推送（路径过滤增加 `config/**`、`tools/dev/**`、`.mvn/**`）、`workflow_dispatch` | 先调用 `Full Verify`，再执行 `Build, Verify & Deploy` | 门禁失败不进入部署 |
+| `.github/workflows/deploy-tencent-cloud.yml` | `main` 推送（路径过滤增加 `config/**`、`tools/dev/**`、`.mvn/**`）、`workflow_dispatch`（两个 job 都限定 `refs/heads/main`；并发组固定，不按分支区分） | 先调用 `Full Verify`，再执行 `Build, Verify & Deploy` | 门禁失败不进入部署 |
 
 `Full Verify` 的步骤名与本地命令一一对应（FR-019）：`Format check`、`Full verify (tools/dev/mvnw clean verify)`、`Baseline must not grow`、`Upload quality reports`、`Upload boot JAR`（最后一步供部署工作流使用门禁产出的 JAR）。
 Checkstyle、PMD、SpotBugs 与测试在同一次 `verify` 中依次运行，报告作为工作流产物上传；失败时日志首行写明门禁编号（G1–G6）。合为一个步骤是已确认的偏差 D-6（见 [plan.md](../plan.md#偏差与需维护者确认)）。
