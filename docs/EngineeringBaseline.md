@@ -59,6 +59,8 @@ export ORYXOS_JAVA_HOME=/absolute/path/to/jdk-21/Contents/Home
 
 **清零计划**：基线只减不增，CI 的 `Baseline must not grow` 步骤会拦截新增条目。修改某个文件时顺手清掉该文件的条目，然后执行 `--prune`。建议优先处理机械性的星号导入与缺失花括号（占 359 条），再逐条处理 `PreserveStackTrace` 和 SpotBugs 条目。SpotBugs 的安全类发现已逐条分诊，见 [US1-security-triage.md](../specs/004-refactor-engineering-foundation/evidence/US1-security-triage.md)。
 
+**依赖漏洞例外**：首次扫描（2026-11-23）报出的存量漏洞中，Tomcat、httpclient5、httpcore5、sqlite-jdbc 已在根 `pom.xml` 升级；自有 CLI 模块被误配为 GitHub CLI，登记为长期误报。Spring Framework 6.2.19 与 Spring AI 1.1.8 已是各自版本线的最后一版，其中 OryxOS 未使用受影响功能的 CVE 登记为已接受例外，范围锁定在这两个版本上，到 **2027-02-23** 失效，需要在此之前完成 Spring Boot 4 迁移或重新评估。逐条依据见 [US4-cve-triage.md](../specs/004-refactor-engineering-foundation/evidence/US4-cve-triage.md)。以后引入 WebFlux 服务端、SSE、SpEL 求值、Spring AI 的工具调度或文档读取时，必须先复查这些例外。
+
 **已知局限**：判定粒度是“文件 + 规则”。如果某个文件已经登记了某条规则，在同一文件里再新增同类违规不会被拦截。新文件不可能出现在基线里，因此新文件的任何违规都会阻断。
 
 ## 4. P3C 规约的落地方式（偏差 D-1）
