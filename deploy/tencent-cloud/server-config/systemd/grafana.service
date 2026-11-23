@@ -9,15 +9,15 @@ Type=simple
 User=grafana
 Group=grafana
 EnvironmentFile=-/etc/oryxos-monitoring/monitoring.env
-Environment=GOMEMLIMIT=200MiB
-WorkingDirectory=/opt/grafana/current
-ExecStart=/opt/grafana/current/bin/grafana server \
-  --homepath=/opt/grafana/current \
+Environment=GOMEMLIMIT=400MiB
+WorkingDirectory=/opt/monitoring/grafana/current
+ExecStart=/opt/monitoring/grafana/current/bin/grafana server \
+  --homepath=/opt/monitoring/grafana/current \
   --config=/opt/oryxos/monitoring-config/current/grafana/grafana.ini
 Restart=on-failure
 RestartSec=5
 MemoryAccounting=yes
-MemoryLimit=256M
+MemoryLimit=512M
 OOMScoreAdjust=500
 NoNewPrivileges=yes
 ProtectSystem=full

@@ -16,7 +16,7 @@ DROPIN_DIR="${SYSTEMD_DIR}/oryxos.service.d"
 DROPIN="${DROPIN_DIR}/10-observability.conf"
 STATE_DIR="${ROOT}/opt/oryxos/monitoring-config"
 MANIFEST="${STATE_DIR}/server-config.sha256"
-PROMTOOL="${ROOT}/opt/prometheus/current/promtool"
+PROMTOOL="${ROOT}/opt/monitoring/prometheus/current/promtool"
 KEEP=3
 
 log() { printf '[sync-server-config] %s\n' "$*"; }
@@ -38,7 +38,7 @@ tree_hash() {
   rm -f "${STATE_DIR}/.tree.$$"
 }
 
-installed() { [[ -x "${ROOT}/opt/$1/current/$( [[ $1 == grafana ]] && echo bin/grafana || echo prometheus )" ]]; }
+installed() { [[ -x "${ROOT}/opt/monitoring/$1/current/$( [[ $1 == grafana ]] && echo bin/grafana || echo prometheus )" ]]; }
 
 replace_file() {
   # replace_file <src> <dst>: atomic replace keeping <dst>.prev, or <dst>.created when <dst> was absent

@@ -8,7 +8,12 @@ on:
       - 'oryxos-*/**'
       - 'pom.xml'
       - 'deploy/tencent-cloud/**'
+      - 'config/**'
+      - 'tools/dev/**'
+      - '.mvn/**'
+      - '.editorconfig'
       - '.github/workflows/deploy-tencent-cloud.yml'
+      - '.github/workflows/quality-gate.yml'
   workflow_dispatch:
     inputs:
       sync_secrets:
@@ -25,8 +30,12 @@ permissions:
   contents: read
 
 jobs:
+  quality:
+    uses: ./.github/workflows/quality-gate.yml
+
   build-and-deploy:
-    name: Build, Verify & Deploy
+    name: Deploy
+    needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -39,63 +48,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
 
-      - name: Configure Maven mirror and HTTP retries
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<'EOF'
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
-            <profiles>
-              <profile>
-                <id>ci-maven-mirror</id>
-                <activation>
-                  <activeByDefault>true</activeByDefault>
-                </activation>
-                <repositories>
-                  <repository>
-                    <id>gcs-maven-central</id>
-                    <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                  </repository>
-                </repositories>
-                <pluginRepositories>
-                  <pluginRepository>
-                    <id>gcs-maven-central</id>
-                    <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                  </pluginRepository>
-                </pluginRepositories>
-                <properties>
-                  <aether.transport.http.retryHandler.count>5</aether.transport.http.retryHandler.count>
-                  <aether.transport.http.retryHandler.interval>5000</aether.transport.http.retryHandler.interval>
-                  <aether.transport.http.retryHandler.intervalMax>30000</aether.transport.http.retryHandler.intervalMax>
-                </properties>
-              </profile>
-            </profiles>
-          </settings>
-          EOF
-
-      - name: Build and run regression suite
-        run: |
-          mkdir -p "${{ github.workspace }}/.oryxos-dev/evidence"
-          RUN_ID="$(cat /proc/sys/kernel/random/uuid)"
-          EXCLUDED_GROUPS="real-integration,kernel-soak,kernel-short-gate,kernel-writer-probe,kernel-redactor-probe,kernel-reader-probe,kernel-provider-probe,kernel-soak-harness"
-          if command -v mvn >/dev/null 2>&1; then
-            mvn -B -ntp verify \
-              -Doryxos.test.runId="${RUN_ID}" \
-              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence" \
-              -DexcludedGroups="${EXCLUDED_GROUPS}"
-          else
-            ./mvnw -B -ntp verify \
-              -Doryxos.test.runId="${RUN_ID}" \
-              -Doryxos.test.evidenceDir="${{ github.workspace }}/.oryxos-dev/evidence" \
-              -DexcludedGroups="${EXCLUDED_GROUPS}"
-          fi
+      - name: Download verified boot JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.quality.outputs.boot-jar-artifact }}
+          path: oryxos-boot/target
 
       - name: Prepare release artifact & checksum
         id: artifact
@@ -111,6 +69,8 @@ jobs:
           (cd /tmp/oryxos-release && sha256sum oryxos-boot.jar > oryxos-boot.jar.sha256)
           mkdir -p /tmp/oryxos-release/config
           rsync -a --exclude='secrets.local.yaml*' deploy/tencent-cloud/config/ /tmp/oryxos-release/config/
+          mkdir -p /tmp/oryxos-release/server-config
+          rsync -a deploy/tencent-cloud/server-config/ /tmp/oryxos-release/server-config/
           ls -lh /tmp/oryxos-release/oryxos-boot.jar
           du -sh /tmp/oryxos-release/lib
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -168,7 +128,7 @@ jobs:
 
           ls -lh /tmp/oryxos-release/oryxos-boot.jar
           echo "[deploy] Creating remote release dir ${REMOTE_RELEASE_DIR}..."
-          ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}' && mkdir -p '${REMOTE_RELEASE_DIR}/config'"
+          ssh tencent "sudo mkdir -p '${REMOTE_RELEASE_DIR}' && sudo chown -R \$(whoami) '${REMOTE_RELEASE_DIR}' && mkdir -p '${REMOTE_RELEASE_DIR}/config' '${REMOTE_RELEASE_DIR}/server-config'"
 
           echo "[deploy] Syncing shared-lib via rsync..."
           rsync -rlz --checksum --no-owner --no-group --no-perms --no-times --delete --partial --timeout=120 /tmp/oryxos-release/lib/ "tencent:/opt/oryxos/shared-lib/"
@@ -176,7 +136,8 @@ jobs:
           echo "[deploy] Uploading thin oryxos-boot.jar, config, and deploy scripts..."
           rsync -rlz --no-owner --no-group --no-perms --no-times --delete --exclude='secrets.local.yaml*' --timeout=120 /tmp/oryxos-release/config/ "tencent:${REMOTE_RELEASE_DIR}/config/"
           scp -O -C /tmp/oryxos-release/oryxos-boot.jar /tmp/oryxos-release/oryxos-boot.jar.sha256 deploy/tencent-cloud/scripts/sync-workspace-config.sh "tencent:${REMOTE_RELEASE_DIR}/"
-          scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh "tencent:/tmp/"
+          rsync -rlz --no-owner --no-group --no-perms --no-times --delete --timeout=120 /tmp/oryxos-release/server-config/ "tencent:${REMOTE_RELEASE_DIR}/server-config/"
+          scp -O -C deploy/tencent-cloud/scripts/deploy-release.sh deploy/tencent-cloud/scripts/rollback.sh deploy/tencent-cloud/scripts/sync-server-config.sh "tencent:/tmp/"
 
           if [ -f /tmp/oryxos-release/secrets.local.yaml ]; then
             echo "[deploy] Uploading secrets.local.yaml..."
@@ -185,7 +146,7 @@ jobs:
           fi
 
           echo "[deploy] Switching release and running health check..."
-          ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
+          ssh tencent "sudo chown -R oryxos:oryxos '${REMOTE_RELEASE_DIR}' && sudo install -m 0750 -o root -g oryxos /tmp/deploy-release.sh /opt/oryxos/bin/deploy-release.sh && sudo install -m 0750 -o root -g oryxos /tmp/rollback.sh /opt/oryxos/bin/rollback.sh && sudo install -m 0750 -o root -g oryxos /tmp/sync-server-config.sh /opt/oryxos/bin/sync-server-config.sh && rm -f /tmp/deploy-release.sh /tmp/rollback.sh /tmp/sync-server-config.sh && sudo /opt/oryxos/bin/deploy-release.sh '${REMOTE_RELEASE_DIR}'"
 
       - name: Cleanup runner secrets and staging files
         if: always()
