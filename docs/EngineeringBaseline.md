@@ -129,7 +129,7 @@ journalctl -u oryxos -o cat | grep '^{' | python3 -c 'import sys,json;[print(jso
 
 `Full Verify` 的步骤依次为 `Format check`、`Full verify (tools/dev/mvnw clean verify)`、`Baseline must not grow`、`Upload quality reports`、`Upload boot JAR`。Checkstyle、PMD、SpotBugs 与测试都在 `Full verify` 这一个步骤里（偏差 D-6，已于 2026-11-21 获维护者确认）：本地与 CI 执行同一条命令且只编译一次，失败时看该步骤日志首行的门禁编号（`G2(checkstyle)`、`G3(pmd)`、`G4(spotbugs)`）即可区分原因，详细报告在 `quality-reports` 产物中。
 
-`Dependency Scan` 需要仓库 Actions Secret `NVD_API_KEY`，缺失时作业直接失败。漏洞库缓存在 `.oryxos-dev/repository/org/owasp/dependency-check-data`，按日期作为缓存键。
+`Dependency Scan` 需要仓库 Actions Secret `NVD_API_KEY`，缺失时作业直接失败。漏洞库缓存在 `.oryxos-dev/repository/org/owasp/dependency-check-data`，按日期作为缓存键。缓存的恢复和保存拆成两步，保存不论扫描成败都会执行：扫描只要发现漏洞就会失败，如果像 `actions/cache` 默认那样只在成功时保存，每次都要重新下载整个 NVD 漏洞库。NVD 不可用（例如返回 503）时，`failOnError=true` 会让作业失败，不会凭不完整的漏洞库通过。
 
 ## 8. 分支保护
 

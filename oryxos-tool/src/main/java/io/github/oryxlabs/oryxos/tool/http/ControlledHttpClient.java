@@ -136,7 +136,8 @@ public final class ControlledHttpClient implements AutoCloseable {
     long budget = Math.min(TimeUnit.SECONDS.toNanos(readSeconds), ctx.deadline().remainingNanos());
     if (budget <= 0) throw new OryxError("DEADLINE", "No time remains for HTTP GET");
     if (closed.get()) throw new TransportFailure("HTTP_CONNECTION", false);
-    long millis = Math.max(1, TimeUnit.NANOSECONDS.toMillis(budget));
+    // Round up: a client timeout firing before the deadline is misread as HTTP_CONNECTION.
+    long millis = Math.max(1, (budget + 999_999) / 1_000_000);
     var request = new org.apache.hc.client5.http.classic.methods.HttpUriRequestBase(method, uri);
     // Lease wait and response reads use this request's remaining budget. Cancellation closes
     // only this exchange; the owned pool remains available to concurrent executions.

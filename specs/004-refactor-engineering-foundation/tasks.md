@@ -237,6 +237,7 @@
 - [X] T065 [US4] 在 `pom.xml` 中新增 profile `dependency-scan`：引入 `dependency-check-maven:${dependency-check.version}`，配置 `failBuildOnCVSS=7`、`suppressionFiles=config/dependency-check/suppressions.xml`、`formats=HTML,JSON`、`nvdApiKeyEnvironmentVariable=NVD_API_KEY`、`ossindexAnalyzerEnabled=false`、`retireJsAnalyzerEnabled=false`、`nodeAuditAnalyzerEnabled=false`、`nodeAnalyzerEnabled=false`、`failOnError=true`；默认构建不包含该插件（依赖 T002、T064）
 - [X] T066 [US4] 新建 `.github/workflows/dependency-scan.yml`：触发为 `pull_request`、`schedule`（每日一次，UTC 时间）、`workflow_dispatch`；作业名 **`Dependency Scan`**；`actions/cache` 缓存 `.oryxos-dev/repository/org/owasp/dependency-check-data`，key 含日期；步骤 `Dependency scan (tools/dev/mvnw -Pdependency-scan dependency-check:aggregate)`，环境变量 `NVD_API_KEY: ${{ secrets.NVD_API_KEY }}`、`ORYXOS_JAVA_HOME`；`NVD_API_KEY` 为空时第一步就失败并说明原因；报告作为产物上传；不被部署工作流引用（依赖 T065）
 - [ ] T067 [US4] 实测漏洞库不可达时的行为：在本地断开 NVD 访问，或在 `workflow_dispatch` 中使用无效的 Key 运行；若插件凭旧缓存静默通过，则在 T066 中增加一步，检查数据库更新日志并显式失败。结果写入 `evidence/US4-offline.md`（依赖 T066）
+  - 进度（2026-11-23）：CI 上真实遇到 NVD 返回 503，作业失败并给出原因，没有静默通过（见 `evidence/US4-cve-triage.md`）；“已有旧缓存、更新失败”的情况待验证
 - [ ] T068 [US4] 【需授权】在验证分支给 `oryxos-boot/pom.xml` 临时加入一个带已知高危 CVE 的旧依赖，发起 PR，确认 `Dependency Scan` 失败并列出坐标、CVE 编号与 CVSS；移除后通过；登记一条带理由的示例抑制并验证生效；结果写入 `evidence/US4-scan.md`，验证分支不合入（依赖 T066）
 
 **Checkpoint**：`Dependency Scan` 可以作为必过检查，部署链不受其影响。
