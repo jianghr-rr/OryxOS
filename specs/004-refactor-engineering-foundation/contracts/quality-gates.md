@@ -23,7 +23,7 @@
 | 完整校验（格式 + 规约 + 安全 + 测试 + 基线） | `./tools/dev/mvnw clean verify` | `Full verify (tools/dev/mvnw clean verify)` |
 | 自动格式化 | `./tools/dev/mvnw spotless:apply` | — |
 | 只查格式 | `./tools/dev/mvnw spotless:check` | — |
-| 依赖漏洞扫描（显式开启） | `NVD_API_KEY=... ./tools/dev/mvnw -Pdependency-scan dependency-check:aggregate` | `Dependency scan (tools/dev/mvnw -Pdependency-scan ...)` |
+| 依赖漏洞扫描（显式开启） | 先在当前 shell 中 `export NVD_API_KEY`，再执行 `./tools/dev/mvnw -Pdependency-scan dependency-check:aggregate` | `Dependency scan (tools/dev/mvnw -Pdependency-scan ...)` |
 | 基线只减不增检查 | `./tools/dev/quality-baseline --check-shrink origin/main` | `Baseline must not grow` |
 | 删除已清零的基线条目 | `./tools/dev/quality-baseline --prune` | — |
 | 安装提交前钩子 | `./tools/dev/install-hooks` | — |
@@ -63,7 +63,7 @@
 | --- | --- | --- |
 | 编码规约 · 命名 | ClassNamingShouldBeCamel、MethodNamingShouldBeLowerCamel、ConstantFieldShouldBeUpperCase、AbstractClassShouldStartWithAbstract | `ClassNamingConventions`、`MethodNamingConventions`、`FieldNamingConventions`、`LocalVariableNamingConventions`、`FormalParameterNamingConventions`（抽象类前缀规则记为缺口，不强制） |
 | 编码规约 · 控制语句 / OOP | NeedBrace、SwitchStatement（必须 default）、EqualsAvoidNull、WrapperTypeEquality | `ControlStatementBraces`、`NonExhaustiveSwitch`、`CompareObjectsWithEquals`、`UseEqualsToCompareStrings` |
-| 编码规约 · 日志 | 禁止 `System.out` / `printStackTrace` | `SystemPrintln`、`AvoidPrintStackTrace`（两处 CLI 契约输出登记为带理由的例外） |
+| 编码规约 · 日志 | 禁止 `System.out` / `printStackTrace` | `SystemPrintln`、`AvoidPrintStackTrace`（三处契约要求的输出登记为带理由的例外：两处 CLI 契约输出，一处日志目录不可写时的 stderr 告警） |
 | 并发 | ThreadPoolCreation、AvoidManuallyCreateThread、ThreadShouldSetName | 自定义 XPath 规则 `OryxThreadPoolCreation`：禁止 `Executors.newFixedThreadPool/newCachedThreadPool/newSingleThreadExecutor/newScheduledThreadPool/newSingleThreadScheduledExecutor/newWorkStealingPool`，允许 `newVirtualThreadPerTaskExecutor`、`newThreadPerTaskExecutor`；手动建线程、线程命名记为缺口 |
 | 并发 | AvoidUseTimer、LockShouldWithTryFinally、DoubleCheckedLocking、static SimpleDateFormat | `DoubleCheckedLocking`、`NonThreadSafeSingleton`、`UnsynchronizedStaticFormatter`、`DontCallThreadRun`、`UseNotifyAllInsteadOfNotify`；Timer、Lock 释放用自定义 XPath 规则或记为缺口 |
 | 异常处理 | 空 catch、捕获后不处理、finally 中 return、捕获 NPE、抛出原始类型异常 | `EmptyCatchBlock`、`ReturnFromFinallyBlock`、`DoNotThrowExceptionInFinally`、`AvoidCatchingNPE`、`AvoidCatchingThrowable`、`AvoidThrowingRawExceptionTypes`、`PreserveStackTrace` |
@@ -78,7 +78,7 @@
 | `.github/workflows/dependency-scan.yml` | `pull_request`；每日 `schedule`；`workflow_dispatch` | **`Dependency Scan`** | 阻断合并；不在部署链上 |
 | `.github/workflows/deploy-tencent-cloud.yml` | `main` 推送（路径过滤增加 `config/**`、`tools/dev/**`、`.mvn/**`）、`workflow_dispatch` | 先调用 `Full Verify`，再执行 `Build, Verify & Deploy` | 门禁失败不进入部署 |
 
-`Full Verify` 的步骤名与本地命令一一对应（FR-019）：`Format check`、`Full verify (tools/dev/mvnw clean verify)`、`Baseline must not grow`、`Upload quality reports`。
+`Full Verify` 的步骤名与本地命令一一对应（FR-019）：`Format check`、`Full verify (tools/dev/mvnw clean verify)`、`Baseline must not grow`、`Upload quality reports`、`Upload boot JAR`（最后一步供部署工作流使用门禁产出的 JAR）。
 Checkstyle、PMD、SpotBugs 与测试在同一次 `verify` 中依次运行，报告作为工作流产物上传；失败时日志首行写明门禁编号（G1–G6）。合为一个步骤是已确认的偏差 D-6（见 [plan.md](../plan.md#偏差与需维护者确认)）。
 
 ## 6. 提交前钩子
@@ -86,7 +86,7 @@ Checkstyle、PMD、SpotBugs 与测试在同一次 `verify` 中依次运行，报
 | 项 | 约定 |
 | --- | --- |
 | 安装 | `./tools/dev/install-hooks` 执行 `git config core.hooksPath tools/dev/hooks`，只修改本仓库 `.git/config` |
-| 执行内容 | `tools/dev/mvnw -q spotless:check pmd:pmd checkstyle:checkstyle`，然后对 PMD/Checkstyle 做基线判定 |
+| 执行内容 | 暂存区含 Java、`pom.xml` 或 `config/` 文件时执行 `tools/dev/mvnw -q -B compile pmd:pmd checkstyle:checkstyle`（`compile` 先经过 `spotless:check`；不先编译时 `pmd:pmd` 无法解析兄弟模块），然后对 PMD/Checkstyle 做基线判定 |
 | 失败提示 | 打印 `./tools/dev/mvnw spotless:apply` 修复命令及违规列表 |
 | 依赖 | 只需 `ORYXOS_JAVA_HOME` 与系统 `python3`（与 `tools/dev` 相同），不安装全局软件 |
 | 跳过 | `git commit --no-verify` 可跳过；CI 仍会拦截 |

@@ -145,7 +145,7 @@ NVD API Key 通过 `nvdApiKeyEnvironmentVariable=NVD_API_KEY` 从环境读取，
 
 **Rationale / 风险**：CI 改走 `tools/dev` 后，会执行原先 CI 排除、但本地会跑的 `kernel-soak-harness` 本地分组，使 CI 与本地一致；它对 CI 时长的影响**待实测**并写入基线说明。
 
-**提交前钩子**：`tools/dev/hooks/pre-commit` + `tools/dev/install-hooks`（执行 `git config core.hooksPath tools/dev/hooks`，只改本仓库 `.git/config`）。钩子运行 `tools/dev/mvnw -q spotless:check pmd:pmd checkstyle:checkstyle`，再对 PMD/Checkstyle 跑基线判定（SpotBugs 需要编译产物，不放进钩子）。缺少 `ORYXOS_JAVA_HOME` 时给出提示并拒绝提交；`git commit --no-verify` 可以跳过，但 CI 仍会拦截（FR-021）。
+**提交前钩子**：`tools/dev/hooks/pre-commit` + `tools/dev/install-hooks`（执行 `git config core.hooksPath tools/dev/hooks`，只改本仓库 `.git/config`）。钩子运行 `tools/dev/mvnw -q -B compile pmd:pmd checkstyle:checkstyle`（`compile` 先经过 `spotless:check`；不先编译时 `pmd:pmd` 无法解析兄弟模块，见 P0-compat），再对 PMD/Checkstyle 跑基线判定（SpotBugs 需要编译产物，不放进钩子）。缺少 `ORYXOS_JAVA_HOME` 时给出提示并拒绝提交；`git commit --no-verify` 可以跳过，但 CI 仍会拦截（FR-021）。
 
 ## 11. 服务器监控栈
 
@@ -154,7 +154,7 @@ NVD API Key 通过 `nvdApiKeyEnvironmentVariable=NVD_API_KEY` 从环境读取，
 **Decision**：
 - 版本：**Prometheus 3.13.5**（3.13 是当前仍在发补丁的 LTS 线；3.16.0 为最新普通版）、**Grafana 13.3.1**（最新稳定版）。二者均为官方 linux-amd64 tar 包，版本号与 sha256 锁定在 `deploy/tencent-cloud/monitoring/versions.env`。
 - 安装：一次性幂等脚本 `deploy/tencent-cloud/scripts/install-monitoring.sh --dist-dir <目录>`。安装包由维护者在本机下载后 `scp` 到服务器，脚本只做离线校验和安装。原因：服务器直连 GitHub 不可用（10 秒超时）；**TUNA github-release 镜像只保留最新版**（已核实目录只有 `3.16.0` 与 `LatestRelease`），无法提供锁定版本。
-- 运行：systemd 219 单元，使用 `MemoryAccounting=yes` + `MemoryLimit=256M`（各一份，合计 512MB）、`Environment=GOMEMLIMIT=200MiB`、`OOMScoreAdjust=500`、`ProtectSystem=full`、`NoNewPrivileges=yes`；不使用 `MemoryMax=`、`StateDirectory=`、`ProtectSystem=strict`、`ReadWritePaths=`。
+- 运行：systemd 219 单元，使用 `MemoryAccounting=yes` + `MemoryLimit=256M`（Prometheus）与 `512M`（Grafana，实测后放宽，见 plan D-7），合计 768MB；`GOMEMLIMIT` 分别为 `200MiB` 与 `400MiB`、`OOMScoreAdjust=500`、`ProtectSystem=full`、`NoNewPrivileges=yes`；不使用 `MemoryMax=`、`StateDirectory=`、`ProtectSystem=strict`、`ReadWritePaths=`。
 - 监听：Prometheus `127.0.0.1:9090`，Grafana `127.0.0.1:3300`（3000/3001/3010/3011 已被 Docker 容器占用）。
 - Prometheus：每 15 秒采集一次 `127.0.0.1:8080/actuator/prometheus` 与自身指标；`--storage.tsdb.retention.time=15d` + `--storage.tsdb.retention.size=1GB`；不开启 admin API 与 lifecycle API。
 - Grafana：`auth.anonymous.enabled=false`、`users.allow_sign_up=false`、`auth.basic.enabled=false`（避免 nginx Basic Auth 头被 Grafana 当作登录凭证）；管理员密码 `admin_password = $__file{/etc/oryxos-monitoring/secrets/grafana-admin-password}`（0640 root:grafana，安装脚本生成随机值，不打印、不入库）；关闭统一告警、更新检查、使用统计与插件预装，以降低内存占用并避免外联。

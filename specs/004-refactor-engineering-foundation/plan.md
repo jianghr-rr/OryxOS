@@ -35,7 +35,7 @@
 **Performance Goals**:
 - SC-001：完整校验比重构前多出的耗时 ≤ 3 分钟（实施第一步先测出重构前的耗时 T0）
 - 提交前钩子目标 ≤ 60 秒（不计 Maven 首次下载依赖）
-- SC-009：Prometheus + Grafana 常驻内存合计 ≤ 512MB；OryxOS JVM 新增内存开销需实测并记录（重构前 `MemoryCurrent` 约 417MB）
+- SC-009：Prometheus + Grafana 常驻内存合计 ≤ 768MB（原为 512MB，见偏差 D-7）；OryxOS JVM 新增内存开销需实测并记录（重构前 `MemoryCurrent` 约 417MB）
 
 **Constraints**: JVM `-Xmx768m` 不变；运维端点不进入 OpenAPI（19 操作 / 44 schema 零差异）；CLI stdout/stderr 契约与退出码不变；fat JAR 名称与启动方式不变；配置、工作流和脚本中不得包含密钥、Webhook、主机地址或域名；systemd 单元只用 219 支持的指令
 
@@ -65,7 +65,7 @@
 来自维护者在服务器上执行的只读检查及随后完成的前置整治（主机名和 IP 已脱敏为 `<HOST>`），是 FR-007a/FR-020a/SC-009 的设计输入：
 
 - **系统**：OpenCloudOS 7.9（RHEL7 系，glibc 2.17，内核 5.4），2 核，SELinux 关闭；systemd 219 + cgroup v1。→ 单元文件用 `MemoryLimit=` + `MemoryAccounting=yes`，不用 `MemoryMax=`；不支持 `StateDirectory=`/`LogsDirectory=`，目录与用户由幂等脚本创建；脚本不用 `systemctl show --value`。
-- **内存（整治后）**：总 3.6GiB，可用约 1.7GB；已新增 2GB swapfile（`vm.swappiness=10`）。占用：OryxOS JVM RSS 约 410MB（最坏约 1.0GB）、4 个 node 容器约 460MB、dockerd 约 95MB（已在 live-restore 下重启，从约 1.0GB 降下来）、宝塔约 110MB；journald 在 `/run` 约 270MB。→ Prometheus、Grafana 各 `MemoryLimit=256M`、`GOMEMLIMIT≈200MiB`、`OOMScoreAdjust=500`；OryxOS 堆满加上监控上限后仍余约 600MB。**残留风险**：有一个容器的健康检查长期失败，dockerd 的内存可能再次上涨（不在 004 范围内）。
+- **内存（整治后）**：总 3.6GiB，可用约 1.7GB；已新增 2GB swapfile（`vm.swappiness=10`）。占用：OryxOS JVM RSS 约 410MB（最坏约 1.0GB）、4 个 node 容器约 460MB、dockerd 约 95MB（已在 live-restore 下重启，从约 1.0GB 降下来）、宝塔约 110MB；journald 在 `/run` 约 270MB。→ Prometheus `MemoryLimit=256M`、`GOMEMLIMIT=200MiB`，Grafana `MemoryLimit=512M`、`GOMEMLIMIT=400MiB`（D-7 实测后放宽），均 `OOMScoreAdjust=500`；OryxOS 堆满加上监控上限后余量由约 600MB 降为约 350MB，内存紧张时监控服务优先被回收。**残留风险**：有一个容器的健康检查长期失败，dockerd 的内存可能再次上涨（不在 004 范围内）。
 - **端口**：9090 空闲；3000/3001/3010/3011 被 Docker 容器以 `*:端口` 占用。→ Prometheus `127.0.0.1:9090`，Grafana `127.0.0.1:3300`；OryxOS `127.0.0.1:8080` 由本机直接采集。
 - **磁盘（整治后）**：`/var`、`/var/log`、`/opt` 同在 50G 根分区（ext4），已用 12G、可用 36G。日志 ≤1GB + Prometheus 15 天约 0.3–0.5GB + Grafana <100MB + 程序约 1GB，足够；Prometheus 另设 `retention.size=1GB` 兜底。
 - **安装方式**：官方 tar 包 + systemd；不用 yum，也不用 Docker。服务器直连 GitHub 不可用，且 TUNA 只保留 Prometheus 最新版 → 安装包由维护者在本机下载后上传，脚本离线校验 sha256。
@@ -127,7 +127,7 @@ oryxos-boot/
 │   ├── GuardedRollingFileAppender.java   # 新：目录不可写时只告警、不让启动失败
 │   ├── LogRedaction.java                 # 新：持有运行时 Redactor（注册前用纯正则版本）
 │   ├── RedactingValueMasker.java         # 新：JSON 全字段脱敏
-│   ├── RedactingConverters.java          # 新：文本形态 %redactedMessage / %redactedException
+│   ├── RedactingConverters.java          # 新：文本形态 %redactedMessage / %redactedException / %redactedMdc
 │   ├── LogRedactionRegistrar.java        # 新：容器启动时注册 Redactor
 │   └── OryxRuntimeHealthIndicator.java   # 新：readiness 与 /api/v1/health 同源
 └── src/test/java/.../boot/observability/ # 新：分组 f004-observability（见下）
@@ -213,6 +213,8 @@ docs/
 | D-4 | `oryxos-init` 片段要求 Spotless `<importOrder/>`、SpotBugs `threshold=Low` | 不加 importOrder（google-java-format 已排序，避免冲突）；threshold 用 Medium（控制噪声，安全检测器默认就是 Medium 以上） | 无需确认，记录在案 |
 | D-5 | 新增一条 `/api/v1/**` INFO 访问日志 | 这是满足 SC-003 必需的最小日志；`/actuator` 和静态资源不记 | 无需确认，记录在案 |
 | **D-6** | FR-019 要求 CI 串行执行各项检查且步骤名与本地命令一一对应；`Full Verify` 把 Checkstyle、PMD、SpotBugs 与测试合在一个 `Full verify (tools/dev/mvnw clean verify)` 步骤内 | 保持与本地同一条命令、只编译一次；门禁失败时日志首行写明门禁编号（G1–G6），质量报告作为产物上传，以此满足 US3 场景 2 的“失败原因清晰可辨”；拆成多个步骤会重复编译、拉长 CI | **已确认（2026-11-21，维护者在一致性检查后选择保留单一步骤并登记偏差）** |
+
+| **D-7** | 安装后实测 Grafana 13.3.1 在 `MemoryLimit=256M` 下 cgroup `total_rss` 约 225MB、进程 RSS 约 342MB，启动 90 秒内 `memory.failcnt` 达 63720，依赖 swap 运行（cgroup v1 的 `MemoryLimit` 不限制 swap） | Grafana 放宽为 `MemoryLimit=512M`、`GOMEMLIMIT=400MiB`；Prometheus 保持 `256M`（实测约 37MB）；SC-009 合计目标由 512MB 改为 768MB | **已确认（2026-11-23，维护者选择放宽 Grafana 上限）** |
 
 ## 范围外发现（记录，不在 004 实施）
 

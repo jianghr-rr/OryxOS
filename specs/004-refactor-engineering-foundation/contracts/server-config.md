@@ -58,8 +58,8 @@ Environment=ORYXOS_LOG_DIR=/var/log/oryxos
 | --- | --- |
 | `User` / `Group` | `prometheus` / `grafana`（系统用户，`/sbin/nologin`） |
 | `MemoryAccounting` | `yes` |
-| `MemoryLimit` | `256M`（两者合计 512MB，SC-009） |
-| `Environment` | `GOMEMLIMIT=200MiB` |
+| `MemoryLimit` | Prometheus `256M`，Grafana `512M`（合计 768MB，SC-009） |
+| `Environment` | Prometheus `GOMEMLIMIT=200MiB`，Grafana `GOMEMLIMIT=400MiB` |
 | `EnvironmentFile` | `-/etc/oryxos-monitoring/monitoring.env` |
 | `OOMScoreAdjust` | `500`（内存紧张时优先于 OryxOS 被回收） |
 | `NoNewPrivileges` / `ProtectSystem` / `ProtectHome` / `PrivateTmp` | `yes` / `full` / `yes` / `yes` |
@@ -79,7 +79,7 @@ Environment=ORYXOS_LOG_DIR=/var/log/oryxos
 ```nginx
 location ^~ /grafana/ {
     auth_basic "OryxOS Admin Restricted";
-    auth_basic_user_file /www/server/panel/vhost/htpasswd/oryxos.htpasswd;
+    auth_basic_user_file /www/server/nginx/conf/oryxos.htpasswd;
     proxy_set_header Authorization "";       # 不把 Basic Auth 凭证转给 Grafana
     proxy_set_header Host $host;
     proxy_pass http://127.0.0.1:3300;
@@ -87,7 +87,7 @@ location ^~ /grafana/ {
 
 location ^~ /prometheus/ {
     auth_basic "OryxOS Admin Restricted";
-    auth_basic_user_file /www/server/panel/vhost/htpasswd/oryxos.htpasswd;
+    auth_basic_user_file /www/server/nginx/conf/oryxos.htpasswd;
     proxy_pass http://127.0.0.1:9090;
 }
 ```

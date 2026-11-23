@@ -80,7 +80,7 @@ sudo bash deploy/tencent-cloud/scripts/install-monitoring.sh --dist-dir /root/or
 | # | 操作（服务器） | 期望 |
 | --- | --- | --- |
 | 5.1 | `ss -lntp \| grep -E ':(9090\|3300)\b'` | 只出现 `127.0.0.1:9090` 与 `127.0.0.1:3300` |
-| 5.2 | `for s in prometheus grafana; do systemctl show $s -p MemoryCurrent -p MemoryLimit; done` | 两者 `MemoryCurrent` 合计 ≤ 512MB（SC-009，观察 24 小时后再记录一次） |
+| 5.2 | `for s in prometheus grafana; do systemctl show $s -p MemoryCurrent -p MemoryLimit; done` | 两者 `MemoryCurrent` 合计 ≤ 768MB（SC-009，观察 24 小时后再记录一次） |
 | 5.3 | `curl -s 127.0.0.1:9090/prometheus/api/v1/targets \| python3 -m json.tool \| grep health` | `oryxos` 与 `prometheus` 两个目标均为 `up` |
 | 5.4 | 公网未认证访问 `https://<域名>/grafana/`、`/prometheus/`、`/actuator/health` | 前两者 401（Basic Auth），`/actuator` 403（SC-004、SC-009） |
 | 5.5 | 认证后打开 Grafana 看板 `OryxOS JVM & HTTP` | 最近 24 小时曲线，间隔 ≤ 1 分钟 |
