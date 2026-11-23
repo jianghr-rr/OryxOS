@@ -27,18 +27,17 @@ public final class PromptBuilder {
     var messages = new ArrayList<>(memory.recent());
     messages.addAll(memory.current());
     return new ProviderRequest(
-            context.agent().providerName(),
-            context.agent().model(),
-            system,
-            messages,
-            tools.stream()
-                .map(t ->
-                    new ProviderRequest.ToolSchema(t.name(), t.description(), t.inputSchemaJson()))
-                .toList(),
-            context.execution().snapshot(0).toolNames(),
-            Duration.ofNanos(context.deadline().remainingNanos()),
-            context.execution().id(),
-            iteration)
-        .withDispatcher(context.dispatcher());
+        context.agent().providerName(),
+        context.agent().model(),
+        system,
+        messages,
+        tools.stream()
+            .map(
+                t -> new ProviderRequest.ToolSchema(t.name(), t.description(), t.inputSchemaJson()))
+            .toList(),
+        context.execution().snapshot(0).toolNames(),
+        Duration.ofNanos(context.deadline().remainingNanos()),
+        context.execution().id(),
+        iteration);
   }
 }

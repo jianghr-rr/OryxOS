@@ -61,7 +61,7 @@ class ProviderConcurrencyProbeIT {
               }
               waits.put(token, new Wait(start, System.nanoTime()));
               byte[] reply =
-                  ProviderContractTest.ordinary("served-model", token)
+                  ProviderTestSupport.ordinary("served-model", token)
                       .getBytes(StandardCharsets.UTF_8);
               exchange.getResponseHeaders().set("Content-Type", "application/json");
               exchange.sendResponseHeaders(200, reply.length);
@@ -76,13 +76,13 @@ class ProviderConcurrencyProbeIT {
       Files.writeString(
           root.resolve("runtime.yaml"),
           "schema_version: 1\nproviders:\n"
-              + ProviderContractTest.definition("probe", origin, "/chat/completions", "{}"));
+              + ProviderTestSupport.definition("probe", origin, "/chat/completions", "{}"));
       var env = Map.of("PROBE_KEY", "local-controlled-provider-probe");
       var redactor = new Redactor();
       var config = new RuntimeConfigLoader(env, redactor).load(workspace);
-      try (var provider = new ProviderRegistry(config, workspace, env, redactor, audit::add)) {
+      try (var provider = new ProviderService(config, workspace, env, redactor, audit::add)) {
         for (int i = 0; i < 3; i++)
-          provider.call(ProviderContractTest.request("probe", "warm-" + i));
+          provider.call(ProviderTestSupport.request("probe", "warm-" + i));
         for (int round = 0; round < 3; round++) {
           var release = new CountDownLatch(1);
           var pending = new ArrayList<Future<Sample>>();
@@ -97,7 +97,7 @@ class ProviderConcurrencyProbeIT {
                     assertEquals(
                         token,
                         provider
-                            .call(ProviderContractTest.request("probe", token))
+                            .call(ProviderTestSupport.request("probe", token))
                             .assistantMessage()
                             .content());
                   }

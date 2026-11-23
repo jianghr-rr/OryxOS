@@ -77,7 +77,7 @@ class RealProviderIT {
 
   private void ordinary(String name) throws Exception {
     var profile = agents.require("real-" + name);
-    var registry = new ProviderRegistry(config, workspace, System.getenv(), redactor, audit::add);
+    var registry = new ProviderService(config, workspace, System.getenv(), redactor, audit::add);
     UUID execution = UUID.randomUUID();
     String prompt = "Reply briefly with this exact marker: ORYXOS_US1_" + execution;
     var request =

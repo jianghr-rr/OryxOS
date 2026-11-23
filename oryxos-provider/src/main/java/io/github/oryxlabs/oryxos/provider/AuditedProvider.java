@@ -1,8 +1,11 @@
 package io.github.oryxlabs.oryxos.provider;
 
-import io.github.oryxlabs.oryxos.core.audit.*;
+import io.github.oryxlabs.oryxos.core.audit.AuditSink;
+import io.github.oryxlabs.oryxos.core.audit.ModelCallRecord;
 import io.github.oryxlabs.oryxos.core.error.OryxError;
-import io.github.oryxlabs.oryxos.core.provider.*;
+import io.github.oryxlabs.oryxos.core.provider.ProviderPort;
+import io.github.oryxlabs.oryxos.core.provider.ProviderReply;
+import io.github.oryxlabs.oryxos.core.provider.ProviderRequest;
 import io.github.oryxlabs.oryxos.core.runtime.Uuids;
 import io.github.oryxlabs.oryxos.core.security.Redactor;
 import java.time.Instant;
@@ -29,12 +32,9 @@ public final class AuditedProvider implements ProviderPort {
       var remaining =
           request.withRemainingDuration(
               request.remainingDuration().minusNanos(System.nanoTime() - begin));
-      reply =
-          request.dispatcher() == null
-              ? delegate.call(remaining)
-              : request.dispatcher().call(() -> delegate.call(remaining));
+      reply = delegate.call(remaining);
     } catch (RuntimeException raw) {
-      OryxError error = ProviderErrorMapper.failure(raw);
+      OryxError error = raw instanceof OryxError known ? known : ProviderErrorMapper.protocol();
       write(
           record(
               id,
@@ -97,7 +97,9 @@ public final class AuditedProvider implements ProviderPort {
 
   private String safe(String value) {
     String safe = redactor.redact(value);
-    if (safe == null) return null;
+    if (safe == null) {
+      return null;
+    }
     safe = safe.replaceAll("[\\p{Cntrl}]", "?");
     return safe.substring(0, Math.min(256, safe.length()));
   }

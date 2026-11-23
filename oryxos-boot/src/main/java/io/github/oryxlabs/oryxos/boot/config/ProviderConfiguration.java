@@ -6,7 +6,7 @@ import io.github.oryxlabs.oryxos.core.error.OryxError;
 import io.github.oryxlabs.oryxos.core.provider.ProviderPort;
 import io.github.oryxlabs.oryxos.core.security.Redactor;
 import io.github.oryxlabs.oryxos.core.workspace.WorkspaceHandle;
-import io.github.oryxlabs.oryxos.provider.ProviderRegistry;
+import io.github.oryxlabs.oryxos.provider.ProviderService;
 import org.springframework.context.annotation.*;
 
 @Configuration(proxyBeanMethods = false)
@@ -43,6 +43,6 @@ public class ProviderConfiguration {
       return request -> {
         throw new OryxError(loaded.code(), loaded.safeMessage());
       };
-    return new ProviderRegistry(loaded.config(), workspace, System.getenv(), redactor, audit);
+    return new ProviderService(loaded.config(), workspace, System.getenv(), redactor, audit);
   }
 }

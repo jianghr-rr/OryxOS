@@ -3,21 +3,26 @@ package io.github.oryxlabs.oryxos.provider;
 import io.github.oryxlabs.oryxos.core.audit.AuditSink;
 import io.github.oryxlabs.oryxos.core.config.RuntimeConfig;
 import io.github.oryxlabs.oryxos.core.error.OryxError;
-import io.github.oryxlabs.oryxos.core.provider.*;
+import io.github.oryxlabs.oryxos.core.model.ChatMessage;
+import io.github.oryxlabs.oryxos.core.provider.ProviderPort;
+import io.github.oryxlabs.oryxos.core.provider.ProviderReply;
+import io.github.oryxlabs.oryxos.core.provider.ProviderRequest;
 import io.github.oryxlabs.oryxos.core.security.Redactor;
 import io.github.oryxlabs.oryxos.core.security.SecretResolver;
 import io.github.oryxlabs.oryxos.core.workspace.WorkspaceHandle;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class ProviderRegistry implements ProviderPort, AutoCloseable {
-  private final java.util.List<SpringAiProvider> owned = new java.util.ArrayList<>();
-  private final java.util.concurrent.atomic.AtomicBoolean closed =
-      new java.util.concurrent.atomic.AtomicBoolean();
+public final class ProviderService implements ProviderPort, AutoCloseable {
+  private final List<SpringAiProvider> owned = new ArrayList<>();
+  private final AtomicBoolean closed = new AtomicBoolean();
   private final Map<String, ProviderPort> providers;
   private final Map<String, String> unavailable;
 
-  public ProviderRegistry(
+  public ProviderService(
       RuntimeConfig config,
       WorkspaceHandle workspace,
       Map<String, String> environment,
@@ -46,17 +51,38 @@ public final class ProviderRegistry implements ProviderPort, AutoCloseable {
   }
 
   public void close() {
-    if (closed.compareAndSet(false, true)) owned.forEach(SpringAiProvider::close);
+    if (closed.compareAndSet(false, true)) {
+      owned.forEach(SpringAiProvider::close);
+    }
   }
 
   public ProviderReply call(ProviderRequest request) {
-    if (closed.get()) throw new OryxError("PROVIDER_UNAVAILABLE", "Provider registry is closed");
-    SpringAiProvider.validate(request);
+    if (closed.get()) {
+      throw new OryxError("PROVIDER_UNAVAILABLE", "Provider registry is closed");
+    }
+    validate(request);
     var port = providers.get(request.providerName());
-    if (port == null)
+    if (port == null) {
       throw new OryxError(
           "PROVIDER_UNAVAILABLE",
           unavailable.getOrDefault(request.providerName(), "Provider name is not configured"));
+    }
     return port.call(request);
+  }
+
+  private static void validate(ProviderRequest request) {
+    if (request.model() == null || request.model().isBlank() || request.iteration() < 1) {
+      throw OryxError.configuration("provider request model/iteration");
+    }
+    var users =
+        request.orderedMessages().stream().filter(m -> m.role() == ChatMessage.Role.USER).toList();
+    if (users.isEmpty()
+        || users.getLast().content() == null
+        || users.getLast().content().isBlank()) {
+      throw new OryxError("INVALID_TASK", "Provide non-blank task content before calling a model");
+    }
+    if (request.remainingDuration().isNegative() || request.remainingDuration().isZero()) {
+      throw new OryxError("PROVIDER_TIMEOUT", "No time remains for a model call");
+    }
   }
 }

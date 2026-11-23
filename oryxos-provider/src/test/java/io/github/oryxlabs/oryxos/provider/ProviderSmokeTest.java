@@ -22,16 +22,16 @@ class ProviderSmokeTest {
 
   @Test
   void twoAgentDefinitionsReachTheirConfiguredServices() throws Exception {
-    try (var one = new ProviderContractTest.Receiver();
-        var two = new ProviderContractTest.Receiver()) {
-      one.response = ProviderContractTest.ordinary("one-version", "one response");
-      two.response = ProviderContractTest.ordinary("two-version", "two response");
+    try (var one = new ProviderTestSupport.Receiver();
+        var two = new ProviderTestSupport.Receiver()) {
+      one.response = ProviderTestSupport.ordinary("one-version", "one response");
+      two.response = ProviderTestSupport.ordinary("two-version", "two response");
       var env = Map.of("ONE_KEY", "fixture-one", "TWO_KEY", "fixture-two");
       Files.writeString(
           root.resolve("runtime.yaml"),
           "schema_version: 1\nproviders:\n"
-              + ProviderContractTest.definition("one", one.origin(), "/chat/completions", "{}")
-              + ProviderContractTest.definition("two", two.origin(), "/v1/chat/completions", "{}"));
+              + ProviderTestSupport.definition("one", one.origin(), "/chat/completions", "{}")
+              + ProviderTestSupport.definition("two", two.origin(), "/v1/chat/completions", "{}"));
       for (String name : List.of("one", "two")) {
         Path file = root.resolve("agents/" + name + "/AGENT.md");
         Files.createDirectories(file.getParent());
@@ -50,7 +50,7 @@ class ProviderSmokeTest {
       var config = new RuntimeConfigLoader(env, redactor).load(workspace);
       var catalog = AgentCatalog.load(workspace, config, env, redactor);
       var audit = new ArrayList<ModelCallRecord>();
-      var providers = new ProviderRegistry(config, workspace, env, redactor, audit::add);
+      var providers = new ProviderService(config, workspace, env, redactor, audit::add);
       for (String name : List.of("one", "two")) {
         var profile = catalog.require(name);
         var reply =
@@ -72,7 +72,7 @@ class ProviderSmokeTest {
       assertEquals(1, two.requests.size());
       assertEquals(4, audit.size());
       System.out.println(
-          "US1 LOCAL demo: two AGENT.md profiles -> explicit ProviderRegistry -> two loopback HTTP receivers; two responses, four correlated audit events, zero tool executors.");
+          "US1 LOCAL demo: two AGENT.md profiles -> explicit ProviderService -> two loopback HTTP receivers; two responses, four correlated audit events, zero tool executors.");
     }
   }
 }

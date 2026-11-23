@@ -4,7 +4,10 @@ import io.github.oryxlabs.oryxos.core.model.*;
 import java.time.Duration;
 import java.util.*;
 
-/** Provider options are resolved exclusively from the registry's runtime configuration snapshot. */
+/**
+ * Provider options are resolved exclusively from the registry's runtime configuration snapshot.
+ * Runtime admission belongs to the caller; a request carries no admission capability.
+ */
 public record ProviderRequest(
     String providerName,
     String model,
@@ -14,31 +17,7 @@ public record ProviderRequest(
     ToolNameMap toolNames,
     Duration remainingDuration,
     UUID executionId,
-    int iteration,
-    io.github.oryxlabs.oryxos.core.runtime.ActionDispatcher dispatcher) {
-  public ProviderRequest(
-      String providerName,
-      String model,
-      String systemPrompt,
-      List<ChatMessage> messages,
-      List<ToolSchema> tools,
-      ToolNameMap names,
-      Duration remaining,
-      UUID executionId,
-      int iteration) {
-    this(
-        providerName,
-        model,
-        systemPrompt,
-        messages,
-        tools,
-        names,
-        remaining,
-        executionId,
-        iteration,
-        null);
-  }
-
+    int iteration) {
   public record ToolSchema(String name, String description, String inputSchemaJson) {}
 
   public ProviderRequest {
@@ -59,23 +38,7 @@ public record ProviderRequest(
         toolNames,
         remaining,
         executionId,
-        iteration,
-        dispatcher);
-  }
-
-  public ProviderRequest withDispatcher(
-      io.github.oryxlabs.oryxos.core.runtime.ActionDispatcher dispatcher) {
-    return new ProviderRequest(
-        providerName,
-        model,
-        systemPrompt,
-        orderedMessages,
-        tools,
-        toolNames,
-        remainingDuration,
-        executionId,
-        iteration,
-        dispatcher);
+        iteration);
   }
 
   @Override

@@ -2,8 +2,9 @@ package io.github.oryxlabs.oryxos.provider;
 
 import io.github.oryxlabs.oryxos.core.config.ProviderDefinition;
 import io.github.oryxlabs.oryxos.core.error.OryxError;
-import io.github.oryxlabs.oryxos.core.model.ChatMessage;
-import io.github.oryxlabs.oryxos.core.provider.*;
+import io.github.oryxlabs.oryxos.core.provider.ProviderPort;
+import io.github.oryxlabs.oryxos.core.provider.ProviderReply;
+import io.github.oryxlabs.oryxos.core.provider.ProviderRequest;
 import io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming;
 import java.time.Duration;
 
@@ -17,46 +18,30 @@ final class SpringAiProvider implements ProviderPort, AutoCloseable {
     this.clients = new OpenAiClientFactory(definition, credential);
   }
 
-  static void validate(ProviderRequest request) {
-    if (request.model() == null || request.model().isBlank() || request.iteration() < 1)
-      throw OryxError.configuration("provider request model/iteration");
-    var users =
-        request.orderedMessages().stream().filter(m -> m.role() == ChatMessage.Role.USER).toList();
-    if (users.isEmpty() || users.getLast().content() == null || users.getLast().content().isBlank())
-      throw new OryxError("INVALID_TASK", "Provide non-blank task content before calling a model");
-    if (request.remainingDuration().isNegative() || request.remainingDuration().isZero())
-      throw new OryxError("PROVIDER_TIMEOUT", "No time remains for a model call");
-  }
-
+  /** Requests reach this adapter only after ProviderService validated them. */
   public ProviderReply call(ProviderRequest request) {
-    validate(request);
-    if (!definition.name().equals(request.providerName()))
+    if (!definition.name().equals(request.providerName())) {
       throw OryxError.configuration("provider routing mismatch");
+    }
     long start = System.nanoTime();
     try {
       var messages = ProviderMessageMapper.messages(request);
       var wire = ProviderOptionsMapper.request(definition, request, messages);
       Duration remaining = request.remainingDuration().minusNanos(System.nanoTime() - start);
-      {
-        var response =
-            RuntimeTiming.call(
-                "provider.transport",
-                () ->
-                    clients.call(
-                        remaining,
-                        client ->
-                            request.dispatcher() == null
-                                ? client.chatCompletionEntity(wire).getBody()
-                                : request
-                                    .dispatcher()
-                                    .call(() -> client.chatCompletionEntity(wire).getBody())));
-        if (expired(start, request.remainingDuration())) throw timeout();
-        return RuntimeTiming.call(
-            "provider.reply", () -> ProviderMessageMapper.reply(request, response));
+      var response =
+          RuntimeTiming.call(
+              "provider.transport",
+              () -> clients.call(remaining, client -> client.chatCompletionEntity(wire).getBody()));
+      if (expired(start, request.remainingDuration())) {
+        throw timeout();
       }
+      return RuntimeTiming.call(
+          "provider.reply", () -> ProviderMessageMapper.reply(request, response));
     } catch (RuntimeException error) {
       // A timed-out streaming body can surface as JSON decoding EOF after Spring closes it.
-      if (expired(start, request.remainingDuration())) throw timeout();
+      if (expired(start, request.remainingDuration())) {
+        throw timeout();
+      }
       throw ProviderErrorMapper.failure(error);
     }
   }

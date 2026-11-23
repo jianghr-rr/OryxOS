@@ -102,11 +102,11 @@ ORYXOS_REPO=/Users/jianghaoran/github/OryxOS
 python3 "$ORYXOS_REPO/tools/dev/test_build_environment.py"
 ```
 
-`us1-contract`有15个必跑用例；其中`ProviderSmokeTest`是可执行独立演示：
+`us1-contract`有20个必跑用例。Provider按验收点分为`ProviderRoutingTest`、`ProviderToolSchemaTest`、`ProviderAuditTest`、`ProviderProtocolTest`、`ProviderTransportTest`、`ProviderAdmissionTest`和`ProviderArchitectureGuardTest`；其中`ProviderSmokeTest`是可执行独立演示：
 两个AGENT.md → 真实适配代码 → 两个本地HTTP接收器，检查来源、响应与调用记录。
 不需要公网账号，不声称这证明真实DeepSeek/Kimi连通。`status`读取当前磁盘上的Agent配置，
 只显示通知名称；运行中进程仍持有启动配置快照。US1当时模型调用只有关联结构化日志；当前US5已提供SQLite审计。
-端口只接收消息、Schema和时限，供应商选项由注册表取runtime.yaml快照，不接受任务覆盖。
+端口只接收消息、Schema和时限，供应商选项由`ProviderService`取runtime.yaml快照，不接受任务覆盖。
 工具提议只作为数据返回；未知wire名携带UNKNOWN_TOOL，后续引擎负责配对错误，无自动工具执行。
 
 真实普通请求另有严格入口。需先具备：
