@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Point this clone's git hooks at tools/dev/hooks (pre-commit format + PMD/Checkstyle gate).
+set -euo pipefail
+
+repo="$(git rev-parse --show-toplevel)"
+chmod +x "$repo/tools/dev/hooks/"*
+git -C "$repo" config core.hooksPath tools/dev/hooks
+echo "Installed: core.hooksPath=tools/dev/hooks"
+echo "Uninstall: git config --unset core.hooksPath"

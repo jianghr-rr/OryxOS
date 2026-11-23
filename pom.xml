@@ -322,4 +322,37 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- G7: run only via tools/dev/mvnw -Pdependency-scan dependency-check:aggregate; never part of the default build. -->
+    <profile>
+      <id>dependency-scan</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>${dependency-check.version}</version>
+            <configuration>
+              <failBuildOnCVSS>7</failBuildOnCVSS>
+              <failOnError>true</failOnError>
+              <suppressionFiles>
+                <suppressionFile>${oryxos.config.dir}/dependency-check/suppressions.xml</suppressionFile>
+              </suppressionFiles>
+              <formats>
+                <format>HTML</format>
+                <format>JSON</format>
+              </formats>
+              <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+              <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+              <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+              <nodeAuditAnalyzerEnabled>false</nodeAuditAnalyzerEnabled>
+              <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
+              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -12,4 +12,38 @@
   <Match>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
+
+  <!-- reason: the shell tool executes commands by design; argv, directory and environment come from ProcessPolicy (WhitelistSandbox) authorization; registered: 2026-11-21 -->
+  <Match>
+    <Class name="io.github.oryxlabs.oryxos.tool.shell.ShellTool"/>
+    <Bug pattern="COMMAND_INJECTION"/>
+  </Match>
+
+  <!-- reason: MCP stdio servers are launched from the operator-maintained mcp_servers.yaml, not from model input; registered: 2026-11-21 -->
+  <Match>
+    <Class name="io.github.oryxlabs.oryxos.tool.mcp.SanitizedStdioTransport"/>
+    <Bug pattern="COMMAND_INJECTION"/>
+  </Match>
+
+  <!-- reason: SQL text is built only from code constants and column names; every value is a bound parameter; registered: 2026-11-21 -->
+  <Match>
+    <Or>
+      <Class name="io.github.oryxlabs.oryxos.storage.query.SqliteReadOnlyQueries"/>
+      <Class name="io.github.oryxlabs.oryxos.storage.session.JpaSessionStore"/>
+      <Class name="io.github.oryxlabs.oryxos.storage.transaction.StoredSql"/>
+    </Or>
+    <Bug pattern="SQL_INJECTION_JDBC"/>
+  </Match>
+
+  <!-- reason: PRAGMA busy_timeout takes a computed int, not external input; registered: 2026-11-21 -->
+  <Match>
+    <Class name="io.github.oryxlabs.oryxos.storage.transaction.WorkspaceWriteCoordinator"/>
+    <Bug pattern="SQL_INJECTION_JDBC"/>
+  </Match>
+
+  <!-- reason: compares public migration checksums, not secrets; timing side channels are irrelevant; registered: 2026-11-21 -->
+  <Match>
+    <Class name="io.github.oryxlabs.oryxos.storage.migration.SchemaMigrator"/>
+    <Bug pattern="UNSAFE_HASH_EQUALS"/>
+  </Match>
 </FindBugsFilter>

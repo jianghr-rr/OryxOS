@@ -39,7 +39,7 @@ class Harness(unittest.TestCase):
         self.directory.cleanup()
 
     def install_monitoring(self, promtool_fails=False):
-        for path in ('opt/prometheus/current/prometheus', 'opt/grafana/current/bin/grafana', 'opt/prometheus/current/promtool'):
+        for path in ('opt/monitoring/prometheus/current/prometheus', 'opt/monitoring/grafana/current/bin/grafana', 'opt/monitoring/prometheus/current/promtool'):
             (self.root / path).parent.mkdir(parents=True, exist_ok=True)
             (self.root / path).write_text('#!/bin/bash\nexit %d\n' % (1 if promtool_fails and path.endswith('promtool') else 0))
             (self.root / path).chmod(0o755)

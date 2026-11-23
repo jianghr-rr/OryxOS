@@ -97,6 +97,7 @@ def run(repo, java, args):
     if 'dependency-scan' in profiles and 'NVD_API_KEY' in os.environ:
         env['NVD_API_KEY'] = os.environ['NVD_API_KEY']
     settings = 'maven-settings-ci.xml' if os.environ.get('GITHUB_ACTIONS') == 'true' else 'maven-settings.xml'
+    (dev / 'evidence').mkdir(parents=True, exist_ok=True)
     excluded = {'local': 'real-integration,kernel-soak,kernel-short-gate,kernel-writer-probe,kernel-redactor-probe,kernel-reader-probe,kernel-provider-probe', 'real': 'kernel-soak', 'soak': 'real-integration'}[mode]
     command = [str(repo / 'mvnw'), *args, '-s', str(repo / 'tools/dev' / settings),
                '-gs', str(repo / 'tools/dev/maven-global-settings.xml'), f'-Dmaven.repo.local={dev / "repository"}',

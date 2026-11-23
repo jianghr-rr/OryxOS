@@ -129,9 +129,9 @@ def load_baseline(text):
     return {(e['tool'], e['rule'], e['file']) for e in data['entries']}
 
 
-def write_baseline(repo, entries):
-    head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=repo, capture_output=True, text=True).stdout.strip()
-    data = {'schema': 1, 'createdAt': datetime.date.today().isoformat(), 'baseCommit': head,
+def write_baseline(repo, entries, created=None, base=None):
+    head = base or subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=repo, capture_output=True, text=True).stdout.strip()
+    data = {'schema': 1, 'createdAt': created or datetime.date.today().isoformat(), 'baseCommit': head,
             'entries': [{'tool': t, 'rule': r, 'file': f} for t, r, f in sorted(entries, key=lambda e: (e[0], e[2], e[1]))]}
     path = repo / BASELINE
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -206,9 +206,11 @@ def baseline_command(repo, options):
         write_baseline(repo, entries)
         print(f'Baseline initialized: {len(entries)} entries')
     elif options.prune:
-        current = load_baseline(path.read_text())
+        text = path.read_text()
+        current, meta = load_baseline(text), json.loads(text)
         kept = current & main_entries(collect(repo, modules_of(repo), TOOLS))
-        write_baseline(repo, kept)
+        if kept != current:
+            write_baseline(repo, kept, meta.get('createdAt'), meta.get('baseCommit'))
         print(f'Baseline pruned: {len(current) - len(kept)} removed, {len(kept)} kept')
     else:
         shown = subprocess.run(['git', 'show', f'{options.check_shrink}:{BASELINE}'], cwd=repo, capture_output=True, text=True)

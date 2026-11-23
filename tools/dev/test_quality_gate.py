@@ -124,6 +124,23 @@ class QualityGateTest(unittest.TestCase):
         entries = json.loads((self.repo / gate.BASELINE).read_text())['entries']
         self.assertEqual([{'tool': 'pmd', 'rule': 'SystemPrintln', 'file': MAIN}], entries)
 
+    def test_prune_keeps_creation_metadata_and_skips_noop_rewrite(self):
+        (self.repo / 'pom.xml').write_text('<project xmlns="http://maven.apache.org/POM/4.0.0"><modules><module>mod</module></modules></project>')
+        (self.repo / 'config/quality').mkdir(parents=True)
+        path = self.repo / gate.BASELINE
+        path.write_text(json.dumps({'schema': 1, 'createdAt': '2000-01-01', 'baseCommit': 'abc123', 'entries': [
+            {'tool': 'pmd', 'rule': 'EmptyCatchBlock', 'file': MAIN}, {'tool': 'pmd', 'rule': 'SystemPrintln', 'file': MAIN}]}))
+        options = type('O', (), {'init': False, 'prune': True, 'check_shrink': None})
+        self.pmd([(MAIN, 'EmptyCatchBlock'), (MAIN, 'SystemPrintln')])
+        before = path.read_bytes()
+        gate.baseline_command(self.repo, options)
+        self.assertEqual(before, path.read_bytes())
+        self.pmd([(MAIN, 'SystemPrintln')])
+        gate.baseline_command(self.repo, options)
+        data = json.loads(path.read_text())
+        self.assertEqual(('2000-01-01', 'abc123'), (data['createdAt'], data['baseCommit']))
+        self.assertEqual([{'tool': 'pmd', 'rule': 'SystemPrintln', 'file': MAIN}], data['entries'])
+
 
 if __name__ == '__main__':
     unittest.main()

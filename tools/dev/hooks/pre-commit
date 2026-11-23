@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Pre-commit gate: format (G1) plus PMD/Checkstyle new-violation check (G2/G3) on the working tree.
+# SpotBugs and tests stay in `tools/dev/mvnw clean verify`. Install with tools/dev/install-hooks.
+set -euo pipefail
+
+repo="$(git rev-parse --show-toplevel)"
+cd "$repo"
+
+if [[ -z ${ORYXOS_JAVA_HOME:-} ]]; then
+  echo "[pre-commit] ORYXOS_JAVA_HOME is not set; export it to a JDK 21 home before committing." >&2
+  exit 1
+fi
+
+if git diff --cached --quiet -- '*.java' 'pom.xml' '*/pom.xml' 'config/**'; then
+  exit 0
+fi
+
+start=$(date +%s)
+for module in oryxos-*/; do
+  rm -f "${module}target/pmd.xml" "${module}target/checkstyle-result.xml"
+done
+
+# compile is required: without it the reactor cannot resolve sibling modules for pmd:pmd.
+if ! ./tools/dev/mvnw -q -B compile pmd:pmd checkstyle:checkstyle; then
+  echo "[pre-commit] Format or analysis failed. To fix formatting run: ./tools/dev/mvnw spotless:apply" >&2
+  exit 1
+fi
+
+if ! /usr/bin/python3 -I tools/dev/quality-gate.py --repo "$repo" check --tools pmd,checkstyle; then
+  echo "[pre-commit] New PMD/Checkstyle violations; fix them or register a justified exception (config/quality/README.md)." >&2
+  exit 1
+fi
+echo "[pre-commit] passed in $(( $(date +%s) - start ))s"

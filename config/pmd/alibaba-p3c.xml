@@ -61,8 +61,12 @@
   <rule ref="category/java/errorprone.xml/EmptyCatchBlock"/>
   <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock"/>
   <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
-  <rule ref="category/java/errorprone.xml/AvoidCatchingNPE"/>
-  <rule ref="category/java/errorprone.xml/AvoidCatchingThrowable"/>
+  <!-- Replaces AvoidCatchingNPE/AvoidCatchingThrowable, deprecated in PMD 7 and removed in PMD 8. -->
+  <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException">
+    <properties>
+      <property name="typesThatShouldNotBeCaught" value="java.lang.NullPointerException,java.lang.Throwable"/>
+    </properties>
+  </rule>
   <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes"/>
   <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
 

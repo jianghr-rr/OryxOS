@@ -1,0 +1,2307 @@
+{
+  "schema": 1,
+  "createdAt": "2026-11-21",
+  "baseCommit": "5b288bad98b64c3e7a3217034615e76f681b7d14",
+  "entries": [
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/audit/StructuredLogAuditSink.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/AgentRuntimeConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/AgentRuntimeConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/McpConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/McpConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryToolConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/PersistentRuntimeConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ProviderConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ProviderConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/RuntimeConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/RuntimeConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ScheduleConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/StorageLifecycle.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/StorageLifecycle.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ToolConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/WebApiConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/WebApiConfiguration.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootCliQueries.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootRuntimeLauncher.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootRuntimeLauncher.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeRecoveryService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeStartupCheck.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeStartupCheck.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/schedule/SpringScheduleAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/schedule/SpringScheduleAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliChannelAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliChannelAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliExecutionAwaiter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliExecutionAwaiter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliOutput.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliOutput.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/OryxCommandLine.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/OryxCommandLine.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/InitCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/InitCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/SessionListCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/SessionListCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ToolListCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ToolListCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ToolListCommand.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentProfile.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/audit/ToolCallRecord.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigLoader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigLoader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/PromptBuilder.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/Execution.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/Execution.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/Execution.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ExecutionContext.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ExecutionContext.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/RecordingScope.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/LongTermMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryEntry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryEntry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryRecordStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ToolNameMap.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ToolNameMap.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/provider/ProviderReply.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/provider/ProviderRequest.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/CorrectionTracker.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/CorrectionTracker.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ReActLoop.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ReActLoop.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ReActLoop.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/Deadline.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/Deadline.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/IncidentDetail.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeGate.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeTiming.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleCoordinator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleCoordinator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/Redactor.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/Redactor.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/SecretResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/SecretResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/HistorySelector.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/HistorySelector.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/Session.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/Session.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionHistoryPort.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "OverloadMethodsDeclarationOrderCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolExecutor.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolExecutor.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolRegistryPort.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceHandle.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInspector.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInspector.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryBackendFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryService.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/Mem0MemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/Mem0MemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/Mem0MemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MemoryTextCodec.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MemoryTextCodec.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/SqliteMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/SqliteMemoryStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Config.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Config.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/RecallMemoryTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/RecallMemoryTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/SaveMemoryTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/SaveMemoryTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderErrorMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderMessageMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderMessageMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderOptionsMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AbbreviationAsWordInNameCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ToolWireNameMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/JpaAuditSink.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/JpaAuditSink.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/LlmCallEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/ToolInvocationEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/ExecutionEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/JpaExecutionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/JpaExecutionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResourceFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResourceFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResources.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResources.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/JpaMemoryRecordStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/JpaMemoryRecordStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/MemoryEntryEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/RemoteLinkEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/RemoteLinkEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "OverloadMethodsDeclarationOrderCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEvidenceReader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEvidenceReader.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentRepository.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentRepository.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/WorkspaceStateEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/JpaScheduleStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/JpaScheduleStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/ScheduleEventEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/ScheduleStateEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "OverloadMethodsDeclarationOrderCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/MessageEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/SessionEntity.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/sqlite/SqliteConnectionFactory.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredJson.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredSql.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/ToolRegistry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/ToolRegistry.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/ListDirTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/ReadFileTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpGetTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpGetTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpPostTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpTargetPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpTargetPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "OverloadMethodsDeclarationOrderCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolDiscovery.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolDiscovery.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "MultipleVariableDeclarationsCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/AnnotatedToolAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/AnnotatedToolAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/NativeToolRegistrar.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/NativeToolRegistrar.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotificationTargetResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotificationTargetResolver.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotifyTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/WebhookNotifyAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/WebhookNotifyAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/policy/ToolPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/policy/ToolRetryPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ShellTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ShellTool.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/validation/ToolArgumentValidator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/validation/ToolArgumentValidator.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ApiExceptionHandler.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ApiExceptionHandler.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ContractDtos.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/PublicDtoMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/PublicDtoMapper.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/RequestLimits.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/RequestLimits.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/AgentController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/CapabilityController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ExecutionController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/RuntimeController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ScheduleController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ScheduleController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/SessionController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/SystemController.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/HttpContract.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/PublicSchemas.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/PublicSchemas.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "AvoidStarImportCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/RuntimeOpenApi.java"
+    },
+    {
+      "tool": "checkstyle",
+      "rule": "NeedBracesCheck",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/RuntimeOpenApi.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/audit/StructuredLogAuditSink.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/AgentRuntimeConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/McpConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/MemoryConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/ProviderConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/RuntimeConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/StorageLifecycle.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/config/WebApiConfiguration.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/BootRuntimeLauncher.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeRecoveryService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeStartupCheck.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeStartupCheck.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/schedule/SpringScheduleAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliChannelAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliChannelAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliExecutionAwaiter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliExecutionAwaiter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliOutput.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-channel-cli/src/main/java/io/github/oryxlabs/oryxos/channel/cli/CliOutput.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/OryxCommandLine.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/InitCommand.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileCommand.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/SessionListCommand.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ToolListCommand.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigLoader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/RuntimeConfigLoader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/context/ContextLoader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/Execution.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/ExecutionContext.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/execution/RecordingScope.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/LongTermMemoryStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/memory/MemoryEntry.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/model/ToolNameMap.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/CorrectionTracker.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/react/ReActLoop.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/Deadline.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeGate.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/RuntimeTiming.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "CompareObjectsWithEquals",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleCoordinator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/schedule/ScheduleCoordinator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/Redactor.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/SecretResolver.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/security/SecretResolver.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/HistorySelector.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/Session.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolExecutor.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/tool/ToolExecutor.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceHandle.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInspector.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInspector.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/MemoryService.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/Mem0MemoryStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MemoryTextCodec.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MemoryTextCodec.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/SqliteMemoryStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Client.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/mem0/Mem0Config.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/RecallMemoryTool.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/tool/SaveMemoryTool.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderErrorMapper.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderMessageMapper.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/audit/JpaAuditSink.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/execution/JpaExecutionStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResourceFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResourceFactory.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/lifecycle/StorageResources.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/JpaMemoryRecordStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/memory/JpaMemoryRecordStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/migration/SchemaMigrator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/query/SqliteReadOnlyQueries.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentEvidenceReader.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/IncidentRepository.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/schedule/JpaScheduleStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/session/JpaSessionStore.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredJson.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "CompareObjectsWithEquals",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredSql.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/StoredSql.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "AvoidCatchingGenericException",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/transaction/WorkspaceWriteCoordinator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/ToolRegistry.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/ControlledHttpClient.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpGetTool.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpTargetPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/http/HttpTargetPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolDiscovery.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpToolDiscovery.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/AnnotatedToolAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/NativeToolRegistrar.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotificationTargetResolver.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/WebhookNotifyAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/policy/ToolPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ShellTool.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/validation/ToolArgumentValidator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/validation/ToolArgumentValidator.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/ApiExceptionHandler.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/PublicDtoMapper.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/PublicDtoMapper.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/RequestLimits.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "PreserveStackTrace",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/api/RequestLimits.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/controller/ScheduleController.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "OryxThreadPoolCreation",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/execution/HttpExecutionAdapter.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/PublicSchemas.java"
+    },
+    {
+      "tool": "pmd",
+      "rule": "ControlStatementBraces",
+      "file": "oryxos-web/src/main/java/io/github/oryxlabs/oryxos/web/openapi/RuntimeOpenApi.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/CliRuntimeView.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-boot/src/main/java/io/github/oryxlabs/oryxos/boot/runtime/RuntimeHttpService.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-cli/src/main/java/io/github/oryxlabs/oryxos/cli/command/ProfileFiles.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentCatalog.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/config/SafeYaml.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "PREDICTABLE_RANDOM",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/runtime/Uuids.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "AT_STALE_THREAD_WRITE_OF_PRIMITIVE",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/session/SessionManager.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceInitializer.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "USO_UNSAFE_METHOD_SYNCHRONIZATION",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "USO_UNSAFE_STATIC_METHOD_SYNCHRONIZATION",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceProcessLock.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/workspace/WorkspaceResolver.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-memory/src/main/java/io/github/oryxlabs/oryxos/memory/backend/MarkdownMemoryStore.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "AT_STALE_THREAD_WRITE_OF_PRIMITIVE",
+      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-storage/src/main/java/io/github/oryxlabs/oryxos/storage/runtime/RunJournal.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/FileAccessPolicy.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/ListDirTool.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/file/WriteFileTool.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/McpClientManager.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/mcp/SanitizedStdioTransport.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/nativeext/AnnotatedToolAdapter.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "WMI_WRONG_MAP_ITERATOR",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/NotificationTargetResolver.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/notify/WebhookNotifyAdapter.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ProcessPolicy.java"
+    },
+    {
+      "tool": "spotbugs",
+      "rule": "REC_CATCH_EXCEPTION",
+      "file": "oryxos-tool/src/main/java/io/github/oryxlabs/oryxos/tool/shell/ShellTool.java"
+    }
+  ]
+}
