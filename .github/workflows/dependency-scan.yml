@@ -41,8 +41,11 @@ jobs:
         id: date
         run: echo "day=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-      - name: Cache vulnerability database
-        uses: actions/cache@v4
+      # restore/save are split because actions/cache only saves on job success, and this job fails
+      # whenever a CVE is found, which would force a full NVD download on every run.
+      - name: Restore vulnerability database
+        id: nvd-cache
+        uses: actions/cache/restore@v4
         with:
           path: .oryxos-dev/repository/org/owasp/dependency-check-data
           key: dependency-check-data-${{ steps.date.outputs.day }}
@@ -53,6 +56,13 @@ jobs:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
           ORYXOS_JAVA_HOME: ${{ env.JAVA_HOME }}
         run: ./tools/dev/mvnw -B -ntp -Pdependency-scan dependency-check:aggregate
+
+      - name: Save vulnerability database
+        if: always() && steps.nvd-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .oryxos-dev/repository/org/owasp/dependency-check-data
+          key: dependency-check-data-${{ steps.date.outputs.day }}
 
       - name: Upload dependency-check report
         if: always()
