@@ -10,6 +10,37 @@ spring:
   threads:
     virtual:
       enabled: true
+  output:
+    ansi:
+      enabled: detect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      show-components: never
+      # oryxRuntime exists only in the servlet runtime; chat and other non-web modes omit it.
+      validate-group-membership: false
+      group:
+        readiness:
+          include: readinessState,oryxRuntime
+        liveness:
+          include: livenessState
+  info:
+    build:
+      enabled: true
+  metrics:
+    tags:
+      application: oryxos
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 server:
   address: 127.0.0.1

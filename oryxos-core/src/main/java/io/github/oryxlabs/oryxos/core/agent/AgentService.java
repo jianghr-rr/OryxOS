@@ -3,6 +3,7 @@ package io.github.oryxlabs.oryxos.core.agent;
 import io.github.oryxlabs.oryxos.core.error.OryxError;
 import io.github.oryxlabs.oryxos.core.execution.*;
 import io.github.oryxlabs.oryxos.core.model.*;
+import io.github.oryxlabs.oryxos.core.observability.MdcContext;
 import io.github.oryxlabs.oryxos.core.react.ReActLoop;
 import io.github.oryxlabs.oryxos.core.runtime.*;
 import io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming;
@@ -16,9 +17,12 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** The single ingress for CLI, scheduler and future HTTP. Stores never own session policy. */
 public final class AgentService implements AutoCloseable {
+  private static final Logger LOG = LoggerFactory.getLogger(AgentService.class);
   private static final ThreadLocal<Consumer<Handle>> INLINE_WORKER = new ThreadLocal<>();
 
   public static Handle withInlineWorker(Consumer<Handle> onAdmitted, Supplier<Handle> starter) {
@@ -280,12 +284,24 @@ public final class AgentService implements AutoCloseable {
               }
             }
           };
+      Runnable tracedTask =
+          () -> {
+            try (var scope = MdcContext.put("executionId", execution.id().toString())) {
+              workerTask.run();
+              var finished = ctx.snapshot();
+              LOG.debug(
+                  "execution_finished status={} errorCode={}",
+                  finished.status(),
+                  finished.errorCode());
+            }
+          };
       if (inlineObserver != null) {
         inlineObserver.accept(handle);
         RuntimeTiming.run("agent.dispatch.queue", () -> {});
-        workerTask.run();
+        tracedTask.run();
       } else {
-        workers.execute(RuntimeTiming.wrap("agent.dispatch.queue", workerTask));
+        workers.execute(
+            MdcContext.capture().wrap(RuntimeTiming.wrap("agent.dispatch.queue", tracedTask)));
       }
       return handle;
     } catch (RuntimeException error) {

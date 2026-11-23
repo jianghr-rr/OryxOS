@@ -2,6 +2,8 @@ package io.github.oryxlabs.oryxos.web.api;
 
 import io.github.oryxlabs.oryxos.core.error.OryxError;
 import io.github.oryxlabs.oryxos.core.security.Redactor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestControllerAdvice
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ApiExceptionHandler {
+  private static final Logger LOG = LoggerFactory.getLogger(ApiExceptionHandler.class);
   private final Redactor redactor;
 
   public ApiExceptionHandler(Redactor redactor) {
@@ -82,6 +85,8 @@ public class ApiExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<?> unexpected(Exception e) {
+    // The logging layer redacts the message and stack trace.
+    LOG.error("Unexpected request failure", e);
     return response(e);
   }
 }
