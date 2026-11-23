@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Each <suppress> must carry <notes> containing "reason:" and "registered: YYYY-MM-DD".
-  Example:
-  <suppress>
-    <notes>reason: false positive, CPE matches an unrelated product; registered: 2026-11-21</notes>
-    <packageUrl regex="true">^pkg:maven/com\.example/lib@.*$</packageUrl>
-    <cve>CVE-0000-00000</cve>
-  </suppress>
+  Accepted vulnerabilities carry an "until" date and pin the exact version, so an upgrade or the
+  expiry date brings them back into the scan. Triage record: specs/004-refactor-engineering-foundation/evidence/US4-cve-triage.md
 -->
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+  <suppress>
+    <notes>reason: false positive, OryxOS's own modules oryxos-cli and oryxos-channel-cli are matched to the GitHub CLI product (cpe github:cli) by name only; registered: 2026-11-23</notes>
+    <packageUrl regex="true">^pkg:maven/io\.github\.oryx-labs/.*$</packageUrl>
+    <cpe>cpe:/a:github:cli</cpe>
+  </suppress>
+
+  <suppress until="2027-02-23Z">
+    <notes>reason: accepted until the Spring Boot 4 migration; Spring Framework 6.2.19 is the last 6.2 release. Affected features are server-side WebFlux, RSocket, the Jetty reactive adapter, Aalto XML, WebFlux WebSocket and functional endpoints. spring-webflux is only a transitive jar of spring-ai-openai and WebClient is unused; there is no reactive server runtime (no reactor-netty, Jetty, Aalto or RSocket on the classpath) and OryxOS runs as a Spring MVC servlet application on Tomcat or with web-application-type none; registered: 2026-11-23</notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*@6\.2\.19$</packageUrl>
+    <cve>CVE-2026-47885</cve>
+    <cve>CVE-2026-47888</cve>
+    <cve>CVE-2026-47889</cve>
+    <cve>CVE-2026-47891</cve>
+    <cve>CVE-2026-47892</cve>
+    <cve>CVE-2026-47893</cve>
+  </suppress>
+  <suppress until="2027-02-23Z">
+    <notes>reason: accepted until the Spring Boot 4 migration; Spring Framework 6.2.19 is the last 6.2 release. Affected features are unused: SSE and SSE view fragments, XsltView rendering (no XSLT view resolver; the only view is the explicit forward:/admin/index.html), SpEL evaluation of user input (no SpEL parser in OryxOS code), data binding of user-supplied property paths (JSON request bodies only, no @ModelAttribute or DataBinder); registered: 2026-11-23</notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*@6\.2\.19$</packageUrl>
+    <cve>CVE-2026-47884</cve>
+    <cve>CVE-2026-47886</cve>
+    <cve>CVE-2026-47890</cve>
+    <cve>CVE-2026-59282</cve>
+    <cve>CVE-2026-59283</cve>
+    <cve>CVE-2026-59313</cve>
+  </suppress>
+
+  <suppress until="2027-02-23Z">
+    <notes>reason: accepted until the Spring AI 2 migration; Spring AI 1.1.8 is the last 1.1 release. OryxOS uses only the low-level OpenAiApi and @Tool schema generation: no PDF document reader (CVE-2026-47851), no ONNX transformers module (CVE-2026-47852), and Spring AI tool dispatch is not used; ToolPolicy rejects tools outside the Agent allowlist before any IO (CVE-2026-59318, covered by ToolSafetyContractTest); registered: 2026-11-23</notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.ai/spring-ai-.*@1\.1\.8$</packageUrl>
+    <cve>CVE-2026-47851</cve>
+    <cve>CVE-2026-47852</cve>
+    <cve>CVE-2026-59318</cve>
+  </suppress>
 </suppressions>

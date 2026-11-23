@@ -38,6 +38,10 @@
     <findsecbugs.version>1.14.0</findsecbugs.version>
     <dependency-check.version>13.0.0</dependency-check.version>
     <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
+    <!-- Overrides of Spring Boot 3.5.16 managed versions to clear G7 findings that have fixes within the same line. -->
+    <tomcat.version>10.1.62</tomcat.version>
+    <httpclient5.version>5.6.5</httpclient5.version>
+    <httpcore5.version>5.5</httpcore5.version>
   </properties>
 
   <modules>
@@ -76,7 +80,7 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.51.3.0</version>
+        <version>3.54.1.0</version>
       </dependency>
       <dependency>
         <groupId>com.networknt</groupId>
