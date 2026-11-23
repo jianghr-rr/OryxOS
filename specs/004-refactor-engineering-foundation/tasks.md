@@ -219,6 +219,7 @@
 - [X] T060 [P] [US3] 新建 `tools/dev/hooks/pre-commit`（bash）：执行 `tools/dev/mvnw -q spotless:check pmd:pmd checkstyle:checkstyle`（实施注：改为 `compile pmd:pmd checkstyle:checkstyle`，单独 `pmd:pmd` 无法解析 reactor 兄弟模块；`compile` 已经过 `spotless:check`，见 P0-compat），再用 `quality-gate.py --tools pmd,checkstyle` 判定；`ORYXOS_JAVA_HOME` 缺失时提示后以退出码 1 拒绝；失败时打印 `./tools/dev/mvnw spotless:apply`。新建 `tools/dev/install-hooks`：执行 `git config core.hooksPath tools/dev/hooks`，并打印卸载命令 `git config --unset core.hooksPath`（`quality-gate.py` 需支持 `--tools` 参数）
 - [X] T061 [US3] 执行 `./tools/dev/install-hooks`，提交一次格式不合规的改动，确认被拒绝，并记录钩子耗时（目标 ≤ 60 秒）；然后撤销该改动，结果写入 `evidence/US3-hook.md`（依赖 T060）
 - [ ] T062 [US3] 【需授权】把 US1–US3 的改动推送到功能分支：先推送一个故意不合规的提交，确认 `Full Verify` 标红且失败步骤名可辨；修复后变绿；记录 CI 总时长（包含原先被排除的 `kernel-soak-harness` 分组），超过 45 分钟时向维护者报告，不擅自调整分组；结果写入 `evidence/US3-ci.md`
+  - 进度（2026-11-23）：功能分支已推送，`Full Verify` 通过，约 15.7 分钟；故意不合规提交的标红验证未执行
 - [ ] T063 [US3] 先在 `docs/EngineeringBaseline.md` 中写出“分支保护”一节（GitHub Settings → Branches → Add rule → `main` → Require status checks: `Full Verify`、`Dependency Scan` → Do not allow bypassing；其余章节由 T069 补齐）。随后 **【需授权】** 按该节开启 main 保护（禁止直接推送；两个检查在 GitHub 上至少运行过一次才可选为必过项），通过 PR 合入，确认部署工作流先跑 `quality` 再发布、健康检查通过、`/var/log/oryxos/oryxos.json` 开始写入；按 [quickstart.md §5](./quickstart.md#5-服务器监控栈与配置同步) 执行 5.7–5.9，结果写入 `evidence/US3-deploy.md`（依赖 T057、T058、T062、T066、T068；监控部分依赖 T055）
   - 进度（2026-11-23）：“分支保护”一节已写入 `docs/EngineeringBaseline.md` 第 8 节；开启保护、合入与服务器验证待授权，本任务保持未完成
 
