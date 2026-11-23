@@ -6,7 +6,7 @@ import org.slf4j.MDC;
 
 /** The request's {@code traceId}: response envelopes and log lines read the same MDC value. */
 public final class RequestTrace {
-  public static final String MDC_KEY = "traceId";
+      public static final String MDC_KEY =   "traceId";
   private static final Pattern ACCEPTED = Pattern.compile("^[A-Za-z0-9._:-]{8,64}$");
 
   private RequestTrace() {}
