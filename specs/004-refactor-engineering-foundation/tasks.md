@@ -186,7 +186,8 @@
 - [X] T053 [US2] 新建 `deploy/tencent-cloud/scripts/install-monitoring.sh`，按 [contracts/server-config.md §5](./contracts/server-config.md#5-一次性安装脚本-install-monitoringsh) 的 8 个步骤实现，每步都能重复执行；对 `127.0.0.1:9090` 与 `127.0.0.1:3300` 做端口预检；按 `versions.env` 校验 sha256；用 `grafana --version` 与 `prometheus --version` 做 glibc 预检；密码文件只生成一次，只打印路径不打印值；`monitoring.env` 缺失时写占位文件并提示；不修改 nginx、防火墙、Docker 和 `oryxos.service`（依赖 T044、T051）
 - [X] T054 [P] [US2] 修改 `deploy/tencent-cloud/nginx/oryxos-baota-vhost.conf.tpl`：新增 `location ~ ^/actuator(/|$) { return 403; }`；在 `location /` 中加入 `proxy_set_header X-Request-ID $request_id;`；按 [contracts/server-config.md §4](./contracts/server-config.md#4-nginx-参考片段) 新增 `/grafana/`（含 `proxy_set_header Authorization "";`）与 `/prometheus/`，二者都启用 Basic Auth；顶部注释说明 9090 与 3300 不得放行
 - [ ] T055 [US2] 【需授权】在服务器上首次安装：维护者在本机下载并核对两个 tar 包，`scp` 到服务器，填写 `/etc/oryxos-monitoring/monitoring.env`，执行 `install-monitoring.sh`，并在宝塔面板中应用 T054 的 nginx 片段；按 [quickstart.md §5](./quickstart.md#5-服务器监控栈与配置同步) 的 5.1–5.6 验收，观察 24 小时后再记录一次 `MemoryCurrent`（SC-009），结果写入 `evidence/US2-server.md`（主机名和 IP 脱敏）（依赖 T053、T054，以及 US3 中 T063 部署出带 actuator 的新版本）
-  - 进度（2026-11-23）：安装与 nginx 已完成，5.1、5.4 通过，5.5 看板已预配置并可登录查看，Grafana 上限按 D-7 放宽；5.3 `oryxos` 目标、5.5 数据曲线、5.6 日志文件与 24 小时内存复测待新版本部署后完成
+  - 进度（2026-11-23）：安装与 nginx 已完成，5.1、5.4 通过，5.5 看板已预配置并可登录查看，Grafana 上限按 D-7 放宽；新版本部署后 5.3 `oryxos` 目标为 `up`、5.5 看板有数据、5.6 日志文件已写入
+  - 延后（2026-11-23，维护者决定）：剩余两项不阻塞 004 收尾，在后续运维中补做后再勾选。5.2：运行满 24 小时后复测 Prometheus 与 Grafana 的 `total_rss` 并截取看板 24 小时曲线（首次读数合计 260MB，上限 768MB）；5.6：主机下次重启后确认 `/var/log/oryxos/` 旧日志仍在，不为此专门重启
 
 **Checkpoint**：本地可观测性完整可验证（T043）；服务器部分依赖 US3 的部署链交付新版本后完成 T055。
 
@@ -238,6 +239,7 @@
 - [X] T066 [US4] 新建 `.github/workflows/dependency-scan.yml`：触发为 `pull_request`、`schedule`（每日一次，UTC 时间）、`workflow_dispatch`；作业名 **`Dependency Scan`**；`actions/cache` 缓存 `.oryxos-dev/repository/org/owasp/dependency-check-data`，key 含日期；步骤 `Dependency scan (tools/dev/mvnw -Pdependency-scan dependency-check:aggregate)`，环境变量 `NVD_API_KEY: ${{ secrets.NVD_API_KEY }}`、`ORYXOS_JAVA_HOME`；`NVD_API_KEY` 为空时第一步就失败并说明原因；报告作为产物上传；不被部署工作流引用（依赖 T065）
 - [ ] T067 [US4] 实测漏洞库不可达时的行为：在本地断开 NVD 访问，或在 `workflow_dispatch` 中使用无效的 Key 运行；若插件凭旧缓存静默通过，则在 T066 中增加一步，检查数据库更新日志并显式失败。结果写入 `evidence/US4-offline.md`（依赖 T066）
   - 进度（2026-11-23）：CI 上真实遇到 NVD 返回 503，作业失败并给出原因，没有静默通过（见 `evidence/US4-cve-triage.md`）；“已有旧缓存、更新失败”的情况待验证
+  - 延后（2026-11-23，维护者决定）：旧缓存场景不阻塞 004 收尾。风险是扫描凭旧漏洞库通过，最多漏掉缓存日期之后新公布的 CVE；漏洞库缓存按天更新，`failOnError=true` 预期会让更新失败直接报错，但尚未实测
 - [X] T068 [US4] 【需授权】在验证分支给 `oryxos-boot/pom.xml` 临时加入一个带已知高危 CVE 的旧依赖，发起 PR，确认 `Dependency Scan` 失败并列出坐标、CVE 编号与 CVSS；移除后通过；登记一条带理由的示例抑制并验证生效；结果写入 `evidence/US4-scan.md`，验证分支不合入（依赖 T066）
   - 进度（2026-11-23）：验证分支 `004-verify-cve-scan`（PR #1）加入 commons-collections 3.2.1，`Dependency Scan` 失败并列出坐标、CVE-2015-6420 与 9.8 分；抑制条目已在 CI 上生效（Spring、Spring AI、CLI 误报不再报出）；不含该依赖的 PR #2 扫描通过（运行 45127674169）。记录写在 `evidence/US4-scan.md` 与 `evidence/US4-cve-triage.md`
 

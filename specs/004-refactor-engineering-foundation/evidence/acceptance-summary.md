@@ -51,4 +51,4 @@
 | A6 | tasks.md | 两处任务外修复：`tools/dev/build.py` 创建 `.oryxos-dev/evidence`（否则全新检出上 `WriterIsolationTest` 必败，CI 首跑会红）；`quality-gate.py --prune` 保留 `createdAt`/`baseCommit` 且不做无变化改写 | 已记录在 final-verify.md 与 US5-walkthrough.md |
 | A7 | US2 实现细节 | 日志参数使用 `springProperty`、`AgentService` 新增 DEBUG 行 `execution_finished`、`validate-group-membership: false`、健康指示器由 `@Bean("oryxRuntime")` 注册 | 已在 US2-local.md“与任务描述的差异”中说明 |
 
-覆盖检查：tasks.md 共 77 个任务，已完成 75 个；未完成 2 个（T055、T067），分别等待 24 小时观察与旧缓存场景实测。偏差 D-1 至 D-6 的处理与 plan 一致，D-1、D-6 已获维护者确认。
+覆盖检查：tasks.md 共 77 个任务，已完成 75 个；未完成 2 个（T055、T067），分别等待 24 小时观察与旧缓存场景实测，维护者已决定延后到后续运维中补做，不阻塞 004 收尾。偏差 D-1 至 D-6 的处理与 plan 一致，D-1、D-6 已获维护者确认。
