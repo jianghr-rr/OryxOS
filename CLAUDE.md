@@ -129,7 +129,7 @@ OryxOS 是 Java 原生、可私有部署的 **分布式 AI Agent Harness OS**。
 
 ## 开发流程与验证
 
-Spec Kit 固定为 1.2.5，安装仅位于本项目 `.venv-speckit/`；执行 CLI 时使用根目录 `./specifyw`，或先激活该虚拟环境，不要调用全局另一版本的 `specify`。Claude Code 的项目 skills 位于 `.claude/skills/`，命令使用 `/speckit-constitution`、`/speckit-specify` 等连字符形式。安装与启动方式见 [tools/spec-kit/README.md](tools/spec-kit/README.md)。初始化模板不代表项目宪章已经获确认，不能据其中的示例原则替代课程与现有设计约束。
+Spec Kit 固定为 1.2.5，安装仅位于本项目 `.venv-speckit/`；执行 CLI 时使用根目录 `./specifyw`，或先激活该虚拟环境，不要调用全局另一版本的 `specify`。项目 skills 同时维护在 `.agents/skills/`（Codex / Agent Skills，命令前缀 `$`）和 `.claude/skills/`（Claude Code，命令前缀 `/`），除 `speckit-*` 系列外，还包含 `oryxos-init`、`oryxos-lesson-dev`、`oryxos-admin-ui` 三个项目专属 skill。安装与启动方式见 [tools/spec-kit/README.md](tools/spec-kit/README.md)。初始化模板不代表项目宪章已经获确认，不能据其中的示例原则替代课程与现有设计约束。
 
 主体开发按 [AI 编程指南](docs/AiProgrammingGuide.md) 使用 Spec-Kit：constitution → specify → clarify（需要时）→ plan → tasks → implement → analyze。仅在工具已安装、工作区已初始化且任务要求对应流程时执行，不假装命令存在或分析已通过。已有宪章不可由 AI 擅自修改，主体 plan 按指南经过人工 review 后锁定；普通小增量直接修改并验证，不强制重跑全流程。
 
@@ -152,6 +152,9 @@ export ORYXOS_JAVA_HOME=/absolute/path/to/jdk-21/Contents/Home
 ./tools/dev/oryxos --root /tmp/oryxos-demo status
 ./tools/dev/oryxos --root /tmp/oryxos-demo serve
 # serve已提供业务HTTP、文件调度与/admin/管理台；Ctrl-C退出释放工作区锁
+./tools/dev/mvnw spotless:apply            # 门禁G1格式不合规时自动修复
+./tools/dev/install-hooks                  # 安装提交前钩子（格式 + PMD/Checkstyle 新增违规）
+./tools/dev/mvnw -Pdependency-scan dependency-check:aggregate  # 依赖漏洞扫描，需先export NVD_API_KEY
 ```
 
 仅改文档时检查内容一致性、文件引用及差异，不为文档改动虚构构建结果。完成任务后用中文说明修改内容、验证结果和未验证项；修改契约、配置或命令时同步相关文档。保留用户已有改动，不自动提交、推送或发布。
