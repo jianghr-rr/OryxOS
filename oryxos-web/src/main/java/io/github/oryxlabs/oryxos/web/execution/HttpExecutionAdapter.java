@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.oryxlabs.oryxos.core.agent.AgentService;
 import io.github.oryxlabs.oryxos.core.error.OryxError;
 import io.github.oryxlabs.oryxos.core.execution.Execution;
+import io.github.oryxlabs.oryxos.core.observability.MdcContext;
 import io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming;
 import io.github.oryxlabs.oryxos.core.runtime.TimeSource;
 import io.github.oryxlabs.oryxos.web.api.*;
@@ -118,10 +119,7 @@ public final class HttpExecutionAdapter implements AutoCloseable {
     Consumer<ResponseEntity<?>> completeDirect =
         entity -> writeDirect(async, response, asyncClosed, entity);
     dispatchAsync(
-        request,
-        completeDirect,
-        error -> completeDirect.accept(errors.response(error)),
-        operation);
+        request, completeDirect, error -> completeDirect.accept(errors.response(error)), operation);
   }
 
   private void writeDirect(
@@ -161,6 +159,7 @@ public final class HttpExecutionAdapter implements AutoCloseable {
     if (entered == null) entered = new Entered(time.instant(), time.nanoTime());
     var handle = new AtomicReference<AgentService.Handle>();
     var start = new Entered(entered.at(), entered.nanos(), handle::set);
+    var mdc = MdcContext.capture();
     var responded = new AtomicBoolean();
     var slotReleased = new AtomicBoolean();
     Runnable releaseSlot =
@@ -174,7 +173,7 @@ public final class HttpExecutionAdapter implements AutoCloseable {
     long remaining = Math.max(0, TimeUnit.SECONDS.toNanos(60) - (time.nanoTime() - start.nanos()));
     var timer =
         deadlines.schedule(
-            () -> {
+            mdc.wrap(() -> {
               var h = handle.get();
               if (h == null) {
                 respondOnce.accept(
@@ -187,56 +186,57 @@ public final class HttpExecutionAdapter implements AutoCloseable {
               h.expireIfDue(); // Seal the shared action permit before exposing the timeout
               // snapshot.
               respondOnce.accept(response(h.current(), h.waitExpired()));
-            },
+            }),
             remaining,
             TimeUnit.NANOSECONDS);
     try {
       java.util.function.Function<AgentService.Handle, Boolean> attachCallbacks =
           attached ->
               attached.whenFinished(
-                  (snapshot, expired) -> {
+                  mdc.wrap((Execution.Snapshot snapshot, Boolean expired) -> {
                     timer.cancel(false);
                     respondOnce.accept(response(snapshot, expired));
-                  },
-                  () -> {
+                  }),
+                  mdc.wrap(() -> {
                     timer.cancel(false);
                     releaseSlot.run();
-                  });
+                  }));
       workers.execute(
-          RuntimeTiming.wrap(
-              "http.dispatch.queue",
-              () -> {
-                AgentService.Handle h = null;
-                boolean[] handedOff = new boolean[1];
-                try {
-                  h =
-                      AgentService.withInlineWorker(
-                          admitted -> {
-                            handle.set(admitted);
-                            admitted.expireIfDue();
-                            handedOff[0] = attachCallbacks.apply(admitted);
-                          },
-                          () -> operation.start(start));
-                  handle.set(h);
-                  if (handedOff[0]) return;
-                  h.expireIfDue();
-                  if (attachCallbacks.apply(h)) {
-                    handedOff[0] = true;
-                    return;
-                  }
-                  var snapshot = h.await();
-                  respondOnce.accept(response(snapshot, h.waitExpired()));
-                } catch (RuntimeException e) {
-                  timer.cancel(false);
-                  respondOnce.accept(errors.response(e));
-                } finally {
-                  if (!handedOff[0]) {
-                    timer.cancel(false);
-                    if (h != null) h.awaitSettled();
-                    releaseSlot.run();
-                  }
-                }
-              }));
+          mdc.wrap(
+              RuntimeTiming.wrap(
+                  "http.dispatch.queue",
+                  () -> {
+                    AgentService.Handle h = null;
+                    boolean[] handedOff = new boolean[1];
+                    try {
+                      h =
+                          AgentService.withInlineWorker(
+                              admitted -> {
+                                handle.set(admitted);
+                                admitted.expireIfDue();
+                                handedOff[0] = attachCallbacks.apply(admitted);
+                              },
+                              () -> operation.start(start));
+                      handle.set(h);
+                      if (handedOff[0]) return;
+                      h.expireIfDue();
+                      if (attachCallbacks.apply(h)) {
+                        handedOff[0] = true;
+                        return;
+                      }
+                      var snapshot = h.await();
+                      respondOnce.accept(response(snapshot, h.waitExpired()));
+                    } catch (RuntimeException e) {
+                      timer.cancel(false);
+                      respondOnce.accept(errors.response(e));
+                    } finally {
+                      if (!handedOff[0]) {
+                        timer.cancel(false);
+                        if (h != null) h.awaitSettled();
+                        releaseSlot.run();
+                      }
+                    }
+                  })));
     } catch (RuntimeException e) {
       timer.cancel(false);
       releaseSlot.run();

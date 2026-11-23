@@ -24,13 +24,12 @@ class RedactorConcurrencyTest {
       for (int i = 0; i < 100; i++) {
         String secret = "CANARY[" + i + "]";
         registrations.add(
-            threads.submit(
-                () -> {
-                  redactor.register(secret);
-                  redactor.register(secret);
-                  assertTrue(redactor.containsSecret(secret));
-                  assertEquals("[REDACTED]", redactor.redact(secret));
-                }));
+            threads.submit(() -> {
+              redactor.register(secret);
+              redactor.register(secret);
+              assertTrue(redactor.containsSecret(secret));
+              assertEquals("[REDACTED]", redactor.redact(secret));
+            }));
       }
       for (var future : registrations) future.get(5, TimeUnit.SECONDS);
     }
@@ -62,15 +61,14 @@ class RedactorConcurrencyTest {
       var jobs = new ArrayList<Future<?>>();
       for (int i = 0; i < 100; i++)
         jobs.add(
-            threads.submit(
-                () -> {
-                  start.await();
-                  long began = System.nanoTime();
-                  for (int audit = 0; audit < 12; audit++)
-                    assertEquals(expected, redactor.redact(input));
-                  samples.add(System.nanoTime() - began);
-                  return null;
-                }));
+            threads.submit(() -> {
+              start.await();
+              long began = System.nanoTime();
+              for (int audit = 0; audit < 12; audit++)
+                assertEquals(expected, redactor.redact(input));
+              samples.add(System.nanoTime() - began);
+              return null;
+            }));
       start.countDown();
       for (var job : jobs) job.get(10, TimeUnit.SECONDS);
     }

@@ -16,16 +16,15 @@ class RuntimeTimingTest {
       var captured = RuntimeTiming.capture();
       try (var workers = Executors.newVirtualThreadPerTaskExecutor()) {
         workers
-            .submit(
-                () -> {
-                  assertNull(RuntimeTiming.capture(), "No implicit thread inheritance");
-                  try (var worker = RuntimeTiming.bind(captured);
-                      var queue = RuntimeTiming.measure("db.queue")) {
-                    Thread.sleep(25);
-                  } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                  }
-                })
+            .submit(() -> {
+              assertNull(RuntimeTiming.capture(), "No implicit thread inheritance");
+              try (var worker = RuntimeTiming.bind(captured);
+                  var queue = RuntimeTiming.measure("db.queue")) {
+                Thread.sleep(25);
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+              }
+            })
             .get();
       }
     }
@@ -45,14 +44,12 @@ class RuntimeTimingTest {
     var events = new ArrayList<RuntimeTiming.Segment>();
     try (var outer = RuntimeTiming.bind(events::add)) {
       try (var broken =
-          RuntimeTiming.bind(
-              s -> {
-                throw new IllegalStateException("observer");
-              })) {
-        assertDoesNotThrow(
-            () -> {
-              try (var ignored = RuntimeTiming.measure("failure")) {}
-            });
+          RuntimeTiming.bind(s -> {
+            throw new IllegalStateException("observer");
+          })) {
+        assertDoesNotThrow(() -> {
+          try (var ignored = RuntimeTiming.measure("failure")) {}
+        });
       }
       try (var restored = RuntimeTiming.measure("restored")) {}
     }

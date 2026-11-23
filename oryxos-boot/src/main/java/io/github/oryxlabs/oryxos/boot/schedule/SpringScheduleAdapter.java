@@ -28,10 +28,8 @@ public final class SpringScheduleAdapter implements ScheduleTimer, AutoCloseable
     scheduler.setRemoveOnCancelPolicy(true);
     scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
     scheduler.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-    scheduler.setErrorHandler(
-        error ->
-            LOG.warn(
-                "Schedule trigger could not be recorded or dispatched; inspect runtime state"));
+    scheduler.setErrorHandler(error ->
+        LOG.warn("Schedule trigger could not be recorded or dispatched; inspect runtime state"));
     scheduler.initialize();
   }
 

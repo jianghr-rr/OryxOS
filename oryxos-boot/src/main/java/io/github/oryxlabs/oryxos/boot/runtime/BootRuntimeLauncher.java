@@ -70,22 +70,21 @@ public final class BootRuntimeLauncher implements RuntimeLauncher {
       defaults.putAll(serverDefaults);
       application.setBannerMode(org.springframework.boot.Banner.Mode.OFF);
       application.setDefaultProperties(defaults);
-      application.addInitializers(
-          context -> {
-            context
-                .getEnvironment()
-                .getPropertySources()
-                .addFirst(
-                    new org.springframework.core.env.MapPropertySource(
-                        "oryxos-launcher-options", defaults));
-            var generic = (GenericApplicationContext) context;
-            generic.registerBean("selectedWorkspace", WorkspaceHandle.class, () -> workspace);
-            generic.registerBean(
-                "selectedWorkspaceLock",
-                WorkspaceProcessLock.class,
-                () -> lock,
-                definition -> definition.setDestroyMethodName("close"));
-          });
+      application.addInitializers(context -> {
+        context
+            .getEnvironment()
+            .getPropertySources()
+            .addFirst(
+                new org.springframework.core.env.MapPropertySource(
+                    "oryxos-launcher-options", defaults));
+        var generic = (GenericApplicationContext) context;
+        generic.registerBean("selectedWorkspace", WorkspaceHandle.class, () -> workspace);
+        generic.registerBean(
+            "selectedWorkspaceLock",
+            WorkspaceProcessLock.class,
+            () -> lock,
+            definition -> definition.setDestroyMethodName("close"));
+      });
       var context = application.run();
       try {
         CliRuntimeView.publish(workspace, context);

@@ -1,8 +1,59 @@
 <configuration>
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-  <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
-    <target>System.err</target>
-    <encoder><pattern>${CONSOLE_LOG_PATTERN}</pattern></encoder>
-  </appender>
-  <root level="INFO"><appender-ref ref="STDERR"/></root>
+
+  <conversionRule conversionWord="redactedMessage" class="io.github.oryxlabs.oryxos.boot.observability.RedactingConverters$Message"/>
+  <conversionRule conversionWord="redactedException" class="io.github.oryxlabs.oryxos.boot.observability.RedactingConverters$Throwable"/>
+  <conversionRule conversionWord="redactedMdc" class="io.github.oryxlabs.oryxos.boot.observability.RedactingConverters$Mdc"/>
+
+  <!-- Bound from ORYXOS_LOG_* environment variables through Spring relaxed binding. -->
+  <springProperty scope="context" name="ORYXOS_LOG_DIR" source="oryxos.log.dir" defaultValue="/var/log/oryxos"/>
+  <springProperty scope="context" name="ORYXOS_LOG_MAX_FILE_SIZE" source="oryxos.log.max-file-size" defaultValue="50MB"/>
+  <springProperty scope="context" name="ORYXOS_LOG_MAX_HISTORY" source="oryxos.log.max-history" defaultValue="14"/>
+  <springProperty scope="context" name="ORYXOS_LOG_TOTAL_SIZE_CAP" source="oryxos.log.total-size-cap" defaultValue="1GB"/>
+
+  <springProfile name="!prod">
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+      <target>System.err</target>
+      <encoder>
+        <pattern>%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%redactedMdc{traceId:-},%redactedMdc{executionId:-}]){faint} %clr(:){faint} %redactedMessage%n%redactedException</pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+    </appender>
+    <root level="INFO">
+      <appender-ref ref="STDERR"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="prod">
+    <appender name="JSON_STDERR" class="ch.qos.logback.core.ConsoleAppender">
+      <target>System.err</target>
+      <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <includeContext>false</includeContext>
+        <customFields>{"application":"oryxos"}</customFields>
+        <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+          <valueMasker class="io.github.oryxlabs.oryxos.boot.observability.RedactingValueMasker"/>
+        </jsonGeneratorDecorator>
+      </encoder>
+    </appender>
+    <appender name="JSON_FILE" class="io.github.oryxlabs.oryxos.boot.observability.GuardedRollingFileAppender">
+      <file>${ORYXOS_LOG_DIR}/oryxos.json</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${ORYXOS_LOG_DIR}/oryxos.%d{yyyy-MM-dd}.%i.json.gz</fileNamePattern>
+        <maxFileSize>${ORYXOS_LOG_MAX_FILE_SIZE}</maxFileSize>
+        <maxHistory>${ORYXOS_LOG_MAX_HISTORY}</maxHistory>
+        <totalSizeCap>${ORYXOS_LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+      </rollingPolicy>
+      <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <includeContext>false</includeContext>
+        <customFields>{"application":"oryxos"}</customFields>
+        <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+          <valueMasker class="io.github.oryxlabs.oryxos.boot.observability.RedactingValueMasker"/>
+        </jsonGeneratorDecorator>
+      </encoder>
+    </appender>
+    <root level="INFO">
+      <appender-ref ref="JSON_STDERR"/>
+      <appender-ref ref="JSON_FILE"/>
+    </root>
+  </springProfile>
 </configuration>

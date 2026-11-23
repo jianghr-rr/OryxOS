@@ -37,14 +37,13 @@ class WorkspaceCommandsTest {
     try (var paths = Files.walk(root)) {
       paths
           .filter(Files::isRegularFile)
-          .forEach(
-              p -> {
-                try {
-                  before.put(p, Files.readAllBytes(p));
-                } catch (IOException e) {
-                  throw new UncheckedIOException(e);
-                }
-              });
+          .forEach(p -> {
+            try {
+              before.put(p, Files.readAllBytes(p));
+            } catch (IOException e) {
+              throw new UncheckedIOException(e);
+            }
+          });
     }
     assertEquals(0, execute("init"));
     for (var entry : before.entrySet()) {

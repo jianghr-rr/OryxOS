@@ -48,16 +48,15 @@ class TencentCloudConfigTemplateTest {
       }
       current = current.getParent();
     }
-    throw new IllegalStateException("Cannot locate deploy/tencent-cloud/config from " + Path.of("").toAbsolutePath());
+    throw new IllegalStateException(
+        "Cannot locate deploy/tencent-cloud/config from " + Path.of("").toAbsolutePath());
   }
 
   private void stageTemplates(String secretsContent) throws Exception {
     Path configDir = locateConfigDir();
     Files.createDirectories(workspaceRoot.resolve("output"));
     Files.createDirectories(workspaceRoot.resolve("memory"));
-    Files.copy(
-        configDir.resolve("runtime.yaml.template"),
-        workspaceRoot.resolve("runtime.yaml"));
+    Files.copy(configDir.resolve("runtime.yaml.template"), workspaceRoot.resolve("runtime.yaml"));
 
     Path agentsSource = configDir.resolve("agents");
     try (Stream<Path> dirs = Files.list(agentsSource)) {
@@ -76,7 +75,8 @@ class TencentCloudConfigTemplateTest {
   @Test
   void cloudTemplatesLoadCleanlyAndMatchManagedAgentContract() throws Exception {
     Path configDir = locateConfigDir();
-    assertFalse(Files.exists(configDir.resolve("agents/default")), "default template must not exist");
+    assertFalse(
+        Files.exists(configDir.resolve("agents/default")), "default template must not exist");
 
     stageTemplates(
         "DEEPSEEK_API_KEY: \""
@@ -92,7 +92,8 @@ class TencentCloudConfigTemplateTest {
     assertEquals("Asia/Shanghai", config.timezone().getId());
     assertEquals("md", config.memoryBackend());
     assertNotNull(config.providers().get("deepseek"));
-    assertTrue(config.providers().get("deepseek").available(), "deepseek provider should load cleanly");
+    assertTrue(
+        config.providers().get("deepseek").available(), "deepseek provider should load cleanly");
     assertEquals("${DEEPSEEK_API_KEY}", config.providers().get("deepseek").apiKeyReference());
 
     AgentCatalog rawCatalog = AgentCatalog.load(workspace, config, Map.of(), redactor);
@@ -137,7 +138,8 @@ class TencentCloudConfigTemplateTest {
       assertTrue(weather.schedules().isEmpty());
       assertEquals(Set.of("feishu"), weather.notifyChannelNames());
       assertTrue(weather.notifications().get("feishu").defaultTarget());
-      assertEquals("json_equals", weather.notifications().get("feishu").acknowledgement().get("mode"));
+      assertEquals(
+          "json_equals", weather.notifications().get("feishu").acknowledgement().get("mode"));
       assertEquals("/code", weather.notifications().get("feishu").acknowledgement().get("pointer"));
       assertEquals(0, weather.notifications().get("feishu").acknowledgement().get("expected"));
 
@@ -175,16 +177,16 @@ class TencentCloudConfigTemplateTest {
         HttpTargetPolicy.from(SafeYaml.map(config.toolRules().get("http"), "tools.http"));
 
     assertDoesNotThrow(() -> policy.authorize("https://open.feishu.cn/open-apis/bot/v2/hook/test"));
-    assertDoesNotThrow(
-        () ->
-            policy.authorize(
-                "https://api.open-meteo.com/v1/forecast?latitude=31.2304&longitude=121.4737"));
+    assertDoesNotThrow(() ->
+        policy.authorize(
+            "https://api.open-meteo.com/v1/forecast?latitude=31.2304&longitude=121.4737"));
     assertDoesNotThrow(
         () -> policy.authorize("https://geocoding-api.open-meteo.com/v1/search?name=Shanghai"));
 
     assertThrows(OryxError.class, () -> policy.authorize("https://example.com/"));
     assertThrows(
-        OryxError.class, () -> policy.authorize("http://open.feishu.cn/open-apis/bot/v2/hook/test"));
+        OryxError.class,
+        () -> policy.authorize("http://open.feishu.cn/open-apis/bot/v2/hook/test"));
     assertThrows(
         OryxError.class, () -> policy.authorize("https://api.open-meteo.com:8443/v1/forecast"));
   }

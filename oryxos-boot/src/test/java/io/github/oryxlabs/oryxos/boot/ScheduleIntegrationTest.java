@@ -486,10 +486,9 @@ class ScheduleIntegrationTest {
                       true))) {
         var s = c.getBean(ScheduleCoordinator.class);
         assertTrue(entered.await(5, TimeUnit.SECONDS));
-        waitFor(
-            () ->
-                s.history("local:daily", 100, null).stream()
-                    .anyMatch(e -> e.status() == ScheduleEvent.Status.SKIPPED_OVERLAP));
+        waitFor(() ->
+            s.history("local:daily", 100, null).stream()
+                .anyMatch(e -> e.status() == ScheduleEvent.Status.SKIPPED_OVERLAP));
         assertEquals(1, f.models.get());
         release.countDown();
         waitFor(() -> f.models.get() >= 2);
@@ -603,12 +602,11 @@ class ScheduleIntegrationTest {
             Thread.sleep(25);
           }
           assertTrue(f.models.get() > before, Files.readString(log));
-          waitFor(
-              () ->
-                  queries.executions(null, 100).stream()
-                          .filter(e -> "SUCCEEDED".equals(e.get("status")))
-                          .count()
-                      > before);
+          waitFor(() ->
+              queries.executions(null, 100).stream()
+                      .filter(e -> "SUCCEEDED".equals(e.get("status")))
+                      .count()
+                  > before);
         } finally {
           process.destroy();
           if (!process.waitFor(15, TimeUnit.SECONDS)) process.destroyForcibly().waitFor();
@@ -618,10 +616,9 @@ class ScheduleIntegrationTest {
         assertFalse(Files.readString(log).contains("LOCAL_SECRET_CANARY"));
         assertTrue(
             queries.executions(null, 100).stream()
-                .allMatch(
-                    e ->
-                        "scheduler".equals(e.get("channel"))
-                            && ScheduleCoordinator.SYSTEM_USER.equals(e.get("user_id"))));
+                .allMatch(e ->
+                    "scheduler".equals(e.get("channel"))
+                        && ScheduleCoordinator.SYSTEM_USER.equals(e.get("user_id"))));
       }
       try (var c = f.start()) {
         assertEquals(RuntimeGate.State.READY, c.getBean(RuntimeGate.class).state());

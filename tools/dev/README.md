@@ -1,5 +1,22 @@
 > 当前进度：US5完成T073–T097及T102发布说明与30分钟新使用者路径验证（7.22s，使用回环模型桩）；第九批 Slice 5–6 已将短程内部最大从201.80ms降至112.14ms（0违例、审计全过、322项本地 `verify` 全绿），已按用户确认将压测目标时长改为2分钟（`120s` / `PT2M`），因仍超过50ms按路线 C 止损保持 T101 未勾选；T027/028/042/044/051/057/058/070/071/072/098–100 真实前提缺口不变，T103–T104 尚待全部前置关闭后进入。
 
+## 004 工程门禁
+
+门禁清单、例外登记、存量基线与 CI 说明见 [docs/EngineeringBaseline.md](../../docs/EngineeringBaseline.md)，以下命令与该文档一致：
+
+```bash
+export ORYXOS_JAVA_HOME=/absolute/path/to/jdk-21/Contents/Home
+./tools/dev/mvnw clean verify                                   # 格式、规约、安全、测试与基线判定
+./tools/dev/mvnw spotless:apply                                 # 自动格式化；只检查用 spotless:check
+./tools/dev/install-hooks                                       # 安装提交前钩子（格式 + PMD/Checkstyle）
+./tools/dev/quality-baseline --check-shrink origin/main         # 基线只减不增
+./tools/dev/quality-baseline --prune                            # 在一次 clean verify 之后删除已清零条目
+# 依赖漏洞扫描：先在当前 shell 中 export NVD_API_KEY，不要写进文件或命令参数
+./tools/dev/mvnw -Pdependency-scan dependency-check:aggregate
+```
+
+`-Dspotbugs.skip`、`-DskipTests` 等跳过门禁的参数会被拒绝（退出码 2）。
+
 ## T102 新使用者路径与当前边界（2026-11-18）
 
 - 个人构建与运行入口统一为：`./tools/dev/mvnw -B -ntp verify` 与 `./tools/dev/oryxos --root <workspace> <cmd>`（先设置 `ORYXOS_JAVA_HOME=/Users/jianghaoran/jikeshijian/.oryxos-course/tools/jdk-21.0.13+9/Contents/Home`）。

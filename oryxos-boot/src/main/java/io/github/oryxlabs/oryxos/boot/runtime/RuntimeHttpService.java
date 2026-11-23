@@ -247,15 +247,14 @@ public final class RuntimeHttpService implements WebRuntimePort {
     var p = RequestLimits.page(all, limit, cursor, "tools:" + name, ToolDescriptor::name);
     return new ContractDtos.ToolPage(
         p.items().stream()
-            .map(
-                d ->
-                    new ContractDtos.Tool(
-                        d.name(),
-                        dto.safe(d.description()),
-                        d.source(),
-                        true,
-                        dto.schema(d.inputSchemaJson()),
-                        d.safeToRetry()))
+            .map(d ->
+                new ContractDtos.Tool(
+                    d.name(),
+                    dto.safe(d.description()),
+                    d.source(),
+                    true,
+                    dto.schema(d.inputSchemaJson()),
+                    d.safeToRetry()))
             .toList(),
         p.nextCursor());
   }

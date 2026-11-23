@@ -95,14 +95,12 @@ class HttpCompletionResumptionTest {
                 frames.stream().anyMatch(f -> f.contains("HttpExecutionAdapter"));
             boolean parkedInAwait =
                 frames.stream()
-                    .anyMatch(
-                        f ->
-                            f.contains("AgentService$Handle.await(")
-                                || f.contains("AgentService$Handle.awaitSettled("));
+                    .anyMatch(f ->
+                        f.contains("AgentService$Handle.await(")
+                            || f.contains("AgentService$Handle.awaitSettled("));
             assertFalse(
                 hasAdapterFrame && parkedInAwait,
-                () ->
-                    "HTTP dispatch thread must not park in Handle.await/awaitSettled: " + frames);
+                () -> "HTTP dispatch thread must not park in Handle.await/awaitSettled: " + frames);
           }
         }
         var overlap =
@@ -154,24 +152,22 @@ class HttpCompletionResumptionTest {
       }
       String utf8 = new String(bytecode, StandardCharsets.UTF_8);
       assertFalse(
-          utf8.contains("randomUUID"),
-          () -> cls.getName() + " still references UUID.randomUUID()");
+          utf8.contains("randomUUID"), () -> cls.getName() + " still references UUID.randomUUID()");
     }
     var ids = ConcurrentHashMap.<String>newKeySet(10_000);
     try (var workers = Executors.newVirtualThreadPerTaskExecutor()) {
       var futures = new ArrayList<Future<?>>(100);
       for (int i = 0; i < 100; i++) {
         futures.add(
-            workers.submit(
-                () -> {
-                  for (int j = 0; j < 100; j++) {
-                    String raw = ApiResponse.ok("ok").traceId();
-                    UUID parsed = UUID.fromString(raw);
-                    assertEquals(4, parsed.version());
-                    assertEquals(2, parsed.variant());
-                    ids.add(raw);
-                  }
-                }));
+            workers.submit(() -> {
+              for (int j = 0; j < 100; j++) {
+                String raw = ApiResponse.ok("ok").traceId();
+                UUID parsed = UUID.fromString(raw);
+                assertEquals(4, parsed.version());
+                assertEquals(2, parsed.variant());
+                ids.add(raw);
+              }
+            }));
       }
       for (var future : futures) future.get(5, TimeUnit.SECONDS);
     }
@@ -206,20 +202,14 @@ class HttpCompletionResumptionTest {
       var err = new StringWriter();
       int rc =
           javap.run(
-              new PrintWriter(out),
-              new PrintWriter(err),
-              "-c",
-              "-v",
-              "-p",
-              classFile.toString());
+              new PrintWriter(out), new PrintWriter(err), "-c", "-v", "-p", classFile.toString());
       assertEquals(0, rc, () -> "javap failed for " + cls.getName() + ": " + err);
       String disassembly = out.toString();
       assertFalse(
           disassembly.contains("ACC_SYNCHRONIZED"),
           () -> cls.getName() + " still uses ACC_SYNCHRONIZED");
       assertFalse(
-          disassembly.contains("monitorenter"),
-          () -> cls.getName() + " still uses monitorenter");
+          disassembly.contains("monitorenter"), () -> cls.getName() + " still uses monitorenter");
     }
     try (var fixture = new PersistentFixture(root);
         var context =
@@ -265,8 +255,8 @@ class HttpCompletionResumptionTest {
     }
   }
 
-  private static HttpResponse<String> post(
-      HttpClient client, String url, String body, String user) throws Exception {
+  private static HttpResponse<String> post(HttpClient client, String url, String body, String user)
+      throws Exception {
     return client.send(
         HttpRequest.newBuilder(URI.create(url))
             .timeout(Duration.ofSeconds(10))

@@ -40,10 +40,9 @@ public class ScheduleConfiguration {
             ? List.<ScheduleDefinition>of()
             : catalog.catalog().entries().stream()
                 .filter(e -> e.available())
-                .flatMap(
-                    e ->
-                        e.profile().schedules().stream()
-                            .map(s -> ScheduleDefinition.from(e.profile(), s)))
+                .flatMap(e ->
+                    e.profile().schedules().stream()
+                        .map(s -> ScheduleDefinition.from(e.profile(), s)))
                 .toList();
     var coordinator =
         new ScheduleCoordinator(

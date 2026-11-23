@@ -88,26 +88,23 @@ class SoakHarnessTest {
       try (var lines = Files.lines(folder.resolve("samples.jsonl"))) {
         var sample =
             lines
-                .map(
-                    line -> {
-                      try {
-                        return SoakHarness.JSON.readTree(line);
-                      } catch (Exception e) {
-                        throw new RuntimeException(e);
-                      }
-                    })
+                .map(line -> {
+                  try {
+                    return SoakHarness.JSON.readTree(line);
+                  } catch (Exception e) {
+                    throw new RuntimeException(e);
+                  }
+                })
                 .filter(node -> node.path("kind").asText().equals("task"))
                 .findFirst()
                 .orElseThrow();
         var names = new HashSet<String>();
         sample
             .path("segments")
-            .forEach(
-                segment -> {
-                  names.add(segment.path("name").asText());
-                  assertTrue(
-                      segment.path("endNanos").asLong() >= segment.path("startNanos").asLong());
-                });
+            .forEach(segment -> {
+              names.add(segment.path("name").asText());
+              assertTrue(segment.path("endNanos").asLong() >= segment.path("startNanos").asLong());
+            });
         assertTrue(
             names.containsAll(
                 Set.of(

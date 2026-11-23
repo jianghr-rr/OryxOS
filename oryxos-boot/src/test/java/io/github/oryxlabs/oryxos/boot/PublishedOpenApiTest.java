@@ -66,108 +66,84 @@ class PublishedOpenApiTest {
       expected
           .path("paths")
           .fields()
-          .forEachRemaining(
-              path ->
-                  path.getValue()
-                      .fields()
-                      .forEachRemaining(
-                          method -> {
-                            if (!Set.of("get", "post", "put", "delete", "patch")
-                                .contains(method.getKey())) return;
-                            String at = method.getKey().toUpperCase() + " " + path.getKey();
-                            var want = method.getValue();
-                            var have =
-                                actual
-                                    .path("paths")
-                                    .path("/api/v1" + path.getKey())
-                                    .path(method.getKey());
-                            if (have.isMissingNode()) {
-                              diffs.add(at + " missing operation");
-                              return;
-                            }
-                            if (!want.path("operationId").equals(have.path("operationId")))
-                              diffs.add(at + " operationId differs");
-                            var expectedStatuses = new TreeSet<String>();
-                            want.path("responses")
-                                .fieldNames()
-                                .forEachRemaining(expectedStatuses::add);
-                            var actualStatuses = new TreeSet<String>();
-                            have.path("responses")
-                                .fieldNames()
-                                .forEachRemaining(actualStatuses::add);
-                            if (!expectedStatuses.equals(actualStatuses))
-                              diffs.add(at + " response status set differs");
-                            if (want.path("requestBody").path("required").asBoolean()
-                                != have.path("requestBody").path("required").asBoolean())
-                              diffs.add(at + " request body required flag differs");
-                            want.path("responses")
-                                .fields()
-                                .forEachRemaining(
-                                    response -> {
-                                      var desired = resolve(response.getValue(), expected);
-                                      var found =
-                                          resolve(
-                                              have.path("responses").path(response.getKey()),
-                                              actual);
-                                      if (found.isMissingNode()) {
-                                        diffs.add(at + " missing HTTP " + response.getKey());
-                                        return;
-                                      }
-                                      var schema =
-                                          desired
-                                              .path("content")
-                                              .path("application/json")
-                                              .path("schema");
-                                      if (!schema.isMissingNode()
-                                          && !schema.equals(
-                                              found
-                                                  .path("content")
-                                                  .path("application/json")
-                                                  .path("schema")))
-                                        diffs.add(
-                                            at
-                                                + " "
-                                                + response.getKey()
-                                                + " response schema differs");
-                                    });
-                            var request =
-                                want.path("requestBody")
-                                    .path("content")
-                                    .path("application/json")
-                                    .path("schema");
-                            if (!request.isMissingNode()
-                                && !request.equals(
-                                    have.path("requestBody")
-                                        .path("content")
-                                        .path("application/json")
-                                        .path("schema"))) diffs.add(at + " request schema differs");
-                            for (var parameter : want.path("parameters")) {
-                              var param = resolve(parameter, expected);
-                              JsonNode match = null;
-                              for (var candidate : have.path("parameters")) {
-                                var c = resolve(candidate, actual);
-                                if (c.path("in").equals(param.path("in"))
-                                    && c.path("name").equals(param.path("name"))) match = c;
-                              }
-                              if (match == null
-                                  || !param.path("schema").equals(match.path("schema"))
-                                  || param.path("required").asBoolean()
-                                      != match.path("required").asBoolean())
-                                diffs.add(
-                                    at + " parameter differs: " + param.path("name").asText());
-                            }
-                          }));
+          .forEachRemaining(path ->
+              path.getValue()
+                  .fields()
+                  .forEachRemaining(method -> {
+                    if (!Set.of("get", "post", "put", "delete", "patch").contains(method.getKey()))
+                      return;
+                    String at = method.getKey().toUpperCase() + " " + path.getKey();
+                    var want = method.getValue();
+                    var have =
+                        actual.path("paths").path("/api/v1" + path.getKey()).path(method.getKey());
+                    if (have.isMissingNode()) {
+                      diffs.add(at + " missing operation");
+                      return;
+                    }
+                    if (!want.path("operationId").equals(have.path("operationId")))
+                      diffs.add(at + " operationId differs");
+                    var expectedStatuses = new TreeSet<String>();
+                    want.path("responses").fieldNames().forEachRemaining(expectedStatuses::add);
+                    var actualStatuses = new TreeSet<String>();
+                    have.path("responses").fieldNames().forEachRemaining(actualStatuses::add);
+                    if (!expectedStatuses.equals(actualStatuses))
+                      diffs.add(at + " response status set differs");
+                    if (want.path("requestBody").path("required").asBoolean()
+                        != have.path("requestBody").path("required").asBoolean())
+                      diffs.add(at + " request body required flag differs");
+                    want.path("responses")
+                        .fields()
+                        .forEachRemaining(response -> {
+                          var desired = resolve(response.getValue(), expected);
+                          var found =
+                              resolve(have.path("responses").path(response.getKey()), actual);
+                          if (found.isMissingNode()) {
+                            diffs.add(at + " missing HTTP " + response.getKey());
+                            return;
+                          }
+                          var schema =
+                              desired.path("content").path("application/json").path("schema");
+                          if (!schema.isMissingNode()
+                              && !schema.equals(
+                                  found.path("content").path("application/json").path("schema")))
+                            diffs.add(at + " " + response.getKey() + " response schema differs");
+                        });
+                    var request =
+                        want.path("requestBody")
+                            .path("content")
+                            .path("application/json")
+                            .path("schema");
+                    if (!request.isMissingNode()
+                        && !request.equals(
+                            have.path("requestBody")
+                                .path("content")
+                                .path("application/json")
+                                .path("schema"))) diffs.add(at + " request schema differs");
+                    for (var parameter : want.path("parameters")) {
+                      var param = resolve(parameter, expected);
+                      JsonNode match = null;
+                      for (var candidate : have.path("parameters")) {
+                        var c = resolve(candidate, actual);
+                        if (c.path("in").equals(param.path("in"))
+                            && c.path("name").equals(param.path("name"))) match = c;
+                      }
+                      if (match == null
+                          || !param.path("schema").equals(match.path("schema"))
+                          || param.path("required").asBoolean()
+                              != match.path("required").asBoolean())
+                        diffs.add(at + " parameter differs: " + param.path("name").asText());
+                    }
+                  }));
       expected
           .path("components")
           .path("schemas")
           .fields()
-          .forEachRemaining(
-              e -> {
-                var got = actual.path("components").path("schemas").path(e.getKey());
-                if (got.isMissingNode()) diffs.add("schema missing: " + e.getKey());
-                else if (!semantic(e.getValue()).equals(semantic(got)))
-                  diffs.add("schema differs: " + e.getKey());
-              });
+          .forEachRemaining(e -> {
+            var got = actual.path("components").path("schemas").path(e.getKey());
+            if (got.isMissingNode()) diffs.add("schema missing: " + e.getKey());
+            else if (!semantic(e.getValue()).equals(semantic(got)))
+              diffs.add("schema differs: " + e.getKey());
+          });
       Files.writeString(
           evidence.resolveSibling("published-openapi-diff.json"),
           JSON.writerWithDefaultPrettyPrinter().writeValueAsString(diffs));
@@ -184,11 +160,10 @@ class PublishedOpenApiTest {
     if (node.isObject()) {
       var n = JSON.createObjectNode();
       node.fields()
-          .forEachRemaining(
-              e -> {
-                if (!Set.of("description", "title", "example", "examples").contains(e.getKey()))
-                  n.set(e.getKey(), semantic(e.getValue()));
-              });
+          .forEachRemaining(e -> {
+            if (!Set.of("description", "title", "example", "examples").contains(e.getKey()))
+              n.set(e.getKey(), semantic(e.getValue()));
+          });
       return n;
     }
     if (node.isArray()) {

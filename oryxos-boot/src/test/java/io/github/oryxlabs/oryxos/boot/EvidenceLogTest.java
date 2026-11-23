@@ -63,11 +63,10 @@ public class EvidenceLogTest {
       for (int i = 0; i < 100; i++) {
         int id = i;
         calls.add(
-            workers.submit(
-                () -> {
-                  writer.append(Map.of("id", id));
-                  return null;
-                }));
+            workers.submit(() -> {
+              writer.append(Map.of("id", id));
+              return null;
+            }));
       }
       for (var call : calls) call.get(5, TimeUnit.SECONDS);
       assertEquals(100, flushes.get());

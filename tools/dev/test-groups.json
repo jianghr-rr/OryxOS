@@ -1124,6 +1124,53 @@
           ]
         }
       ]
+    },
+    "f004-observability": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.observability.ProductionLogFormatTest",
+          "methods": [
+            "prodProfileWritesParseableJsonLinesWithRequiredFields",
+            "withoutProdProfileNoLogFileIsCreated"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.observability.TraceCorrelationTest",
+          "methods": [
+            "everyResponseTraceIdMatchesItsAccessLogLineAndAsyncExecutionLogs",
+            "wellFormedRequestIdIsReusedAndAnythingElseIsReplaced",
+            "deadlineResponseKeepsCallerTraceAndPooledThreadsKeepNoMdc",
+            "directAgentServiceExecutionLogsCarryThePersistedExecutionId"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.observability.LogRedactionTest",
+          "methods": [
+            "jsonLogsRedactMessageExceptionStackAndMdc",
+            "textLogsRedactMessageExceptionStackAndMdc"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.observability.GuardedFileAppenderTest",
+          "methods": [
+            "unwritableLogDirectoryWarnsAndServiceStillStarts",
+            "rollingDefaultsApplyAndEnvironmentOverridesWin"
+          ]
+        },
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.observability.ActuatorEndpointsTest",
+          "methods": [
+            "healthProbesInfoAndPrometheusAreExposedAndNothingElse",
+            "pausedRecordingTakesReadinessOutOfServiceLikeApiHealth"
+          ]
+        }
+      ]
     }
   }
 }

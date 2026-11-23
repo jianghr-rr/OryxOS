@@ -27,7 +27,9 @@ public final class RuntimeStartupCheck implements AutoCloseable {
   private boolean storageWritable;
   private final List<Runnable> rebuiltListeners = new ArrayList<>();
 
-  public synchronized void onStorageRebuilt(Runnable listener) { rebuiltListeners.add(listener); }
+  public synchronized void onStorageRebuilt(Runnable listener) {
+    rebuiltListeners.add(listener);
+  }
 
   public RuntimeStartupCheck(
       WorkspaceHandle workspace,

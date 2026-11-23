@@ -93,19 +93,18 @@ public final class McpClientManager implements AutoCloseable {
                 .initializationTimeout(Duration.ofSeconds(d.initializationSeconds()))
                 .capabilities(new McpSchema.ClientCapabilities(null, null, null, null))
                 .enableCallToolSchemaCaching(false)
-                .jsonSchemaValidator(
-                    (schema, value) -> {
-                      try {
-                        return validator.matches(json.writeValueAsString(schema), value)
-                            ? io.modelcontextprotocol.json.schema.JsonSchemaValidator
-                                .ValidationResponse.asValid(json.writeValueAsString(value))
-                            : io.modelcontextprotocol.json.schema.JsonSchemaValidator
-                                .ValidationResponse.asInvalid("MCP output schema mismatch");
-                      } catch (Exception e) {
-                        return io.modelcontextprotocol.json.schema.JsonSchemaValidator
-                            .ValidationResponse.asInvalid("MCP schema validation failed offline");
-                      }
-                    })
+                .jsonSchemaValidator((schema, value) -> {
+                  try {
+                    return validator.matches(json.writeValueAsString(schema), value)
+                        ? io.modelcontextprotocol.json.schema.JsonSchemaValidator.ValidationResponse
+                            .asValid(json.writeValueAsString(value))
+                        : io.modelcontextprotocol.json.schema.JsonSchemaValidator.ValidationResponse
+                            .asInvalid("MCP output schema mismatch");
+                  } catch (Exception e) {
+                    return io.modelcontextprotocol.json.schema.JsonSchemaValidator
+                        .ValidationResponse.asInvalid("MCP schema validation failed offline");
+                  }
+                })
                 .build();
         connection = new Connection(d, transport, client);
         connections.put(d.id(), connection);
@@ -157,13 +156,12 @@ public final class McpClientManager implements AutoCloseable {
       if (!"stdio".equals(v.get("transport"))) throw OryxError.configuration("MCP transport");
       var env = new LinkedHashMap<String, String>();
       SafeYaml.map(v.getOrDefault("env", Map.of()), "MCP env")
-          .forEach(
-              (k, value) -> {
-                if (!k.matches("[A-Za-z_][A-Za-z0-9_]*")
-                    || Set.of("PATH", "HOME", "TMPDIR").contains(k))
-                  throw OryxError.configuration("MCP env name");
-                env.put(k, secrets.resolve(SafeYaml.text(value, "MCP env reference")));
-              });
+          .forEach((k, value) -> {
+            if (!k.matches("[A-Za-z_][A-Za-z0-9_]*")
+                || Set.of("PATH", "HOME", "TMPDIR").contains(k))
+              throw OryxError.configuration("MCP env name");
+            env.put(k, secrets.resolve(SafeYaml.text(value, "MCP env reference")));
+          });
       out.add(
           new Definition(
               name,

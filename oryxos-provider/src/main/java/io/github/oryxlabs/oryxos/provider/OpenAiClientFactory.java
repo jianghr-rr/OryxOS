@@ -58,8 +58,8 @@ final class OpenAiClientFactory implements AutoCloseable {
           return !response.getStatusCode().is2xxSuccessful();
         }
 
-        public void handleError(
-            URI uri, HttpMethod method, ClientHttpResponse response) throws IOException {
+        public void handleError(URI uri, HttpMethod method, ClientHttpResponse response)
+            throws IOException {
           throw ProviderErrorMapper.status(response.getStatusCode().value());
         }
       };
@@ -90,7 +90,8 @@ final class OpenAiClientFactory implements AutoCloseable {
             .build();
     // Build one reusable RestClient/OpenAiApi; per-request deadlines travel on ThreadLocal.
     var restTemplate =
-        RestClient.builder().requestFactory(new TimedHttpRequestFactory(new ApacheRequestFactory()));
+        RestClient.builder()
+            .requestFactory(new TimedHttpRequestFactory(new ApacheRequestFactory()));
     // OpenAiApi also constructs a WebClient even for blocking-only calls; refuse reactive use
     // without creating any selector or background threads.
     ClientHttpConnector disabledReactive =
@@ -215,14 +216,13 @@ final class OpenAiClientFactory implements AutoCloseable {
       if (remaining <= 0)
         throw new SocketTimeoutException("Provider request exceeded remaining time budget");
       var request = new HttpUriRequestBase(method.name(), uri);
-      headers.forEach(
-          (name, values) -> {
-            if (!name.equalsIgnoreCase(HttpHeaders.CONTENT_LENGTH)
-                && !name.equalsIgnoreCase(HttpHeaders.TRANSFER_ENCODING)
-                && !name.equalsIgnoreCase(HttpHeaders.HOST)) {
-              for (String value : values) request.addHeader(name, value);
-            }
-          });
+      headers.forEach((name, values) -> {
+        if (!name.equalsIgnoreCase(HttpHeaders.CONTENT_LENGTH)
+            && !name.equalsIgnoreCase(HttpHeaders.TRANSFER_ENCODING)
+            && !name.equalsIgnoreCase(HttpHeaders.HOST)) {
+          for (String value : values) request.addHeader(name, value);
+        }
+      });
       if (body != null) request.setEntity(new ByteArrayEntity(body.toByteArray(), null));
       long millis = Math.max(1L, TimeUnit.NANOSECONDS.toMillis(remaining));
       request.setConfig(
@@ -269,7 +269,8 @@ final class OpenAiClientFactory implements AutoCloseable {
   }
 
   private static HttpHost routeHost(URI uri) {
-    int port = uri.getPort() > 0 ? uri.getPort() : ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80);
+    int port =
+        uri.getPort() > 0 ? uri.getPort() : ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80);
     return new HttpHost(uri.getScheme(), uri.getHost(), port);
   }
 
@@ -279,59 +280,58 @@ final class OpenAiClientFactory implements AutoCloseable {
     var route = new org.apache.hc.client5.http.HttpRoute(host);
     Thread.ofVirtual()
         .name("oryx-provider-prewarm")
-        .start(
-            () -> {
-              if (closed.get()) return;
-              int target = PREWARM_TARGET_CONNECTIONS;
-              var held = new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>(target);
-              var toConnect = new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>();
+        .start(() -> {
+          if (closed.get()) return;
+          int target = PREWARM_TARGET_CONNECTIONS;
+          var held =
+              new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>(target);
+          var toConnect =
+              new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>();
+          try {
+            for (int i = 0; i < target && !closed.get(); i++) {
               try {
-                for (int i = 0; i < target && !closed.get(); i++) {
-                  try {
-                    var ep =
-                        manager
-                            .lease("prewarm-" + i, route, Timeout.ofMilliseconds(50), null)
-                            .get(Timeout.ofMilliseconds(50));
-                    held.add(ep);
-                    if (!ep.isConnected()) toConnect.add(ep);
-                  } catch (Exception ignored) {
-                    break;
-                  }
-                }
-                if (!toConnect.isEmpty() && !closed.get()) {
-                  var latch = new java.util.concurrent.CountDownLatch(toConnect.size());
-                  for (var ep : toConnect) {
-                    Thread.ofVirtual()
-                        .start(
-                            () -> {
-                              try {
-                                if (!closed.get() && !ep.isConnected()) {
-                                  manager.connect(
-                                      ep, TimeValue.ofSeconds(2), HttpClientContext.create());
-                                }
-                              } catch (Exception ignored) {
-                              } finally {
-                                latch.countDown();
-                              }
-                            });
-                  }
-                  try {
-                    latch.await(5, TimeUnit.SECONDS);
-                  } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                  }
-                }
-              } finally {
-                for (var ep : held) {
-                  boolean ok = ep.isConnected() && !closed.get();
-                  try {
-                    manager.release(
-                        ep, null, ok ? TimeValue.ofMinutes(10) : TimeValue.ZERO_MILLISECONDS);
-                  } catch (Exception ignored) {
-                  }
-                }
+                var ep =
+                    manager
+                        .lease("prewarm-" + i, route, Timeout.ofMilliseconds(50), null)
+                        .get(Timeout.ofMilliseconds(50));
+                held.add(ep);
+                if (!ep.isConnected()) toConnect.add(ep);
+              } catch (Exception ignored) {
+                break;
               }
-            });
+            }
+            if (!toConnect.isEmpty() && !closed.get()) {
+              var latch = new java.util.concurrent.CountDownLatch(toConnect.size());
+              for (var ep : toConnect) {
+                Thread.ofVirtual()
+                    .start(() -> {
+                      try {
+                        if (!closed.get() && !ep.isConnected()) {
+                          manager.connect(ep, TimeValue.ofSeconds(2), HttpClientContext.create());
+                        }
+                      } catch (Exception ignored) {
+                      } finally {
+                        latch.countDown();
+                      }
+                    });
+              }
+              try {
+                latch.await(5, TimeUnit.SECONDS);
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+            }
+          } finally {
+            for (var ep : held) {
+              boolean ok = ep.isConnected() && !closed.get();
+              try {
+                manager.release(
+                    ep, null, ok ? TimeValue.ofMinutes(10) : TimeValue.ZERO_MILLISECONDS);
+              } catch (Exception ignored) {
+              }
+            }
+          }
+        });
   }
 
   private static final class ApacheResponse implements ClientHttpResponse {
@@ -387,11 +387,13 @@ final class OpenAiClientFactory implements AutoCloseable {
               try {
                 int value = in.read();
                 if (value == -1 && expired.get())
-                  throw new SocketTimeoutException("Provider response exceeded remaining time budget");
+                  throw new SocketTimeoutException(
+                      "Provider response exceeded remaining time budget");
                 return value;
               } catch (IOException error) {
                 if (expired.get() || System.nanoTime() >= deadlineNanos)
-                  throw new SocketTimeoutException("Provider response exceeded remaining time budget");
+                  throw new SocketTimeoutException(
+                      "Provider response exceeded remaining time budget");
                 throw error;
               }
             }
@@ -401,11 +403,13 @@ final class OpenAiClientFactory implements AutoCloseable {
               try {
                 int count = in.read(bytes, offset, length);
                 if (count == -1 && expired.get())
-                  throw new SocketTimeoutException("Provider response exceeded remaining time budget");
+                  throw new SocketTimeoutException(
+                      "Provider response exceeded remaining time budget");
                 return count;
               } catch (IOException error) {
                 if (expired.get() || System.nanoTime() >= deadlineNanos)
-                  throw new SocketTimeoutException("Provider response exceeded remaining time budget");
+                  throw new SocketTimeoutException(
+                      "Provider response exceeded remaining time budget");
                 throw error;
               }
             }

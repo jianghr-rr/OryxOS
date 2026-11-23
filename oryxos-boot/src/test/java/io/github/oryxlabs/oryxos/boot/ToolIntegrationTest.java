@@ -144,7 +144,7 @@ class ToolIntegrationTest {
     String toolNames =
         allowed
             ? "read_file, write_file, list_dir, shell, http_get, http_post, save_memory,"
-                  + " recall_memory, notify, echo"
+                + " recall_memory, notify, echo"
                 + (mcp ? ", mcp.first.echo" : "")
             : "";
     Files.writeString(
@@ -263,10 +263,9 @@ class ToolIntegrationTest {
               .count());
       assertTrue(
           REQUESTS.get(1).orderedMessages().stream()
-              .anyMatch(
-                  m ->
-                      m.role() == ChatMessage.Role.TOOL
-                          && m.content().contains("actual trusted script output")));
+              .anyMatch(m ->
+                  m.role() == ChatMessage.Role.TOOL
+                      && m.content().contains("actual trusted script output")));
       assertEquals(
           Execution.Status.SUCCEEDED,
           EarlyRuntimeConfiguration.lastExecutions.all().getFirst().status());

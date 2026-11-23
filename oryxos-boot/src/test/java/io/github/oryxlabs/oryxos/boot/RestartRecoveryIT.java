@@ -52,7 +52,9 @@ class RestartRecoveryIT {
                     "tool_invocations",
                     "incidents",
                     "memory_entries")));
-        assertTrue(names.containsAll(List.of("scheduled_tasks", "task_executions")), "T082 adds persistent schedule state and history");
+        assertTrue(
+            names.containsAll(List.of("scheduled_tasks", "task_executions")),
+            "T082 adds persistent schedule state and history");
       }
     }
     assertFalse(WorkspaceProcessLock.isRunning(workspace));

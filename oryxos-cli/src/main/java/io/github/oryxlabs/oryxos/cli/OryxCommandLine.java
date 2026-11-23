@@ -111,29 +111,24 @@ public final class OryxCommandLine implements Callable<Integer> {
             .addSubcommand("provider", group("provider", new ProviderListCommand(this)))
             .addSubcommand("tool", group("tool", new ToolListCommand(this)))
             .addSubcommand("session", group("session", new SessionListCommand(this)));
-    line.setParameterExceptionHandler(
-        (error, args) -> {
-          boolean jsonRequested = json || java.util.Arrays.asList(args).contains("--json");
-          failure(
-              line,
-              "INVALID_INPUT",
-              "Check --help for supported commands and options",
-              jsonRequested);
-          return 2;
-        });
-    line.setExecutionExceptionHandler(
-        (error, command, parsed) -> {
-          if (error instanceof OryxError known) {
-            failure(line, known.code(), known.getMessage(), json);
-            return CliOutput.exitCode(known.code());
-          }
-          failure(
-              line,
-              "OPERATION_FAILED",
-              "Operation could not complete; raw configuration and credentials are not printed",
-              json);
-          return 3;
-        });
+    line.setParameterExceptionHandler((error, args) -> {
+      boolean jsonRequested = json || java.util.Arrays.asList(args).contains("--json");
+      failure(
+          line, "INVALID_INPUT", "Check --help for supported commands and options", jsonRequested);
+      return 2;
+    });
+    line.setExecutionExceptionHandler((error, command, parsed) -> {
+      if (error instanceof OryxError known) {
+        failure(line, known.code(), known.getMessage(), json);
+        return CliOutput.exitCode(known.code());
+      }
+      failure(
+          line,
+          "OPERATION_FAILED",
+          "Operation could not complete; raw configuration and credentials are not printed",
+          json);
+      return 3;
+    });
     return line;
   }
 

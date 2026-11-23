@@ -18,16 +18,15 @@ final class CliExecutionAwaiter {
     var result = new CompletableFuture<Result>();
     Thread.ofVirtual()
         .name("oryx-cli-admission")
-        .start(
-            () -> {
-              try {
-                var h = service.start(request, s -> {}, () -> {}, at, nanos, handle::set);
-                handle.set(h);
-                result.complete(new Result(h.await(), h.waitExpired()));
-              } catch (RuntimeException e) {
-                result.completeExceptionally(e);
-              }
-            });
+        .start(() -> {
+          try {
+            var h = service.start(request, s -> {}, () -> {}, at, nanos, handle::set);
+            handle.set(h);
+            result.complete(new Result(h.await(), h.waitExpired()));
+          } catch (RuntimeException e) {
+            result.completeExceptionally(e);
+          }
+        });
     try {
       return result.get(
           Math.max(0, TimeUnit.SECONDS.toNanos(60) - (time.nanoTime() - nanos)),

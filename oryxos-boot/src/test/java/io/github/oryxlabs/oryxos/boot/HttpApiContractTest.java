@@ -153,18 +153,17 @@ class HttpApiContractTest {
         s.path("required").forEach(n -> assertTrue(value.has(n.asText()), at + " missing " + n));
         value
             .fields()
-            .forEachRemaining(
-                e -> {
-                  var property = s.path("properties").get(e.getKey());
-                  if (property != null) validate(e.getValue(), property, at + "." + e.getKey());
-                  else
-                    assertNotEquals(
-                        false,
-                        s.path("additionalProperties").isBoolean()
-                            ? s.path("additionalProperties").asBoolean()
-                            : true,
-                        at + " unexpected " + e.getKey());
-                });
+            .forEachRemaining(e -> {
+              var property = s.path("properties").get(e.getKey());
+              if (property != null) validate(e.getValue(), property, at + "." + e.getKey());
+              else
+                assertNotEquals(
+                    false,
+                    s.path("additionalProperties").isBoolean()
+                        ? s.path("additionalProperties").asBoolean()
+                        : true,
+                    at + " unexpected " + e.getKey());
+            });
       }
       case "array" -> {
         assertTrue(value.isArray(), at);
@@ -449,34 +448,33 @@ class HttpApiContractTest {
     var names = new HashSet<String>();
     schemas
         .fields()
-        .forEachRemaining(
-            e -> {
-              String name = e.getKey();
-              try {
-                var sample = sample(e.getValue());
-                Object dto;
-                if (name.endsWith("Envelope"))
-                  dto =
-                      new io.github.oryxlabs.oryxos.web.api.ApiResponse<>(
-                          "OK", "OK", sample.path("data"), Instant.now(), "trace");
-                else {
-                  var type = classes.get(name);
-                  assertNotNull(type, name);
-                  var fields =
-                      Arrays.stream(type.getRecordComponents())
-                          .map(java.lang.reflect.RecordComponent::getName)
-                          .collect(java.util.stream.Collectors.toSet());
-                  var expected = new HashSet<String>();
-                  e.getValue().path("properties").fieldNames().forEachRemaining(expected::add);
-                  assertEquals(expected, fields, name);
-                  dto = mapper.treeToValue(sample, type);
-                }
-                validate(mapper.valueToTree(dto), e.getValue(), name);
-                names.add(name);
-              } catch (Exception ex) {
-                throw new AssertionError(name, ex);
-              }
-            });
+        .forEachRemaining(e -> {
+          String name = e.getKey();
+          try {
+            var sample = sample(e.getValue());
+            Object dto;
+            if (name.endsWith("Envelope"))
+              dto =
+                  new io.github.oryxlabs.oryxos.web.api.ApiResponse<>(
+                      "OK", "OK", sample.path("data"), Instant.now(), "trace");
+            else {
+              var type = classes.get(name);
+              assertNotNull(type, name);
+              var fields =
+                  Arrays.stream(type.getRecordComponents())
+                      .map(java.lang.reflect.RecordComponent::getName)
+                      .collect(java.util.stream.Collectors.toSet());
+              var expected = new HashSet<String>();
+              e.getValue().path("properties").fieldNames().forEachRemaining(expected::add);
+              assertEquals(expected, fields, name);
+              dto = mapper.treeToValue(sample, type);
+            }
+            validate(mapper.valueToTree(dto), e.getValue(), name);
+            names.add(name);
+          } catch (Exception ex) {
+            throw new AssertionError(name, ex);
+          }
+        });
     assertEquals(44, names.size());
   }
 

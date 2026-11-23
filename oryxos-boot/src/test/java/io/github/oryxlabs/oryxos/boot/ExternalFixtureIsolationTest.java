@@ -57,19 +57,18 @@ public class ExternalFixtureIsolationTest {
       var release = new CountDownLatch(1);
       try (var clients = ExternalFixtureExecutor.clients()) {
         var writing =
-            clients.submit(
-                () -> {
-                  // The load driver's sample writer holds a monitor across blocking evidence IO.
-                  synchronized (entered) {
-                    entered.countDown();
-                    try {
-                      release.await();
-                    } catch (InterruptedException e) {
-                      Thread.currentThread().interrupt();
-                      throw new IllegalStateException(e);
-                    }
-                  }
-                });
+            clients.submit(() -> {
+              // The load driver's sample writer holds a monitor across blocking evidence IO.
+              synchronized (entered) {
+                entered.countDown();
+                try {
+                  release.await();
+                } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                  throw new IllegalStateException(e);
+                }
+              }
+            });
         try {
           if (!entered.await(5, TimeUnit.SECONDS)) throw new AssertionError("No driver");
           Thread.sleep(50);

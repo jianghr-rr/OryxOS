@@ -49,21 +49,20 @@ public final class ToolListCommand implements Callable<Integer> {
     var items =
         tools.stream()
             .filter(t -> selectedNames == null || selectedNames.contains(t.name()))
-            .map(
-                t ->
-                    CliOutput.fields(
-                        "name",
-                        current.redactor().redact(t.name()),
-                        "description",
-                        current.redactor().redact(t.description()),
-                        "source",
-                        t.source(),
-                        "available",
-                        view != null,
-                        "inputSchema",
-                        CliOutput.schema(t.inputSchemaJson(), current.redactor()),
-                        "safeToRetry",
-                        t.safeToRetry()))
+            .map(t ->
+                CliOutput.fields(
+                    "name",
+                    current.redactor().redact(t.name()),
+                    "description",
+                    current.redactor().redact(t.description()),
+                    "source",
+                    t.source(),
+                    "available",
+                    view != null,
+                    "inputSchema",
+                    CliOutput.schema(t.inputSchemaJson(), current.redactor()),
+                    "safeToRetry",
+                    t.safeToRetry()))
             .toList();
     String source = view == null ? "OFFLINE_STATIC" : "RUNNING_REGISTRY_SNAPSHOT",
         mcp = view == null ? "NOT_DISCOVERED" : "STARTUP_DISCOVERY";

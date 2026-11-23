@@ -16,49 +16,44 @@ public final class IncidentRepository {
   }
 
   public IncidentDetail current() {
-    return writes.read(
-        em -> {
-          var state = em.find(WorkspaceStateEntity.class, workspace.toString());
-          if (state == null || state.incidentId == null) return null;
-          var e = em.find(IncidentEntity.class, state.incidentId);
-          return e == null ? null : StoredJson.read(e.detailJson, IncidentDetail.class);
-        });
+    return writes.read(em -> {
+      var state = em.find(WorkspaceStateEntity.class, workspace.toString());
+      if (state == null || state.incidentId == null) return null;
+      var e = em.find(IncidentEntity.class, state.incidentId);
+      return e == null ? null : StoredJson.read(e.detailJson, IncidentDetail.class);
+    });
   }
 
   public boolean acknowledged(UUID id) {
-    return writes.read(
-        em -> {
-          var e = em.find(IncidentEntity.class, id.toString());
-          return e != null
-              && e.workspaceId.equals(workspace.toString())
-              && e.state.equals("ACKNOWLEDGED");
-        });
+    return writes.read(em -> {
+      var e = em.find(IncidentEntity.class, id.toString());
+      return e != null
+          && e.workspaceId.equals(workspace.toString())
+          && e.state.equals("ACKNOWLEDGED");
+    });
   }
 
   public void save(IncidentDetail detail, UUID run) {
-    writes.write(
-        em -> {
-          put(em, detail, run, null);
-          state(em, "PAUSED_RECORDING", detail.id());
-          return null;
-        });
+    writes.write(em -> {
+      put(em, detail, run, null);
+      state(em, "PAUSED_RECORDING", detail.id());
+      return null;
+    });
   }
 
   public void acknowledge(IncidentDetail detail, UUID run, RecoveryPort.Request request) {
-    writes.write(
-        em -> {
-          put(em, detail.acknowledged(), run, request);
-          state(em, "READY", null);
-          return null;
-        });
+    writes.write(em -> {
+      put(em, detail.acknowledged(), run, request);
+      state(em, "READY", null);
+      return null;
+    });
   }
 
   public void ready() {
-    writes.write(
-        em -> {
-          state(em, "READY", null);
-          return null;
-        });
+    writes.write(em -> {
+      state(em, "READY", null);
+      return null;
+    });
   }
 
   private void state(EntityManager em, String gate, UUID incident) {
@@ -99,29 +94,28 @@ public final class IncidentRepository {
   }
 
   public void interruptUnfinished() {
-    writes.write(
-        em -> {
-          em.createQuery(
-                  "update ExecutionEntity e set"
-                      + " e.status='INTERRUPTED',e.stopReason='UNCLEAN_SHUTDOWN',e.finishedAt=:now,e.recordingStatus='INCOMPLETE',e.inFlightCount=0"
-                      + " where e.status='RUNNING'")
-              .setParameter("now", Instant.now().toString())
-              .executeUpdate();
-          em.createQuery(
-                  "update LlmCallEntity c set c.status='UNKNOWN',c.errorCode='UNCLEAN_SHUTDOWN'"
-                      + " where c.status='STARTED'")
-              .executeUpdate();
-          em.createQuery(
-                  "update ToolInvocationEntity t set"
-                      + " t.status='UNKNOWN',t.sideEffectState='UNKNOWN',t.resolutionStatus='UNRESOLVED',t.errorCode='UNCLEAN_SHUTDOWN'"
-                      + " where t.status='STARTED'")
-              .executeUpdate();
-          em.createQuery(
-                  "update SessionEntity s set s.status='ARCHIVED',s.archivedAt=:now where"
-                      + " s.kind='ONE_SHOT' and s.status='ACTIVE'")
-              .setParameter("now", Instant.now().toString())
-              .executeUpdate();
-          return null;
-        });
+    writes.write(em -> {
+      em.createQuery(
+              "update ExecutionEntity e set"
+                  + " e.status='INTERRUPTED',e.stopReason='UNCLEAN_SHUTDOWN',e.finishedAt=:now,e.recordingStatus='INCOMPLETE',e.inFlightCount=0"
+                  + " where e.status='RUNNING'")
+          .setParameter("now", Instant.now().toString())
+          .executeUpdate();
+      em.createQuery(
+              "update LlmCallEntity c set c.status='UNKNOWN',c.errorCode='UNCLEAN_SHUTDOWN'"
+                  + " where c.status='STARTED'")
+          .executeUpdate();
+      em.createQuery(
+              "update ToolInvocationEntity t set"
+                  + " t.status='UNKNOWN',t.sideEffectState='UNKNOWN',t.resolutionStatus='UNRESOLVED',t.errorCode='UNCLEAN_SHUTDOWN'"
+                  + " where t.status='STARTED'")
+          .executeUpdate();
+      em.createQuery(
+              "update SessionEntity s set s.status='ARCHIVED',s.archivedAt=:now where"
+                  + " s.kind='ONE_SHOT' and s.status='ACTIVE'")
+          .setParameter("now", Instant.now().toString())
+          .executeUpdate();
+      return null;
+    });
   }
 }

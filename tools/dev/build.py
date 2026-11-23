@@ -17,10 +17,18 @@ def run(repo, java, args):
     modules = [e.text for e in ET.parse(repo / 'pom.xml').findall('m:modules/m:module', ns)]
     mode, groups, selected = 'local', None, None
     forbidden = ('-Dmaven.repo.local', '-Duser.home', '-Djava.home', '-Dmaven.multiModuleProjectDirectory',
-                 '-Dmaven.test.skip', '-DskipTests', '-Dsurefire.', '-Doryxos.test.runId', '-Doryxos.test.evidenceDir', '-DexcludedGroups')
+                 '-Dmaven.test.skip', '-DskipTests', '-Dsurefire.', '-Doryxos.test.runId', '-Doryxos.test.evidenceDir', '-DexcludedGroups',
+                 '-Dspotless.', '-Dcheckstyle.skip', '-Dpmd.skip', '-Dcpd.skip', '-Dspotbugs.skip', '-Ddependency-check.skip', '-Dformat.skip')
+    profiles = []
     for i, arg in enumerate(args):
         if arg in ('-f', '--file', '-s', '--settings', '-gs', '--global-settings', '-rf', '--resume-from') or arg.startswith(forbidden):
             raise ValueError('Isolation/test-gate override is not supported: ' + arg.split('=')[0])
+        if arg in ('-P', '--activate-profiles'):
+            profiles += args[i + 1].split(',')
+        elif arg.startswith('-P') or arg.startswith('--activate-profiles='):
+            profiles += arg.split('=', 1)[1].split(',') if arg.startswith('--') else arg[2:].split(',')
+        if any(p.startswith(('!', '-')) for p in profiles):
+            raise ValueError('Profile deactivation is not supported: ' + ','.join(profiles))
         if arg.startswith(('--file=', '--settings=', '--global-settings=')):
             raise ValueError('Build must use the personal repository and settings.')
         if arg.startswith('-Doryxos.tests.mode='):
@@ -61,9 +69,14 @@ def run(repo, java, args):
     if testing and not expected:
         raise ValueError('No registered tests for this reactor selection; select a covered module/group.')
     run_id = str(uuid.uuid4())
+    gating = any(a in ('verify', 'install') for a in args)
     if testing:
         for name in selected:
             shutil.rmtree(repo / name / 'target/surefire-reports', ignore_errors=True)
+    if gating:
+        for name in selected:
+            for report in ('pmd.xml', 'checkstyle-result.xml', 'spotbugsXml.xml'):
+                (repo / name / 'target' / report).unlink(missing_ok=True)
     # Ordinary builds inherit no API keys or personal Maven/Java options.
     env = {k: os.environ[k] for k in ('HOME', 'USER', 'LOGNAME') if k in os.environ}
     env.update(PATH=f'{java}/bin:/usr/bin:/bin:/usr/sbin:/sbin', JAVA_HOME=str(java),
@@ -81,8 +94,12 @@ def run(repo, java, args):
         for key in ('MEM0_API_KEY', 'ORYXOS_DOCKER_HOST'):
             if key in os.environ:
                 env[key] = os.environ[key]
+    if 'dependency-scan' in profiles and 'NVD_API_KEY' in os.environ:
+        env['NVD_API_KEY'] = os.environ['NVD_API_KEY']
+    settings = 'maven-settings-ci.xml' if os.environ.get('GITHUB_ACTIONS') == 'true' else 'maven-settings.xml'
+    (dev / 'evidence').mkdir(parents=True, exist_ok=True)
     excluded = {'local': 'real-integration,kernel-soak,kernel-short-gate,kernel-writer-probe,kernel-redactor-probe,kernel-reader-probe,kernel-provider-probe', 'real': 'kernel-soak', 'soak': 'real-integration'}[mode]
-    command = [str(repo / 'mvnw'), *args, '-s', str(repo / 'tools/dev/maven-settings.xml'),
+    command = [str(repo / 'mvnw'), *args, '-s', str(repo / 'tools/dev' / settings),
                '-gs', str(repo / 'tools/dev/maven-global-settings.xml'), f'-Dmaven.repo.local={dev / "repository"}',
                f'-Doryxos.test.runId={run_id}', f'-Doryxos.test.evidenceDir={dev / "evidence"}', f'-DexcludedGroups={excluded}']
     result = subprocess.run(command, cwd=repo, env=env)
@@ -93,6 +110,11 @@ def run(repo, java, args):
         reports = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(reports)
         reports.check(repo, expected, run_id)
+    if gating:
+        spec = importlib.util.spec_from_file_location('quality', repo / 'tools/dev/quality-gate.py')
+        quality = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(quality)
+        quality.check(repo, selected)
     return 0
 
 

@@ -1,6 +1,7 @@
 package io.github.oryxlabs.oryxos.boot.config;
 
 import com.fasterxml.jackson.databind.*;
+import io.github.oryxlabs.oryxos.boot.observability.OryxRuntimeHealthIndicator;
 import io.github.oryxlabs.oryxos.boot.runtime.RuntimeHttpService;
 import io.github.oryxlabs.oryxos.core.execution.ExecutionStore;
 import io.github.oryxlabs.oryxos.core.runtime.*;
@@ -11,6 +12,7 @@ import io.github.oryxlabs.oryxos.core.tool.ToolRegistryPort;
 import io.github.oryxlabs.oryxos.core.workspace.WorkspaceHandle;
 import io.github.oryxlabs.oryxos.web.api.*;
 import io.github.oryxlabs.oryxos.web.execution.HttpExecutionAdapter;
+import io.github.oryxlabs.oryxos.web.observability.TraceIdFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -60,6 +62,20 @@ public class WebApiConfiguration {
     return new HttpExecutionAdapter(time, mapper, errors, json);
   }
 
+  @Bean("oryxRuntime")
+  OryxRuntimeHealthIndicator oryxRuntimeHealthIndicator(WebRuntimePort runtime) {
+    return new OryxRuntimeHealthIndicator(runtime);
+  }
+
+  @Bean
+  FilterRegistrationBean<TraceIdFilter> traceIdFilter() {
+    var registration = new FilterRegistrationBean<>(new TraceIdFilter());
+    registration.addUrlPatterns("/*");
+    registration.setAsyncSupported(true);
+    registration.setOrder(Integer.MIN_VALUE);
+    return registration;
+  }
+
   @Bean
   FilterRegistrationBean<org.springframework.web.filter.OncePerRequestFilter> httpIngress(
       HttpExecutionAdapter adapter) {
@@ -77,17 +93,15 @@ public class WebApiConfiguration {
             .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .featuresToDisable(
                 MapperFeature.ALLOW_COERCION_OF_SCALARS, DeserializationFeature.ACCEPT_FLOAT_AS_INT)
-            .postConfigurer(
-                mapper -> {
-                  var text =
-                      mapper.coercionConfigFor(
-                          com.fasterxml.jackson.databind.type.LogicalType.Textual);
-                  for (var shape :
-                      java.util.List.of(
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Integer,
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Float,
-                          com.fasterxml.jackson.databind.cfg.CoercionInputShape.Boolean))
-                    text.setCoercion(shape, com.fasterxml.jackson.databind.cfg.CoercionAction.Fail);
-                });
+            .postConfigurer(mapper -> {
+              var text =
+                  mapper.coercionConfigFor(com.fasterxml.jackson.databind.type.LogicalType.Textual);
+              for (var shape :
+                  java.util.List.of(
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Integer,
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Float,
+                      com.fasterxml.jackson.databind.cfg.CoercionInputShape.Boolean))
+                text.setCoercion(shape, com.fasterxml.jackson.databind.cfg.CoercionAction.Fail);
+            });
   }
 }

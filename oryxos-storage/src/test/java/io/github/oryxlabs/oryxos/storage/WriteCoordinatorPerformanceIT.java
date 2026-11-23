@@ -29,15 +29,13 @@ class WriteCoordinatorPerformanceIT {
         var storage = new StorageResourceFactory().open(workspace, lock);
         var callers = Executors.newVirtualThreadPerTaskExecutor()) {
       var writer = new WorkspaceWriteCoordinator(() -> storage, new RuntimeGate());
-      writer.write(
-          em ->
-              StoredSql.update(
-                  em, "CREATE TABLE writer_probe(id INTEGER PRIMARY KEY, content TEXT NOT NULL)"));
+      writer.write(em ->
+          StoredSql.update(
+              em, "CREATE TABLE writer_probe(id INTEGER PRIMARY KEY, content TEXT NOT NULL)"));
       for (int i = 0; i < 20; i++)
-        writer.write(
-            em ->
-                StoredSql.update(
-                    em, "INSERT INTO writer_probe VALUES (?,?)", ids.incrementAndGet(), payload));
+        writer.write(em ->
+            StoredSql.update(
+                em, "INSERT INTO writer_probe VALUES (?,?)", ids.incrementAndGet(), payload));
       for (int round = 0; round < 3; round++) {
         int burst = round;
         var start = new CountDownLatch(1);
@@ -45,33 +43,31 @@ class WriteCoordinatorPerformanceIT {
         for (int client = 0; client < 100; client++) {
           int caller = client;
           jobs.add(
-              callers.submit(
-                  () -> {
-                    var segments = new ArrayList<RuntimeTiming.Segment>();
-                    start.await();
-                    long began = System.nanoTime();
-                    try (var timing = RuntimeTiming.bind(segments::add)) {
-                      for (int record = 0; record < 12; record++)
-                        writer.write(
-                            em ->
-                                StoredSql.update(
-                                    em,
-                                    "INSERT INTO writer_probe VALUES (?,?)",
-                                    ids.incrementAndGet(),
-                                    payload));
-                    }
-                    samples.add(
-                        Map.of(
-                            "burst",
-                            burst,
-                            "caller",
-                            caller,
-                            "elapsedNanos",
-                            System.nanoTime() - began,
-                            "segments",
-                            segments));
-                    return null;
-                  }));
+              callers.submit(() -> {
+                var segments = new ArrayList<RuntimeTiming.Segment>();
+                start.await();
+                long began = System.nanoTime();
+                try (var timing = RuntimeTiming.bind(segments::add)) {
+                  for (int record = 0; record < 12; record++)
+                    writer.write(em ->
+                        StoredSql.update(
+                            em,
+                            "INSERT INTO writer_probe VALUES (?,?)",
+                            ids.incrementAndGet(),
+                            payload));
+                }
+                samples.add(
+                    Map.of(
+                        "burst",
+                        burst,
+                        "caller",
+                        caller,
+                        "elapsedNanos",
+                        System.nanoTime() - began,
+                        "segments",
+                        segments));
+                return null;
+              }));
         }
         start.countDown();
         for (var job : jobs) job.get(10, TimeUnit.SECONDS);

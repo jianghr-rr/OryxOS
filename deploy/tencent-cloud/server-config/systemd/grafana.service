@@ -1,0 +1,28 @@
+# Managed by sync-server-config.sh (monitoring). systemd 219 compatible: no MemoryMax=/StateDirectory=/ProtectSystem=strict.
+[Unit]
+Description=Grafana (OryxOS monitoring, loopback only)
+After=network-online.target prometheus.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=grafana
+Group=grafana
+EnvironmentFile=-/etc/oryxos-monitoring/monitoring.env
+Environment=GOMEMLIMIT=400MiB
+WorkingDirectory=/opt/monitoring/grafana/current
+ExecStart=/opt/monitoring/grafana/current/bin/grafana server \
+  --homepath=/opt/monitoring/grafana/current \
+  --config=/opt/oryxos/monitoring-config/current/grafana/grafana.ini
+Restart=on-failure
+RestartSec=5
+MemoryAccounting=yes
+MemoryLimit=512M
+OOMScoreAdjust=500
+NoNewPrivileges=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

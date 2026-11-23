@@ -104,8 +104,7 @@ public final class WorkspaceWriteCoordinator {
   private static java.util.concurrent.ScheduledExecutorService defaultCheckpointer() {
     var executor =
         new java.util.concurrent.ScheduledThreadPoolExecutor(
-            1,
-            Thread.ofPlatform().daemon(true).name("oryxos-sqlite-checkpoint-", 0).factory());
+            1, Thread.ofPlatform().daemon(true).name("oryxos-sqlite-checkpoint-", 0).factory());
     executor.setRemoveOnCancelPolicy(true);
     executor.setKeepAliveTime(60L, TimeUnit.SECONDS);
     executor.allowCoreThreadTimeOut(true);
@@ -156,11 +155,10 @@ public final class WorkspaceWriteCoordinator {
     T value;
     try {
       value =
-          write(
-              em -> {
-                for (var item : items) item.action().accept(em);
-                return action.apply(em);
-              });
+          write(em -> {
+            for (var item : items) item.action().accept(em);
+            return action.apply(em);
+          });
     } catch (RuntimeException error) {
       for (var item : items) {
         if (item.onFailure() != null) {
@@ -185,11 +183,10 @@ public final class WorkspaceWriteCoordinator {
     var window = coalesceWindow.get();
     if (window == null) {
       try {
-        write(
-            em -> {
-              action.accept(em);
-              return null;
-            });
+        write(em -> {
+          action.accept(em);
+          return null;
+        });
       } catch (RuntimeException error) {
         if (onFailure != null) {
           try {
@@ -218,11 +215,10 @@ public final class WorkspaceWriteCoordinator {
     window.onCommits.clear();
     window.onRollbacks.clear();
     try {
-      write(
-          em -> {
-            for (var item : items) item.action().accept(em);
-            return null;
-          });
+      write(em -> {
+        for (var item : items) item.action().accept(em);
+        return null;
+      });
     } catch (RuntimeException error) {
       for (var item : items) {
         if (item.onFailure() != null) {
@@ -404,8 +400,7 @@ public final class WorkspaceWriteCoordinator {
       try (var c = storage.dataSource().getConnection();
           var s = c.createStatement()) {
         s.execute("PRAGMA wal_checkpoint(PASSIVE)");
-        if (queue.isEmpty()
-            && System.nanoTime() - lastWriteNanos.get() >= CHECKPOINT_QUIET_NANOS) {
+        if (queue.isEmpty() && System.nanoTime() - lastWriteNanos.get() >= CHECKPOINT_QUIET_NANOS) {
           s.execute("PRAGMA wal_checkpoint(RESTART)");
         }
       }
@@ -442,24 +437,22 @@ public final class WorkspaceWriteCoordinator {
           "db.connection",
           () ->
               em.unwrap(org.hibernate.Session.class)
-                  .doWork(
-                      c -> {
-                        statements.bind(c);
-                        int millis =
-                            (int)
-                                Math.min(
-                                    Integer.MAX_VALUE,
-                                    Math.max(
-                                        1L,
-                                        TimeUnit.NANOSECONDS.toMillis(until - System.nanoTime())));
-                        if (c.isWrapperFor(org.sqlite.SQLiteConnection.class)) {
-                          c.unwrap(org.sqlite.SQLiteConnection.class).setBusyTimeout(millis);
-                        } else {
-                          try (var s = c.createStatement()) {
-                            s.execute("PRAGMA busy_timeout=" + millis);
-                          }
-                        }
-                      }));
+                  .doWork(c -> {
+                    statements.bind(c);
+                    int millis =
+                        (int)
+                            Math.min(
+                                Integer.MAX_VALUE,
+                                Math.max(
+                                    1L, TimeUnit.NANOSECONDS.toMillis(until - System.nanoTime())));
+                    if (c.isWrapperFor(org.sqlite.SQLiteConnection.class)) {
+                      c.unwrap(org.sqlite.SQLiteConnection.class).setBusyTimeout(millis);
+                    } else {
+                      try (var s = c.createStatement()) {
+                        s.execute("PRAGMA busy_timeout=" + millis);
+                      }
+                    }
+                  }));
       var tx = em.getTransaction();
       try {
         timed(batch, "db.begin", tx::begin);

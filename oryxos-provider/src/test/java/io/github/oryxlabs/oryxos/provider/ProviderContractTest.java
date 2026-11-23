@@ -230,8 +230,7 @@ class ProviderContractTest {
               exchange.sendResponseHeaders(504, -1);
               return;
             }
-            byte[] reply =
-                ordinary("served-model", "inline-ok").getBytes(StandardCharsets.UTF_8);
+            byte[] reply = ordinary("served-model", "inline-ok").getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, reply.length);
             exchange.getResponseBody().write(reply);
@@ -269,26 +268,24 @@ class ProviderContractTest {
         var calls = new ArrayList<Future<?>>();
         for (int i = 0; i < 100; i++) {
           calls.add(
-              workers.submit(
-                  () -> {
-                    barrier.await();
-                    long callerThread = Thread.currentThread().threadId();
-                    try (var timing =
-                        io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming.bind(
-                            s -> {
-                              if (s.name().equals("provider.http.encode")) {
-                                encodeCount.incrementAndGet();
-                                long writerThread = Thread.currentThread().threadId();
-                                if (writerThread != callerThread)
-                                  mismatchedEncodeThreads.add(callerThread + "->" + writerThread);
-                              }
-                            })) {
-                      assertEquals(
-                          "inline-ok",
-                          port.call(request("good", "inline-body")).assistantMessage().content());
-                    }
-                    return null;
-                  }));
+              workers.submit(() -> {
+                barrier.await();
+                long callerThread = Thread.currentThread().threadId();
+                try (var timing =
+                    io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming.bind(s -> {
+                      if (s.name().equals("provider.http.encode")) {
+                        encodeCount.incrementAndGet();
+                        long writerThread = Thread.currentThread().threadId();
+                        if (writerThread != callerThread)
+                          mismatchedEncodeThreads.add(callerThread + "->" + writerThread);
+                      }
+                    })) {
+                  assertEquals(
+                      "inline-ok",
+                      port.call(request("good", "inline-body")).assistantMessage().content());
+                }
+                return null;
+              }));
         }
         barrier.countDown();
         for (var call : calls) call.get(15, TimeUnit.SECONDS);
@@ -301,7 +298,8 @@ class ProviderContractTest {
                   + mismatchedEncodeThreads.size());
       assertEquals(100, contentLengths.size());
       assertTrue(
-          contentLengths.stream().allMatch(v -> v != null && !v.equals("null") && Integer.parseInt(v) > 0),
+          contentLengths.stream()
+              .allMatch(v -> v != null && !v.equals("null") && Integer.parseInt(v) > 0),
           () -> "Expected fixed Content-Length on every request: " + contentLengths);
       assertTrue(
           transferEncodings.isEmpty(),
@@ -326,22 +324,20 @@ class ProviderContractTest {
       var calls = new ArrayList<Future<?>>();
       for (int i = 0; i < 100; i++)
         calls.add(
-            workers.submit(
-                () -> {
-                  try (var timing =
-                      io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming.bind(
-                          s -> {
-                            if (s.name().equals("provider.http.encode")) {
-                              writes.incrementAndGet();
-                              if (!Thread.currentThread().isVirtual())
-                                platformWriters.add(Thread.currentThread().threadId());
-                            }
-                          })) {
-                    assertEquals(
-                        "fixture answer",
-                        port.call(request("good", "body-worker")).assistantMessage().content());
-                  }
-                }));
+            workers.submit(() -> {
+              try (var timing =
+                  io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming.bind(s -> {
+                    if (s.name().equals("provider.http.encode")) {
+                      writes.incrementAndGet();
+                      if (!Thread.currentThread().isVirtual())
+                        platformWriters.add(Thread.currentThread().threadId());
+                    }
+                  })) {
+                assertEquals(
+                    "fixture answer",
+                    port.call(request("good", "body-worker")).assistantMessage().content());
+              }
+            }));
       for (var call : calls) call.get(10, TimeUnit.SECONDS);
       assertEquals(100, receiver.requests.size());
       assertEquals(100, writes.get());
@@ -402,28 +398,26 @@ class ProviderContractTest {
           "Sequential calls should reuse one physical connection");
       receiver.delayMillis = 300;
       var shortCall =
-          workers.submit(
-              () ->
-                  assertCode(
-                      "PROVIDER_TIMEOUT",
-                      () ->
-                          port.call(
-                              request(
-                                  "good",
-                                  List.of(ChatMessage.user("short")),
-                                  ToolNameMap.empty(),
-                                  List.of(),
-                                  Duration.ofMillis(80)))));
+          workers.submit(() ->
+              assertCode(
+                  "PROVIDER_TIMEOUT",
+                  () ->
+                      port.call(
+                          request(
+                              "good",
+                              List.of(ChatMessage.user("short")),
+                              ToolNameMap.empty(),
+                              List.of(),
+                              Duration.ofMillis(80)))));
       var longCall =
-          workers.submit(
-              () ->
-                  port.call(
-                      request(
-                          "good",
-                          List.of(ChatMessage.user("long")),
-                          ToolNameMap.empty(),
-                          List.of(),
-                          Duration.ofSeconds(3))));
+          workers.submit(() ->
+              port.call(
+                  request(
+                      "good",
+                      List.of(ChatMessage.user("long")),
+                      ToolNameMap.empty(),
+                      List.of(),
+                      Duration.ofSeconds(3))));
       shortCall.get(5, TimeUnit.SECONDS);
       assertEquals(
           "fixture answer", longCall.get(5, TimeUnit.SECONDS).assistantMessage().content());
@@ -540,15 +534,14 @@ class ProviderContractTest {
               new ProviderRequest.ToolSchema(
                   "weather", "Read weather", "{\"type\":\"object\",\"properties\":{}}"));
       var first =
-          assertDoesNotThrow(
-              () ->
-                  port.call(
-                      request(
-                          "kimi",
-                          List.of(ChatMessage.user("weather please")),
-                          names,
-                          schemas,
-                          Duration.ofSeconds(3))));
+          assertDoesNotThrow(() ->
+              port.call(
+                  request(
+                      "kimi",
+                      List.of(ChatMessage.user("weather please")),
+                      names,
+                      schemas,
+                      Duration.ofSeconds(3))));
       assertEquals(
           1, receiver.requests.size()); // A tool proposal cannot cause another request or callback.
       assertEquals("call-weather-1", first.toolCalls().getFirst().id());
@@ -869,61 +862,58 @@ class ProviderContractTest {
     byte[] body = ordinary("actual", "recovered").getBytes(StandardCharsets.UTF_8);
     try (var serverThreads = java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor();
         var callerThreads = java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor();
-        var server =
-            new java.net.ServerSocket(0, 256, java.net.InetAddress.getLoopbackAddress())) {
-      serverThreads.execute(
-          () -> {
-            while (!server.isClosed()) {
-              try {
-                var socket = server.accept();
-                openSockets.add(socket);
-                acceptedConnections.incrementAndGet();
-                serverThreads.execute(
-                    () -> {
-                      try (socket) {
-                        var in = new java.io.BufferedInputStream(socket.getInputStream());
-                        var out = socket.getOutputStream();
-                        while (true) {
-                          int contentLength = readHttpRequestHeadersLength(in);
-                          if (contentLength < 0) break;
-                          if (contentLength > 0) {
-                            byte[] req = in.readNBytes(contentLength);
-                            if (req.length < contentLength) break;
-                          }
-                          long delay = responseDelayMillis.get();
-                          if (delay > 0) Thread.sleep(delay);
-                          byte[] header =
-                              ("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: "
-                                      + body.length
-                                      + "\r\nConnection: keep-alive\r\n\r\n")
-                                  .getBytes(StandardCharsets.US_ASCII);
-                          out.write(header);
-                          out.write(body);
-                          out.flush();
-                        }
-                      } catch (Exception ignored) {
-                      }
-                    });
+        var server = new java.net.ServerSocket(0, 256, java.net.InetAddress.getLoopbackAddress())) {
+      serverThreads.execute(() -> {
+        while (!server.isClosed()) {
+          try {
+            var socket = server.accept();
+            openSockets.add(socket);
+            acceptedConnections.incrementAndGet();
+            serverThreads.execute(() -> {
+              try (socket) {
+                var in = new java.io.BufferedInputStream(socket.getInputStream());
+                var out = socket.getOutputStream();
+                while (true) {
+                  int contentLength = readHttpRequestHeadersLength(in);
+                  if (contentLength < 0) break;
+                  if (contentLength > 0) {
+                    byte[] req = in.readNBytes(contentLength);
+                    if (req.length < contentLength) break;
+                  }
+                  long delay = responseDelayMillis.get();
+                  if (delay > 0) Thread.sleep(delay);
+                  byte[] header =
+                      ("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: "
+                              + body.length
+                              + "\r\nConnection: keep-alive\r\n\r\n")
+                          .getBytes(StandardCharsets.US_ASCII);
+                  out.write(header);
+                  out.write(body);
+                  out.flush();
+                }
               } catch (Exception ignored) {
-                break;
               }
-            }
-          });
+            });
+          } catch (Exception ignored) {
+            break;
+          }
+        }
+      });
 
       try {
         String origin = "http://127.0.0.1:" + server.getLocalPort();
         var port =
             registry(
-                definition("good", origin, "/chat/completions", "{}"),
-                Map.of("GOOD_KEY", SECRET));
+                definition("good", origin, "/chat/completions", "{}"), Map.of("GOOD_KEY", SECRET));
 
         // Sequential single requests should stay lazy and avoid fanning out 96 sockets.
         assertEquals("recovered", port.call(request("good", "seq-1")).assistantMessage().content());
         Thread.sleep(150);
         assertTrue(
             acceptedConnections.get() <= 4,
-            () -> "Single sequential request should not prewarm burst pool: "
-                + acceptedConnections.get());
+            () ->
+                "Single sequential request should not prewarm burst pool: "
+                    + acceptedConnections.get());
 
         // Concurrent requests (inFlight >= 4) trigger asynchronous route pre-warming.
         responseDelayMillis.set(50);
@@ -932,8 +922,7 @@ class ProviderContractTest {
           int idx = i;
           warmupCalls.add(
               java.util.concurrent.CompletableFuture.supplyAsync(
-                  () ->
-                      port.call(request("good", "warm-" + idx)).assistantMessage().content(),
+                  () -> port.call(request("good", "warm-" + idx)).assistantMessage().content(),
                   callerThreads));
         }
         for (var call : warmupCalls) {
@@ -941,15 +930,15 @@ class ProviderContractTest {
         }
         responseDelayMillis.set(0);
 
-        long prewarmDeadline =
-            System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(3);
+        long prewarmDeadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(3);
         while (System.nanoTime() < prewarmDeadline && acceptedConnections.get() < 64) {
           Thread.sleep(25);
         }
         assertTrue(
             acceptedConnections.get() >= 64,
-            () -> "Expected concurrent warmup to prewarm >= 64 idle route connections, got "
-                + acceptedConnections.get());
+            () ->
+                "Expected concurrent warmup to prewarm >= 64 idle route connections, got "
+                    + acceptedConnections.get());
 
         int beforeBurst = acceptedConnections.get();
         var burstCalls = new java.util.ArrayList<java.util.concurrent.CompletableFuture<String>>();
@@ -957,8 +946,7 @@ class ProviderContractTest {
           int idx = i;
           burstCalls.add(
               java.util.concurrent.CompletableFuture.supplyAsync(
-                  () ->
-                      port.call(request("good", "burst-" + idx)).assistantMessage().content(),
+                  () -> port.call(request("good", "burst-" + idx)).assistantMessage().content(),
                   callerThreads));
         }
         for (var call : burstCalls) {
@@ -967,8 +955,9 @@ class ProviderContractTest {
         int deltaAccepted = acceptedConnections.get() - beforeBurst;
         assertTrue(
             deltaAccepted <= 8,
-            () -> "64-way burst should reuse prewarmed route connections, new accepts="
-                + deltaAccepted);
+            () ->
+                "64-way burst should reuse prewarmed route connections, new accepts="
+                    + deltaAccepted);
       } finally {
         try {
           server.close();

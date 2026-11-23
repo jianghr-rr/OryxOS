@@ -71,13 +71,11 @@ public final class JpaAuditSink implements AuditSink {
         return;
       }
       try {
-        writes.writeImmediate(
-            em -> {
-              int changed = StoredSql.update(em, MODEL, prepared);
-              if (changed != 1)
-                throw new IllegalStateException("Attempt already closed or foreign");
-              return null;
-            });
+        writes.writeImmediate(em -> {
+          int changed = StoredSql.update(em, MODEL, prepared);
+          if (changed != 1) throw new IllegalStateException("Attempt already closed or foreign");
+          return null;
+        });
       } catch (RuntimeException error) {
         onFailure.run();
         throw error;
@@ -130,11 +128,10 @@ public final class JpaAuditSink implements AuditSink {
           };
       if ("STARTED".equals(r.status())) {
         try {
-          writes.writeImmediate(
-              em -> {
-                action.accept(em);
-                return null;
-              });
+          writes.writeImmediate(em -> {
+            action.accept(em);
+            return null;
+          });
         } catch (RuntimeException error) {
           onFailure.run();
           throw error;
@@ -158,8 +155,7 @@ public final class JpaAuditSink implements AuditSink {
             rows -> rows.next() ? rows.getLong(1) : 0L,
             executionId.toString(),
             link);
-    if (n == 0)
-      throw new IllegalArgumentException("Correction must refer to the same execution");
+    if (n == 0) throw new IllegalArgumentException("Correction must refer to the same execution");
   }
 
   private static final String MODEL =

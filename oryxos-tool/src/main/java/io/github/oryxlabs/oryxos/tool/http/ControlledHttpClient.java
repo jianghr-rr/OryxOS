@@ -136,7 +136,8 @@ public final class ControlledHttpClient implements AutoCloseable {
     long budget = Math.min(TimeUnit.SECONDS.toNanos(readSeconds), ctx.deadline().remainingNanos());
     if (budget <= 0) throw new OryxError("DEADLINE", "No time remains for HTTP GET");
     if (closed.get()) throw new TransportFailure("HTTP_CONNECTION", false);
-    long millis = Math.max(1, TimeUnit.NANOSECONDS.toMillis(budget));
+    // Round up: a client timeout firing before the deadline is misread as HTTP_CONNECTION.
+    long millis = Math.max(1, (budget + 999_999) / 1_000_000);
     var request = new org.apache.hc.client5.http.classic.methods.HttpUriRequestBase(method, uri);
     // Lease wait and response reads use this request's remaining budget. Cancellation closes
     // only this exchange; the owned pool remains available to concurrent executions.
@@ -208,7 +209,8 @@ public final class ControlledHttpClient implements AutoCloseable {
   }
 
   private static org.apache.hc.core5.http.HttpHost routeHost(URI uri) {
-    int port = uri.getPort() > 0 ? uri.getPort() : ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80);
+    int port =
+        uri.getPort() > 0 ? uri.getPort() : ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80);
     return new org.apache.hc.core5.http.HttpHost(uri.getScheme(), uri.getHost(), port);
   }
 
@@ -218,62 +220,61 @@ public final class ControlledHttpClient implements AutoCloseable {
     var route = new org.apache.hc.client5.http.HttpRoute(host);
     Thread.ofVirtual()
         .name("oryx-http-prewarm")
-        .start(
-            () -> {
-              if (closed.get()) return;
-              int target = PREWARM_TARGET_CONNECTIONS;
-              var held = new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>(target);
-              var toConnect = new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>();
+        .start(() -> {
+          if (closed.get()) return;
+          int target = PREWARM_TARGET_CONNECTIONS;
+          var held =
+              new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>(target);
+          var toConnect =
+              new java.util.ArrayList<org.apache.hc.client5.http.io.ConnectionEndpoint>();
+          try {
+            for (int i = 0; i < target && !closed.get(); i++) {
               try {
-                for (int i = 0; i < target && !closed.get(); i++) {
-                  try {
-                    var ep =
-                        manager
-                            .lease("prewarm-" + i, route, Timeout.ofMilliseconds(50), null)
-                            .get(Timeout.ofMilliseconds(50));
-                    held.add(ep);
-                    if (!ep.isConnected()) toConnect.add(ep);
-                  } catch (Exception ignored) {
-                    break;
-                  }
-                }
-                if (!toConnect.isEmpty() && !closed.get()) {
-                  var latch = new java.util.concurrent.CountDownLatch(toConnect.size());
-                  for (var ep : toConnect) {
-                    Thread.ofVirtual()
-                        .start(
-                            () -> {
-                              try {
-                                if (!closed.get() && !ep.isConnected()) {
-                                  manager.connect(
-                                      ep,
-                                      TimeValue.ofSeconds(2),
-                                      org.apache.hc.client5.http.protocol.HttpClientContext
-                                          .create());
-                                }
-                              } catch (Exception ignored) {
-                              } finally {
-                                latch.countDown();
-                              }
-                            });
-                  }
-                  try {
-                    latch.await(5, TimeUnit.SECONDS);
-                  } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                  }
-                }
-              } finally {
-                for (var ep : held) {
-                  boolean ok = ep.isConnected() && !closed.get();
-                  try {
-                    manager.release(
-                        ep, null, ok ? TimeValue.ofMinutes(10) : TimeValue.ZERO_MILLISECONDS);
-                  } catch (Exception ignored) {
-                  }
-                }
+                var ep =
+                    manager
+                        .lease("prewarm-" + i, route, Timeout.ofMilliseconds(50), null)
+                        .get(Timeout.ofMilliseconds(50));
+                held.add(ep);
+                if (!ep.isConnected()) toConnect.add(ep);
+              } catch (Exception ignored) {
+                break;
               }
-            });
+            }
+            if (!toConnect.isEmpty() && !closed.get()) {
+              var latch = new java.util.concurrent.CountDownLatch(toConnect.size());
+              for (var ep : toConnect) {
+                Thread.ofVirtual()
+                    .start(() -> {
+                      try {
+                        if (!closed.get() && !ep.isConnected()) {
+                          manager.connect(
+                              ep,
+                              TimeValue.ofSeconds(2),
+                              org.apache.hc.client5.http.protocol.HttpClientContext.create());
+                        }
+                      } catch (Exception ignored) {
+                      } finally {
+                        latch.countDown();
+                      }
+                    });
+              }
+              try {
+                latch.await(5, TimeUnit.SECONDS);
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+            }
+          } finally {
+            for (var ep : held) {
+              boolean ok = ep.isConnected() && !closed.get();
+              try {
+                manager.release(
+                    ep, null, ok ? TimeValue.ofMinutes(10) : TimeValue.ZERO_MILLISECONDS);
+              } catch (Exception ignored) {
+              }
+            }
+          }
+        });
   }
 
   public void close() {

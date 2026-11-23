@@ -37,6 +37,13 @@ if [[ -f "${TARGET}/config/runtime.yaml.template" && -x "${SYNC_SCRIPT}" ]]; the
   "${SYNC_SCRIPT}" "${TARGET}/config" "${WORKSPACE_DIR}"
 fi
 
+# The OryxOS drop-in follows the target release; monitoring config is left untouched.
+SERVER_SYNC_SCRIPT="${APP_ROOT}/bin/sync-server-config.sh"
+if [[ -d "${TARGET}/server-config" && -x "${SERVER_SYNC_SCRIPT}" ]]; then
+  printf '[rollback] Synchronizing OryxOS drop-in from %s/server-config...\n' "${TARGET}"
+  "${SERVER_SYNC_SCRIPT}" oryxos-dropin "${TARGET}/server-config"
+fi
+
 systemctl start oryxos
 for i in $(seq 1 30); do
   if curl -fsS -o /dev/null "${HEALTH_URL}"; then

@@ -226,9 +226,8 @@ class SessionContractTest {
       try {
         assertTrue(entered.await(5, TimeUnit.SECONDS));
         var independent =
-            workers.submit(
-                () ->
-                    sessions.acquire(second, "cli", "user", f.profile, Session.Kind.CONVERSATION));
+            workers.submit(() ->
+                sessions.acquire(second, "cli", "user", f.profile, Session.Kind.CONVERSATION));
         try (var lease = independent.get(1, TimeUnit.SECONDS)) {
           assertEquals(second, lease.session().id());
         }

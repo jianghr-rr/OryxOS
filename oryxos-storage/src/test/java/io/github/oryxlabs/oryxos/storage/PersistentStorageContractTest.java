@@ -263,18 +263,16 @@ class PersistentStorageContractTest {
       var entered = new CountDownLatch(1);
       var release = new CountDownLatch(1);
       var first =
-          workers.submit(
-              () ->
-                  writes.write(
-                      em -> {
-                        entered.countDown();
-                        try {
-                          release.await();
-                        } catch (InterruptedException e) {
-                          throw new IllegalStateException(e);
-                        }
-                        return null;
-                      }));
+          workers.submit(() ->
+              writes.write(em -> {
+                entered.countDown();
+                try {
+                  release.await();
+                } catch (InterruptedException e) {
+                  throw new IllegalStateException(e);
+                }
+                return null;
+              }));
       assertTrue(entered.await(2, TimeUnit.SECONDS));
       var waiting = new ArrayList<Future<?>>();
       for (int i = 0; i < 256; i++) waiting.add(workers.submit(() -> writes.write(em -> null)));
@@ -289,18 +287,16 @@ class PersistentStorageContractTest {
       var entered2 = new CountDownLatch(1);
       var release2 = new CountDownLatch(1);
       var second =
-          workers.submit(
-              () ->
-                  writes.write(
-                      em -> {
-                        entered2.countDown();
-                        try {
-                          release2.await();
-                        } catch (InterruptedException e) {
-                          throw new IllegalStateException(e);
-                        }
-                        return null;
-                      }));
+          workers.submit(() ->
+              writes.write(em -> {
+                entered2.countDown();
+                try {
+                  release2.await();
+                } catch (InterruptedException e) {
+                  throw new IllegalStateException(e);
+                }
+                return null;
+              }));
       assertTrue(entered2.await(2, TimeUnit.SECONDS));
       long start = System.nanoTime();
       assertThrows(
@@ -336,20 +332,18 @@ class PersistentStorageContractTest {
       for (int i = 0; i < 2; i++) {
         int id = i;
         calls.add(
-            workers.submit(
-                () -> {
-                  try (var timing = RuntimeTiming.bind(spans.get(id)::add)) {
-                    return writes.write(
-                        em -> {
-                          StoredSql.update(em, "INSERT INTO group_timing VALUES (?)", id);
-                          if (id == 1) {
-                            entered.countDown();
-                            awaitLatch(release);
-                          }
-                          return null;
-                        });
+            workers.submit(() -> {
+              try (var timing = RuntimeTiming.bind(spans.get(id)::add)) {
+                return writes.write(em -> {
+                  StoredSql.update(em, "INSERT INTO group_timing VALUES (?)", id);
+                  if (id == 1) {
+                    entered.countDown();
+                    awaitLatch(release);
                   }
-                }));
+                  return null;
+                });
+              }
+            }));
         long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
         while (writes.queued() < i + 1 && System.nanoTime() < until) Thread.sleep(1);
         assertEquals(i + 1, writes.queued());
@@ -367,16 +361,15 @@ class PersistentStorageContractTest {
       for (var own : spans) {
         var byName =
             own.stream()
-                .filter(
-                    s ->
-                        Set.of(
-                                "db.group.before",
-                                "db.group.after",
-                                "db.action",
-                                "db.commit",
-                                "db.acknowledge.queue",
-                                "db.write")
-                            .contains(s.name()))
+                .filter(s ->
+                    Set.of(
+                            "db.group.before",
+                            "db.group.after",
+                            "db.action",
+                            "db.commit",
+                            "db.acknowledge.queue",
+                            "db.write")
+                        .contains(s.name()))
                 .collect(java.util.stream.Collectors.toMap(RuntimeTiming.Segment::name, s -> s));
         assertTrue(byName.containsKey("db.group.before"));
         assertTrue(byName.containsKey("db.group.after"));
@@ -398,17 +391,16 @@ class PersistentStorageContractTest {
       assertEquals(
           2,
           ((Number)
-                  writes.read(
-                      em ->
-                          em.createNativeQuery("SELECT count(*) FROM group_timing")
-                              .getSingleResult()))
+                  writes.read(em ->
+                      em.createNativeQuery("SELECT count(*) FROM group_timing").getSingleResult()))
               .intValue());
     }
   }
 
   @Test
   @Tag("kernel-group-timing")
-  void tricklingArrivalsDoNotHoldInitialBatchMemberBeyondBoundedAbsorptionWindow() throws Exception {
+  void tricklingArrivalsDoNotHoldInitialBatchMemberBeyondBoundedAbsorptionWindow()
+      throws Exception {
     var workspace = new WorkspaceHandle(root);
     new WorkspaceInitializer().initialize(workspace, Map.of());
     try (var lock = WorkspaceProcessLock.acquire(workspace);
@@ -417,54 +409,47 @@ class PersistentStorageContractTest {
       var gate = new RuntimeGate();
       gate.readyAtFirstStartup();
       var writes = new WorkspaceWriteCoordinator(() -> resources, gate);
-      writes.write(em -> StoredSql.update(em, "CREATE TABLE trickle_probe (id INTEGER PRIMARY KEY)"));
+      writes.write(
+          em -> StoredSql.update(em, "CREATE TABLE trickle_probe (id INTEGER PRIMARY KEY)"));
       var firstEntered = new CountDownLatch(1);
       var firstRelease = new CountDownLatch(1);
       var initialStarted = new java.util.concurrent.atomic.AtomicLong();
       var first =
-          workers.submit(
-              () ->
-                  writes.write(
-                      em -> {
-                        firstEntered.countDown();
-                        awaitLatch(firstRelease);
-                        initialStarted.set(System.nanoTime());
-                        StoredSql.update(em, "INSERT INTO trickle_probe VALUES (0)");
-                        return null;
-                      }));
+          workers.submit(() ->
+              writes.write(em -> {
+                firstEntered.countDown();
+                awaitLatch(firstRelease);
+                initialStarted.set(System.nanoTime());
+                StoredSql.update(em, "INSERT INTO trickle_probe VALUES (0)");
+                return null;
+              }));
       assertTrue(firstEntered.await(5, TimeUnit.SECONDS));
       var trickles = new CopyOnWriteArrayList<Future<?>>();
       trickles.add(
-          workers.submit(
-              () ->
-                  writes.write(
-                      em -> {
-                        StoredSql.update(em, "INSERT INTO trickle_probe VALUES (1)");
-                        awaitMillis(2);
-                        return null;
-                      })));
+          workers.submit(() ->
+              writes.write(em -> {
+                StoredSql.update(em, "INSERT INTO trickle_probe VALUES (1)");
+                awaitMillis(2);
+                return null;
+              })));
       long waitQueued = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
       while (writes.queued() < 1 && System.nanoTime() < waitQueued) Thread.sleep(1);
       assertEquals(1, writes.queued());
       var feeder =
-          workers.submit(
-              () -> {
-                for (int i = 2; i <= 25; i++) {
-                  int id = i;
-                  Thread.sleep(1);
-                  trickles.add(
-                      workers.submit(
-                          () ->
-                              writes.write(
-                                  em -> {
-                                    StoredSql.update(
-                                        em, "INSERT INTO trickle_probe VALUES (?)", id);
-                                    awaitMillis(2);
-                                    return null;
-                                  })));
-                }
-                return null;
-              });
+          workers.submit(() -> {
+            for (int i = 2; i <= 25; i++) {
+              int id = i;
+              Thread.sleep(1);
+              trickles.add(
+                  workers.submit(() ->
+                      writes.write(em -> {
+                        StoredSql.update(em, "INSERT INTO trickle_probe VALUES (?)", id);
+                        awaitMillis(2);
+                        return null;
+                      })));
+            }
+            return null;
+          });
       firstRelease.countDown();
       first.get(5, TimeUnit.SECONDS);
       long elapsedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - initialStarted.get());
@@ -479,10 +464,8 @@ class PersistentStorageContractTest {
       assertEquals(
           26,
           ((Number)
-                  writes.read(
-                      em ->
-                          em.createNativeQuery("SELECT count(*) FROM trickle_probe")
-                              .getSingleResult()))
+                  writes.read(em ->
+                      em.createNativeQuery("SELECT count(*) FROM trickle_probe").getSingleResult()))
               .intValue());
     }
   }
@@ -515,32 +498,27 @@ class PersistentStorageContractTest {
       var readJobs = new ArrayList<Future<?>>();
       for (int i = 0; i < 4; i++) {
         readJobs.add(
-            readers.submit(
-                () ->
-                    writes.readSql(
-                        connection -> {
-                          allEntered.incrementAndGet();
-                          entered.countDown();
-                          awaitLatch(release);
-                          try (var s = connection.createStatement();
-                              var r = s.executeQuery("SELECT 1")) {
-                            assertTrue(r.next());
-                          }
-                          return null;
-                        })));
+            readers.submit(() ->
+                writes.readSql(connection -> {
+                  allEntered.incrementAndGet();
+                  entered.countDown();
+                  awaitLatch(release);
+                  try (var s = connection.createStatement();
+                      var r = s.executeQuery("SELECT 1")) {
+                    assertTrue(r.next());
+                  }
+                  return null;
+                })));
       }
       assertTrue(entered.await(5, TimeUnit.SECONDS));
       Thread.sleep(30);
       try {
         var writeResult =
-            writerWorkers.submit(
-                () -> {
-                  assertTrue(resources.isOpen());
-                  return writes.write(
-                      em ->
-                          StoredSql.update(
-                              em, "CREATE TABLE writer_slot_probe (id INTEGER PRIMARY KEY)"));
-                });
+            writerWorkers.submit(() -> {
+              assertTrue(resources.isOpen());
+              return writes.write(em ->
+                  StoredSql.update(em, "CREATE TABLE writer_slot_probe (id INTEGER PRIMARY KEY)"));
+            });
         assertDoesNotThrow(() -> writeResult.get(500, TimeUnit.MILLISECONDS));
       } finally {
         release.countDown();
@@ -588,7 +566,8 @@ class PersistentStorageContractTest {
                 sid,
                 e,
                 i * 2L + 2,
-                new ChatMessage(ChatMessage.Role.ASSISTANT, "seed-a-" + i, List.of(), null, null, null)));
+                new ChatMessage(
+                    ChatMessage.Role.ASSISTANT, "seed-a-" + i, List.of(), null, null, null)));
         seedSessions.finishTurn(sid, e.turnId());
       }
       var batchExecutions = new ArrayList<Execution>();
@@ -611,24 +590,23 @@ class PersistentStorageContractTest {
         int idx = i;
         var e = batchExecutions.get(idx);
         calls.add(
-            workers.submit(
-                () -> {
-                  try (var timing = RuntimeTiming.bind(spans::add)) {
-                    sessions.append(
-                        message(
-                            sid,
-                            e,
-                            200L + idx * 2L + 2,
-                            new ChatMessage(
-                                ChatMessage.Role.ASSISTANT,
-                                "batch-a-" + idx,
-                                List.of(),
-                                null,
-                                null,
-                                null)));
-                    return null;
-                  }
-                }));
+            workers.submit(() -> {
+              try (var timing = RuntimeTiming.bind(spans::add)) {
+                sessions.append(
+                    message(
+                        sid,
+                        e,
+                        200L + idx * 2L + 2,
+                        new ChatMessage(
+                            ChatMessage.Role.ASSISTANT,
+                            "batch-a-" + idx,
+                            List.of(),
+                            null,
+                            null,
+                            null)));
+                return null;
+              }
+            }));
       }
       long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
       while (writes.queued() < 5 && System.nanoTime() < until) Thread.sleep(1);
@@ -641,13 +619,12 @@ class PersistentStorageContractTest {
       for (int i = 0; i < 5; i++) {
         var e = batchExecutions.get(i);
         calls.add(
-            workers.submit(
-                () -> {
-                  try (var timing = RuntimeTiming.bind(spans::add)) {
-                    sessions.finishTurn(sid, e.turnId());
-                    return null;
-                  }
-                }));
+            workers.submit(() -> {
+              try (var timing = RuntimeTiming.bind(spans::add)) {
+                sessions.finishTurn(sid, e.turnId());
+                return null;
+              }
+            }));
       }
       until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
       while (writes.queued() < 5 && System.nanoTime() < until) Thread.sleep(1);
@@ -679,32 +656,28 @@ class PersistentStorageContractTest {
       var entered = new CountDownLatch(1);
       var release = new CountDownLatch(1);
       var first =
-          workers.submit(
-              () -> {
-                // Hold the completed first commit, so the second request must use a fresh
-                // transaction.
-                try (var timing =
-                    RuntimeTiming.bind(
-                        segment -> {
-                          if (segment.name().equals("db.commit")) {
-                            entered.countDown();
-                            awaitLatch(release);
-                          }
-                        })) {
-                  writes.write(
-                      em -> StoredSql.update(em, "CREATE TABLE timing_probe (id INTEGER)"));
-                }
-              });
+          workers.submit(() -> {
+            // Hold the completed first commit, so the second request must use a fresh
+            // transaction.
+            try (var timing =
+                RuntimeTiming.bind(segment -> {
+                  if (segment.name().equals("db.commit")) {
+                    entered.countDown();
+                    awaitLatch(release);
+                  }
+                })) {
+              writes.write(em -> StoredSql.update(em, "CREATE TABLE timing_probe (id INTEGER)"));
+            }
+          });
       assertTrue(entered.await(5, TimeUnit.SECONDS));
       var segments = new CopyOnWriteArrayList<RuntimeTiming.Segment>();
       var second =
-          workers.submit(
-              () -> {
-                try (var scope = RuntimeTiming.bind(segments::add)) {
-                  writes.write(em -> StoredSql.update(em, "INSERT INTO timing_probe VALUES (1)"));
-                  writes.read(em -> em.createNativeQuery("select 1").getSingleResult());
-                }
-              });
+          workers.submit(() -> {
+            try (var scope = RuntimeTiming.bind(segments::add)) {
+              writes.write(em -> StoredSql.update(em, "INSERT INTO timing_probe VALUES (1)"));
+              writes.read(em -> em.createNativeQuery("select 1").getSingleResult());
+            }
+          });
       long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
       while (writes.queued() == 0 && System.nanoTime() < deadline) Thread.sleep(1);
       assertEquals(1, writes.queued());
@@ -924,16 +897,14 @@ class PersistentStorageContractTest {
       for (int i = 0; i < 100; i++) {
         int id = i;
         jobs.add(
-            workers.submit(
-                () ->
-                    writes.write(
-                        em -> {
-                          em.createNativeQuery("insert into batching_probe(id) values (:id)")
-                              .setParameter("id", id)
-                              .executeUpdate();
-                          if (id == 99) throw new IllegalStateException("injected batch failure");
-                          return id;
-                        })));
+            workers.submit(() ->
+                writes.write(em -> {
+                  em.createNativeQuery("insert into batching_probe(id) values (:id)")
+                      .setParameter("id", id)
+                      .executeUpdate();
+                  if (id == 99) throw new IllegalStateException("injected batch failure");
+                  return id;
+                })));
         long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
         while (writes.queued() < i + 1 && System.nanoTime() < until) Thread.sleep(1);
         assertEquals(i + 1, writes.queued());
@@ -972,23 +943,21 @@ class PersistentStorageContractTest {
       for (int i = 0; i < 100; i++) {
         int id = i;
         jobs.add(
-            workers.submit(
-                () ->
-                    writes.write(
-                        em -> {
-                          em.createNativeQuery("insert into batching_probe(id) values (:id)")
-                              .setParameter("id", id)
-                              .executeUpdate();
-                          if (id == 99) {
-                            lastEntered.countDown();
-                            try {
-                              commit.await();
-                            } catch (InterruptedException e) {
-                              throw new RuntimeException(e);
-                            }
-                          }
-                          return id;
-                        })));
+            workers.submit(() ->
+                writes.write(em -> {
+                  em.createNativeQuery("insert into batching_probe(id) values (:id)")
+                      .setParameter("id", id)
+                      .executeUpdate();
+                  if (id == 99) {
+                    lastEntered.countDown();
+                    try {
+                      commit.await();
+                    } catch (InterruptedException e) {
+                      throw new RuntimeException(e);
+                    }
+                  }
+                  return id;
+                })));
         long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
         while (writes.queued() < i + 1 && System.nanoTime() < until) Thread.sleep(1);
         assertEquals(i + 1, writes.queued());
@@ -1043,38 +1012,33 @@ class PersistentStorageContractTest {
         var spans = new ConcurrentLinkedQueue<RuntimeTiming.Segment>();
         var jobs = new ArrayList<Future<?>>();
         jobs.add(
-            workers.submit(
-                () -> {
-                  try (var timing = RuntimeTiming.bind(spans::add)) {
-                    return writes.write(
-                        em -> {
-                          StoredSql.update(em, "INSERT INTO arrivals_probe VALUES (0)");
-                          firstEntered.countDown();
-                          awaitLatch(allowArrivals);
-                          return null;
-                        });
-                  }
-                }));
+            workers.submit(() -> {
+              try (var timing = RuntimeTiming.bind(spans::add)) {
+                return writes.write(em -> {
+                  StoredSql.update(em, "INSERT INTO arrivals_probe VALUES (0)");
+                  firstEntered.countDown();
+                  awaitLatch(allowArrivals);
+                  return null;
+                });
+              }
+            }));
         assertTrue(firstEntered.await(5, TimeUnit.SECONDS));
         for (int i = 1; i < 100; i++) {
           int id = i;
           jobs.add(
-              workers.submit(
-                  () -> {
-                    try (var timing = RuntimeTiming.bind(spans::add)) {
-                      return writes.write(
-                          em -> {
-                            StoredSql.update(em, "INSERT INTO arrivals_probe VALUES (?)", id);
-                            if (id == 99) {
-                              lastEntered.countDown();
-                              awaitLatch(allowCommit);
-                              if (fail)
-                                throw new IllegalStateException("injected late-member failure");
-                            }
-                            return null;
-                          });
+              workers.submit(() -> {
+                try (var timing = RuntimeTiming.bind(spans::add)) {
+                  return writes.write(em -> {
+                    StoredSql.update(em, "INSERT INTO arrivals_probe VALUES (?)", id);
+                    if (id == 99) {
+                      lastEntered.countDown();
+                      awaitLatch(allowCommit);
+                      if (fail) throw new IllegalStateException("injected late-member failure");
                     }
-                  }));
+                    return null;
+                  });
+                }
+              }));
           long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
           while (writes.queued() < i && System.nanoTime() < until) Thread.sleep(1);
           assertEquals(i, writes.queued());
@@ -1135,21 +1099,20 @@ class PersistentStorageContractTest {
         var caller = new java.util.concurrent.atomic.AtomicReference<Thread>();
         var restored = new java.util.concurrent.atomic.AtomicBoolean();
         var result =
-            workers.submit(
-                () -> {
-                  caller.set(Thread.currentThread());
-                  int value =
-                      writes.write(
-                          null,
-                          Duration.ofMillis(250),
-                          em -> {
-                            entered.countDown();
-                            awaitLatch(release);
-                            return 42;
-                          });
-                  restored.set(Thread.currentThread().isInterrupted());
-                  return value;
-                });
+            workers.submit(() -> {
+              caller.set(Thread.currentThread());
+              int value =
+                  writes.write(
+                      null,
+                      Duration.ofMillis(250),
+                      em -> {
+                        entered.countDown();
+                        awaitLatch(release);
+                        return 42;
+                      });
+              restored.set(Thread.currentThread().isInterrupted());
+              return value;
+            });
         try {
           assertTrue(entered.await(5, TimeUnit.SECONDS));
           if (interrupt) caller.get().interrupt();
@@ -1286,11 +1249,10 @@ class PersistentStorageContractTest {
         assertThrows(
             io.github.oryxlabs.oryxos.core.error.OryxError.class,
             () ->
-                writes.write(
-                    em -> {
-                      called.set(true);
-                      return null;
-                    }));
+                writes.write(em -> {
+                  called.set(true);
+                  return null;
+                }));
     assertEquals("RECORDING_FAILURE", error.code());
     assertEquals(RuntimeGate.State.PAUSED_RECORDING, gate.state());
     assertEquals(0, writes.queued());
@@ -1319,19 +1281,18 @@ class PersistentStorageContractTest {
       gate.readyAtFirstStartup();
       var writes = new WorkspaceWriteCoordinator(() -> resources, gate);
       String entryId = UUID.randomUUID().toString();
-      writes.write(
-          em -> {
-            em.createNativeQuery(
-                    "INSERT INTO"
-                        + " memory_entries(id,workspace_id,scope,raw_content,created_at,source_execution_id,source_agent_name,backend,write_status)"
-                        + " VALUES(?1,?2,'CORE','seed',?3,?4,'agent','sqlite','CONFIRMED')")
-                .setParameter(1, entryId)
-                .setParameter(2, wid.toString())
-                .setParameter(3, Instant.now().toString())
-                .setParameter(4, UUID.randomUUID().toString())
-                .executeUpdate();
-            return null;
-          });
+      writes.write(em -> {
+        em.createNativeQuery(
+                "INSERT INTO"
+                    + " memory_entries(id,workspace_id,scope,raw_content,created_at,source_execution_id,source_agent_name,backend,write_status)"
+                    + " VALUES(?1,?2,'CORE','seed',?3,?4,'agent','sqlite','CONFIRMED')")
+            .setParameter(1, entryId)
+            .setParameter(2, wid.toString())
+            .setParameter(3, Instant.now().toString())
+            .setParameter(4, UUID.randomUUID().toString())
+            .executeUpdate();
+        return null;
+      });
 
       var jobs = new ArrayList<java.util.concurrent.CompletableFuture<Void>>();
       try (var pool = java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor()) {
@@ -1342,15 +1303,14 @@ class PersistentStorageContractTest {
                   () -> {
                     for (int step = 0; step < 50; step++) {
                       int n = worker * 50 + step;
-                      writes.write(
-                          em -> {
-                            em.createNativeQuery(
-                                    "UPDATE memory_entries SET raw_content = ?1 WHERE id = ?2")
-                                .setParameter(1, "v-" + n)
-                                .setParameter(2, entryId)
-                                .executeUpdate();
-                            return null;
-                          });
+                      writes.write(em -> {
+                        em.createNativeQuery(
+                                "UPDATE memory_entries SET raw_content = ?1 WHERE id = ?2")
+                            .setParameter(1, "v-" + n)
+                            .setParameter(2, entryId)
+                            .executeUpdate();
+                        return null;
+                      });
                     }
                   },
                   pool));

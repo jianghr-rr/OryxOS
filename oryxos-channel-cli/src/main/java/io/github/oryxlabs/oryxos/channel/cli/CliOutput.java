@@ -155,11 +155,11 @@ public final class CliOutput {
     return switch (code) {
       case "INVALID_INPUT", "MESSAGE_TOO_LARGE", "CONFIGURATION_ERROR", "INVALID_CURSOR" -> 2;
       case "SESSION_BUSY",
-              "WORKSPACE_BUSY",
-              "SESSION_IDENTITY_MISMATCH",
-              "SESSION_MODEL_CHANGED",
-              "SESSION_ARCHIVED",
-              "PROFILE_EXISTS" ->
+          "WORKSPACE_BUSY",
+          "SESSION_IDENTITY_MISMATCH",
+          "SESSION_MODEL_CHANGED",
+          "SESSION_ARCHIVED",
+          "PROFILE_EXISTS" ->
           4;
       case "MODEL_FAILED", "TOOL_FAILED", "EXECUTION_FAILED", "PARTIAL" -> 5;
       case "DEADLINE", "TIMEOUT", "EXECUTION_TIMEOUT", "PROVIDER_TIMEOUT" -> 6;

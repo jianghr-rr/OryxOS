@@ -67,20 +67,18 @@ public final class RuntimeOpenApi implements OperationCustomizer, OpenApiCustomi
     // Stable client-generation IDs follow the registered route, not overloaded Java method names.
     openApi
         .getPaths()
-        .forEach(
-            (path, item) -> {
-              if (path.startsWith("/api/v1/"))
-                item.readOperationsMap()
-                    .forEach(
-                        (verb, operation) ->
-                            operation.setOperationId(
-                                verb.name().toLowerCase(Locale.ROOT)
-                                    + "_"
-                                    + path.substring("/api/v1".length())
-                                        .replace("/", "_")
-                                        .replace("{", "")
-                                        .replace("}", "")));
-            });
+        .forEach((path, item) -> {
+          if (path.startsWith("/api/v1/"))
+            item.readOperationsMap()
+                .forEach((verb, operation) ->
+                    operation.setOperationId(
+                        verb.name().toLowerCase(Locale.ROOT)
+                            + "_"
+                            + path.substring("/api/v1".length())
+                                .replace("/", "_")
+                                .replace("{", "")
+                                .replace("}", "")));
+        });
     if (openApi.getComponents() == null) openApi.setComponents(new Components());
     openApi.getComponents().setSchemas(schemas.components());
   }

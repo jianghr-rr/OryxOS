@@ -26,6 +26,24 @@
     <mcp.version>0.18.3</mcp.version>
     <oryxos.tests.mode>local</oryxos.tests.mode>
     <excludedGroups>real-integration,kernel-soak,kernel-short-gate,kernel-writer-probe,kernel-redactor-probe,kernel-reader-probe,kernel-provider-probe</excludedGroups>
+    <oryxos.config.dir>${maven.multiModuleProjectDirectory}/config</oryxos.config.dir>
+    <spotless.version>3.12.0</spotless.version>
+    <!-- spotless 3.12.0's glue is compiled against the 2.x API; 1.37.0 fails with NoSuchMethodError (evidence/P0-compat.md). -->
+    <google-java-format.version>2.0.0</google-java-format.version>
+    <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
+    <checkstyle.version>14.4.0</checkstyle.version>
+    <pmd-plugin.version>3.28.0</pmd-plugin.version>
+    <pmd.version>7.29.0</pmd.version>
+    <spotbugs-plugin.version>4.10.5.0</spotbugs-plugin.version>
+    <findsecbugs.version>1.14.0</findsecbugs.version>
+    <dependency-check.version>13.0.0</dependency-check.version>
+    <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
+    <!-- Overrides of Spring Boot 3.5.16 managed versions to clear G7 findings that have fixes within the same line. -->
+    <tomcat.version>10.1.62</tomcat.version>
+    <httpclient5.version>5.6.5</httpclient5.version>
+    <httpcore5.version>5.5</httpcore5.version>
+    <!-- CVE-2026-34479 is 6.9 under CVSS 4.0 but 7.5 under CVSS 3.1, which the G7 threshold uses. -->
+    <log4j2.version>2.25.5</log4j2.version>
   </properties>
 
   <modules>
@@ -64,7 +82,7 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.51.3.0</version>
+        <version>3.54.1.0</version>
       </dependency>
       <dependency>
         <groupId>com.networknt</groupId>
@@ -75,6 +93,11 @@
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>2.9.1</version>
+      </dependency>
+      <dependency>
+        <groupId>net.logstash.logback</groupId>
+        <artifactId>logstash-logback-encoder</artifactId>
+        <version>${logstash-logback-encoder.version}</version>
       </dependency>
 
       <dependency>
@@ -175,6 +198,167 @@
           </execution>
         </executions>
       </plugin>
+      <!-- G1: Google format, blocking for main and test code (FR-010). -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+            </includes>
+            <!-- The googleJavaFormat step also removes unused imports and orders them. -->
+            <googleJavaFormat>
+              <version>${google-java-format.version}</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <id>spotless-check</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- G2–G4 only write reports; tools/dev/quality-gate.py decides against config/quality/baseline.json. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>${oryxos.config.dir}/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>${oryxos.config.dir}/checkstyle/suppressions.xml</suppressionsLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <includeResources>false</includeResources>
+          <includeTestResources>false</includeTestResources>
+          <consoleOutput>false</consoleOutput>
+          <logViolationsToConsole>false</logViolationsToConsole>
+          <failOnViolation>false</failOnViolation>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkstyle-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-core</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-java</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <rulesets>
+            <ruleset>${oryxos.config.dir}/pmd/alibaba-p3c.xml</ruleset>
+          </rulesets>
+          <excludeFromFailureFile>${oryxos.config.dir}/pmd/exclude-pmd.properties</excludeFromFailureFile>
+          <targetJdk>21</targetJdk>
+          <includeTests>true</includeTests>
+          <format>xml</format>
+          <skipEmptyReport>false</skipEmptyReport>
+          <failOnViolation>false</failOnViolation>
+          <printFailingErrors>false</printFailingErrors>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pmd-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>pmd</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-plugin.version}</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Medium</threshold>
+          <excludeFilterFile>${oryxos.config.dir}/spotbugs/exclude.xml</excludeFilterFile>
+          <failOnError>false</failOnError>
+          <xmlOutput>true</xmlOutput>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>${findsecbugs.version}</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <executions>
+          <execution>
+            <id>spotbugs-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>spotbugs</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- G7: run only via tools/dev/mvnw -Pdependency-scan dependency-check:aggregate; never part of the default build. -->
+    <profile>
+      <id>dependency-scan</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>${dependency-check.version}</version>
+            <configuration>
+              <failBuildOnCVSS>7</failBuildOnCVSS>
+              <failOnError>true</failOnError>
+              <suppressionFiles>
+                <suppressionFile>${oryxos.config.dir}/dependency-check/suppressions.xml</suppressionFile>
+              </suppressionFiles>
+              <formats>
+                <format>HTML</format>
+                <format>JSON</format>
+              </formats>
+              <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+              <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+              <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+              <nodeAuditAnalyzerEnabled>false</nodeAuditAnalyzerEnabled>
+              <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
+              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

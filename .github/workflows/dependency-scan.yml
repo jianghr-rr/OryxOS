@@ -1,0 +1,76 @@
+name: Dependency Scan
+
+on:
+  pull_request:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: dependency-scan-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Dependency Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Require NVD_API_KEY
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: |
+          if [ -z "${NVD_API_KEY}" ]; then
+            echo "::error::NVD_API_KEY secret is empty or unavailable (forked PRs do not receive secrets); the scan cannot update the vulnerability database."
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Compute cache date
+        id: date
+        run: echo "day=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      # restore/save are split because actions/cache only saves on job success, and this job fails
+      # whenever a CVE is found, which would force a full NVD download on every run.
+      - name: Restore vulnerability database
+        id: nvd-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .oryxos-dev/repository/org/owasp/dependency-check-data
+          key: dependency-check-data-${{ steps.date.outputs.day }}
+          restore-keys: dependency-check-data-
+
+      - name: Dependency scan (tools/dev/mvnw -Pdependency-scan dependency-check:aggregate)
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          ORYXOS_JAVA_HOME: ${{ env.JAVA_HOME }}
+        run: ./tools/dev/mvnw -B -ntp -Pdependency-scan dependency-check:aggregate
+
+      - name: Save vulnerability database
+        if: always() && steps.nvd-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .oryxos-dev/repository/org/owasp/dependency-check-data
+          key: dependency-check-data-${{ steps.date.outputs.day }}
+
+      - name: Upload dependency-check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: |
+            target/dependency-check-report.html
+            target/dependency-check-report.json
+          if-no-files-found: ignore
+          retention-days: 14

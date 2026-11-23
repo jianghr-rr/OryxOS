@@ -131,18 +131,17 @@ class DeadlineRaceTest {
     try (var f = new LoopFixture(root, 10)) {
       f.context
           .dispatcher()
-          .call(
-              () -> {
-                assertEquals(1, f.gate.inFlight());
-                f.context.stop();
-                assertEquals(
-                    "EXECUTION_STOPPED",
-                    assertThrows(
-                            OryxError.class,
-                            () -> f.context.dispatcher().call(() -> fail("No subrequest")))
-                        .code());
-                return null;
-              });
+          .call(() -> {
+            assertEquals(1, f.gate.inFlight());
+            f.context.stop();
+            assertEquals(
+                "EXECUTION_STOPPED",
+                assertThrows(
+                        OryxError.class,
+                        () -> f.context.dispatcher().call(() -> fail("No subrequest")))
+                    .code());
+            return null;
+          });
       assertEquals(0, f.gate.inFlight());
     }
   }

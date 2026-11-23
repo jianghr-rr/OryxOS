@@ -42,21 +42,20 @@ public final class WorkspaceInspector implements QueryPort {
             .map(p -> redactor.redact(p.name() + ": " + p.error().safeMessage()))
             .toList(),
         agents.entries().stream()
-            .map(
-                e ->
-                    new AgentStatus(
-                        redactor.redact(e.name()),
-                        e.available(),
-                        e.available() ? "CONFIGURED" : e.error().code(),
-                        e.available()
-                            ? "Configuration valid; external services not probed"
-                            : e.error().safeMessage(),
-                        e.available()
-                            ? e.profile().notifyChannelNames().stream()
-                                .map(redactor::redact)
-                                .sorted()
-                                .toList()
-                            : java.util.List.of()))
+            .map(e ->
+                new AgentStatus(
+                    redactor.redact(e.name()),
+                    e.available(),
+                    e.available() ? "CONFIGURED" : e.error().code(),
+                    e.available()
+                        ? "Configuration valid; external services not probed"
+                        : e.error().safeMessage(),
+                    e.available()
+                        ? e.profile().notifyChannelNames().stream()
+                            .map(redactor::redact)
+                            .sorted()
+                            .toList()
+                        : java.util.List.of()))
             .toList());
   }
 }
