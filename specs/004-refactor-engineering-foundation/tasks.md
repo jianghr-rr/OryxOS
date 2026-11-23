@@ -239,6 +239,7 @@
 - [ ] T067 [US4] 实测漏洞库不可达时的行为：在本地断开 NVD 访问，或在 `workflow_dispatch` 中使用无效的 Key 运行；若插件凭旧缓存静默通过，则在 T066 中增加一步，检查数据库更新日志并显式失败。结果写入 `evidence/US4-offline.md`（依赖 T066）
   - 进度（2026-11-23）：CI 上真实遇到 NVD 返回 503，作业失败并给出原因，没有静默通过（见 `evidence/US4-cve-triage.md`）；“已有旧缓存、更新失败”的情况待验证
 - [ ] T068 [US4] 【需授权】在验证分支给 `oryxos-boot/pom.xml` 临时加入一个带已知高危 CVE 的旧依赖，发起 PR，确认 `Dependency Scan` 失败并列出坐标、CVE 编号与 CVSS；移除后通过；登记一条带理由的示例抑制并验证生效；结果写入 `evidence/US4-scan.md`，验证分支不合入（依赖 T066）
+  - 进度（2026-11-23）：验证分支 `004-verify-cve-scan`（PR #1）加入 commons-collections 3.2.1，`Dependency Scan` 失败并列出坐标、CVE-2015-6420 与 9.8 分；抑制条目已在 CI 上生效（Spring、Spring AI、CLI 误报不再报出）。“移除后通过”以 PR #2 扫描变绿为准，待确认。记录写在 `evidence/US4-cve-triage.md`
 
 **Checkpoint**：`Dependency Scan` 可以作为必过检查，部署链不受其影响。
 
