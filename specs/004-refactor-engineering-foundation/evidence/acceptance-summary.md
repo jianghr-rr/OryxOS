@@ -16,13 +16,13 @@
 | SC-006 四类注入 4/4 被拦截、钩子拦截、CI 标红 | **已验证** | 格式、规约、静态安全注入均被拦截且定位到行（[US1-gates.md](./US1-gates.md)）；钩子拦截格式与 PMD/Checkstyle（[US3-hook.md](./US3-hook.md)）；高危 CVE 依赖被 `Dependency Scan` 拦截（[US4-scan.md](./US4-scan.md)）；不合规提交使 CI 标红（[US3-ci.md](./US3-ci.md)） |
 | SC-007 推送 main 后部署成功、服务器配置逐文件一致 | **已验证** | 合入 main 后部署成功；服务器配置 8/8 与仓库一致；只改看板时只重启 Grafana；`prometheus.yml` 写错时监控配置不切换（[US3-deploy.md](./US3-deploy.md)）。首次合入的部署因 sudo 白名单失败，已由 PR #3 修复 |
 | SC-008 新开发者 30 分钟内完成上手 | **已验证** | 约 11 分钟（[US5-walkthrough.md](./US5-walkthrough.md)）；依赖缓存已就绪，首次下载不在内 |
-| SC-009 Grafana 看板、监控内存 ≤ 768MB（原 512MB，见 plan D-7）、公网未认证被拒 | **部分验证** | 监控栈已安装，公网未认证访问 Grafana/Prometheus 返回 401；新版本部署后 Prometheus 与 Grafana 的 `total_rss` 合计 260.2MB（[US2-server.md](./US2-server.md)）；看板已存在。看板数据与 24 小时曲线、24 小时后内存复测待观察（T055） |
+| SC-009 Grafana 看板、监控内存 ≤ 768MB（原 512MB，见 plan D-7）、公网未认证被拒 | **部分验证** | 监控栈已安装，公网未认证访问 Grafana/Prometheus 返回 401；新版本部署后 Prometheus 与 Grafana 的 `total_rss` 合计 260.2MB（[US2-server.md](./US2-server.md)）；看板 JVM 与 HTTP 面板已有数据。24 小时曲线与 24 小时后内存复测待观察（T055） |
 
 ## 2. 未完成任务
 
 | 任务 | 状态 | 需要什么 |
 | --- | --- | --- |
-| T055 服务器监控栈 | 已安装，5.1、5.3、5.4、5.6 通过 | 认证后确认看板有数据（5.5）；运行 24 小时后复测 `total_rss` 与看板曲线（5.2）；重启主机后确认旧日志仍在（5.6） |
+| T055 服务器监控栈 | 已安装，5.1、5.3、5.4、5.5、5.6 通过 | 运行 24 小时后复测 `total_rss` 与看板曲线（5.2）；重启主机后确认旧日志仍在（5.6） |
 | T067 漏洞库不可达时的行为 | 部分验证 | 无缓存时 NVD 返回 503 会使作业失败（[US4-cve-triage.md](./US4-cve-triage.md)）；“已有旧缓存且更新失败”的情况尚未实测 |
 
 ## 3. 敏感信息扫描（T075）
