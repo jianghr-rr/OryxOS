@@ -726,16 +726,6 @@
     {
       "tool": "checkstyle",
       "rule": "AvoidStarImportCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "NeedBracesCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "AvoidStarImportCheck",
       "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
     },
     {
@@ -765,26 +755,6 @@
     },
     {
       "tool": "checkstyle",
-      "rule": "AvoidStarImportCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "NeedBracesCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "AvoidStarImportCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "NeedBracesCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
-    },
-    {
-      "tool": "checkstyle",
       "rule": "AbbreviationAsWordInNameCheck",
       "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
     },
@@ -797,11 +767,6 @@
       "tool": "checkstyle",
       "rule": "NeedBracesCheck",
       "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/TimedHttpRequestFactory.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "AvoidStarImportCheck",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ToolWireNameMapper.java"
     },
     {
       "tool": "checkstyle",
@@ -1806,16 +1771,6 @@
     {
       "tool": "pmd",
       "rule": "ControlStatementBraces",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "PreserveStackTrace",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/AuditedProvider.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "ControlStatementBraces",
       "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/OpenAiClientFactory.java"
     },
     {
@@ -1837,21 +1792,6 @@
       "tool": "pmd",
       "rule": "ControlStatementBraces",
       "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderMessageMapper.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "ControlStatementBraces",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/ProviderRegistry.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "ControlStatementBraces",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "PreserveStackTrace",
-      "file": "oryxos-provider/src/main/java/io/github/oryxlabs/oryxos/provider/SpringAiProvider.java"
     },
     {
       "tool": "pmd",

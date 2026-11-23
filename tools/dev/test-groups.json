@@ -91,16 +91,51 @@
         },
         {
           "module": "oryxos-provider",
-          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderRoutingTest",
           "methods": [
             "routesTwoProvidersAndAuditsActualModelsWithoutInventingUsage",
             "missingCredentialsAndEmptyTasksNeverReachNetwork",
+            "invalidRequestsNeverWriteAuditOrReachNetwork"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderToolSchemaTest",
+          "methods": [
             "returnsStructuredCallsAndReplaysReasoningWithoutExecutingTools",
+            "mapsMcpNamesAndDetectsCollisionsAndUnknownWireNames"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderAuditTest",
+          "methods": [
             "classifiesFailuresWithoutRetriesFallbackOrRawResponseLeakage",
+            "recordingFailuresNeverBecomeSuccessOrTriggerReplay",
+            "failedCallsAreAuditedWithClassifiedCodeBeforeRethrow"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderProtocolTest",
+          "methods": [
             "budgetsCoverHeadersAndBodyAndExpiredRequestsDoNotStart",
-            "rejectsRedirectsDisconnectRetriesAndForeignContinuation",
-            "mapsMcpNamesAndDetectsCollisionsAndUnknownWireNames",
-            "recordingFailuresNeverBecomeSuccessOrTriggerReplay"
+            "rejectsRedirectsDisconnectRetriesAndForeignContinuation"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderAdmissionTest",
+          "methods": [
+            "modelCallHoldsExactlyOneAdmissionWhileInFlight",
+            "stopAfterAdmissionLetsTheCallFinishAndRecordsActualOutcome"
+          ]
+        },
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderArchitectureGuardTest",
+          "methods": [
+            "providerMainCodeUsesOnlyLowLevelOpenAiApi"
           ]
         },
         {
@@ -863,7 +898,7 @@
       "tests": [
         {
           "module": "oryxos-provider",
-          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderTransportTest",
           "methods": [
             "reusesConnectionsWithoutSharingTimeoutsOrClosingConcurrentCalls"
           ]
@@ -936,7 +971,7 @@
       "tests": [
         {
           "module": "oryxos-provider",
-          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderTransportTest",
           "methods": [
             "requestWrappersDoNotAllocateUnownedTransportThreads",
             "requestBodySerializationDoesNotAllocatePerCallPlatformWorkers"
@@ -1061,7 +1096,7 @@
       "tests": [
         {
           "module": "oryxos-provider",
-          "class": "io.github.oryxlabs.oryxos.provider.ProviderContractTest",
+          "class": "io.github.oryxlabs.oryxos.provider.ProviderTransportTest",
           "methods": [
             "transportTimingSeparatesEncodingHeadersAndBodyWithoutChangingReplies",
             "hundredConcurrentCallsEncodeInlineWithContentLengthAndReuseApiInstance",

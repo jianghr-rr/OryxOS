@@ -35,7 +35,7 @@
 | --- | --- | --- |
 | f0-discovery | EntryPointContractTest、TestDiscoveryIT、DiscoverySuffixIT | T003、T006 |
 | f0-foundation | OryxOsApplicationTest、RuntimeConfigContractTest、WorkspaceCommandsTest、StorageLifecycleIntegrationTest、DegradedStartupTest | T018 |
-| us1-contract | ProviderContractTest、ProviderSmokeTest、AgentCatalogContractTest、AgentStatusTest、StructuredLogAuditTest | T019、T026 |
+| us1-contract | ProviderRoutingTest、ProviderToolSchemaTest、ProviderAuditTest、ProviderProtocolTest、ProviderAdmissionTest、ProviderArchitectureGuardTest、ProviderSmokeTest、AgentCatalogContractTest、AgentStatusTest、StructuredLogAuditTest | T019、T026 |
 | us2-loop | ReActContractTest、FailurePolicyContractTest、SessionRuntimeContractTest、ToolSafetyContractTest、EarlyCliLoopIntegrationTest、DeadlineRaceTest | T041、T043 |
 | deadline-boundary | DeadlineRaceTest、FailurePolicyContractTest | T043 |
 | us3-memory | MemoryContractTest、SessionContractTest、Mem0ProtocolContractTest、MemoryFacadeIntegrationTest | T045、T056 |
@@ -75,7 +75,7 @@
 | kernel-tool-transport | HttpTransportReuseTest两项 | 连接复用、100并发、单请求取消隔离、不自动重试及关闭 |
 | kernel-memory-read | MarkdownReadConcurrencyTest一项 | 慢快读取互不阻塞、完整快照与原子发布；多实例写入仍跑原回归 |
 | kernel-evidence-log | EvidenceLogTest两项 | 同步逐条写入/刷新、失败可见、锁等待释放虚拟承载线程 |
-| kernel-provider-timing | ProviderContractTest一项 | 真实HTTP请求体编码/响应头/响应体分段，返回与完整审计不变 |
+| kernel-provider-timing | ProviderTransportTest（spec 005拆分后） | 真实HTTP请求体编码/响应头/响应体分段，返回与完整审计不变 |
 | kernel-group-timing | PersistentStorageContractTest一项 | 真实SQLite组内前后等待仍计入，其他成员未完成时不提前确认 |
 | kernel-external-isolation | ExternalFixtureIsolationTest两项 | 实际单载体子JVM证明外部服务慢读与负载证据写入不饿死运行端 |
 | kernel-provider-probe | ProviderConcurrencyProbeIT一项（显式soak） | 100调用方真实HTTP传输；无SQLite，仅诊断，不替代短程或四小时 |
