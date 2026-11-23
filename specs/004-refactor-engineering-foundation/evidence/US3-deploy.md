@@ -108,6 +108,20 @@ SUCCESS: .../0adc7d582a13795c/prometheus/prometheus.yml is valid prometheus conf
 
 修复（分支 `004-fix-dashboard-utf8`）：改为 `json.load(open(path, encoding="utf-8"))`。在 Python 3.6 容器中，旧脚本退出码为 1、报 ASCII 解码错误，新脚本退出码为 0。`test_sync_server_config.py` 新增 ASCII 语言环境用例，覆盖"非 ASCII 但合法的看板放行、非法 JSON 被拒且链接不变"；本地使用的 Python 3.9 无论新旧脚本都会通过这个用例，因此它防的是"按语言环境默认编码读取"这一类回归，3.6 上的行为以容器对照结果为准。
 
-## 尚未完成
+## quickstart 5.7：只改看板时只重启 Grafana
 
-- quickstart 5.7：`004-fix-dashboard-utf8` 合入并部署后，查看部署日志中是否有 `monitoring: grafana changed, restarted`，且没有 Prometheus 重启的记录。
+PR #5（`004-fix-dashboard-utf8`，merge 提交 `7e726fc`）合入后，部署工作流 Run 17 成功，用时 15 分 8 秒。PR #4 加入的看板 `description` 改动在这次部署中第一次通过校验并生效。维护者在服务器（主机名已脱敏）上执行只读命令，2026-11-23 20:04 前后：
+
+| 检查 | 结果 | 结论 |
+| --- | --- | --- |
+| `readlink -f /opt/oryxos/current` | `/opt/oryxos/releases/20261123115918-7e726fc` | 运行 PR #5 的版本 |
+| `readlink -f /opt/oryxos/monitoring-config/current` | `0adc7d582a13795c` | 已从 `08bbb76ae99dbdcc` 切到含新看板的配置，即 PR #4 部署时被拦下的那一份 |
+| Grafana `ActiveEnterTimestamp` | 2026-11-23 20:00:53 CST | 本次部署时重启 |
+| Prometheus `ActiveEnterTimestamp` | 2026-11-23 11:20:57 CST | 未重启 |
+| `/actuator/health`（本机） | `{"status":"UP","groups":["liveness","readiness"]}` | 通过 |
+
+结论依据的是服务状态，没有读取 Run 17 的部署日志原文；日志中对应的应为 `monitoring: grafana changed, restarted`。5.7 通过。
+
+## 结论
+
+T063 的各项均已完成：分支保护生效；合入后部署工作流先跑 `quality` 再发布；健康检查通过；`/var/log/oryxos/oryxos.json` 已写入；5.7、5.8、5.9 通过。监控栈 24 小时后的内存复测属于 T055，见 [US2-server.md](./US2-server.md)。
