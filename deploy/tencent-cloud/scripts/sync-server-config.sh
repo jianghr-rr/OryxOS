@@ -161,7 +161,8 @@ sync_monitoring() {
   if command -v python3 >/dev/null 2>&1; then
     for f in "${target}"/grafana/dashboards/*.json; do
       [[ -f $f ]] || continue
-      python3 -m json.tool "$f" >/dev/null || { err "monitoring: invalid dashboard JSON $f"; [[ ${old} == "${hash}" ]] || rm -rf "$target"; return 1; }
+      # Explicit UTF-8: python3.6's json.tool decodes with the locale, which is ASCII under sudo.
+      python3 -c 'import json, sys; json.load(open(sys.argv[1], encoding="utf-8"))' "$f" || { err "monitoring: invalid dashboard JSON $f"; [[ ${old} == "${hash}" ]] || rm -rf "$target"; return 1; }
     done
   fi
 

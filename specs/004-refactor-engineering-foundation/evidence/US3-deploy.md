@@ -91,6 +91,23 @@ no-restart
 
 "监控同步排在 OryxOS 健康检查之后、失败时保留新版本"没有在真实部署中触发，由 `deploy-release.sh` 的执行顺序和 `tools/dev/test_sync_server_config.py` 覆盖。
 
+## quickstart 5.7 第一次尝试：看板 JSON 校验误判（PR #4 部署）
+
+PR #4 合入后（`742fab6`，发布 `20261123110037-742fab6`），OryxOS 新版本健康检查通过、两个 Agent 均为 `AVAILABLE`，随后监控同步失败：
+
+```text
+SUCCESS: .../0adc7d582a13795c/prometheus/prometheus.yml is valid prometheus config file syntax
+'ascii' codec can't decode byte 0xe5 in position 87: ordinal not in range(128)
+[sync-server-config] ERROR: monitoring: invalid dashboard JSON .../grafana/dashboards/oryxos-jvm-http.json
+[deploy] ERROR: monitoring sync failed; OryxOS release kept
+```
+
+原因：`sync-server-config.sh` 用 `python3 -m json.tool` 校验看板。服务器的 Python 3.6 中 `json.tool` 按语言环境解码，sudo 下语言环境为 ASCII，因此新加的中文 `description` 被当成无效 JSON。在 `python:3.6-slim` 容器中复现到同样的报错（同为 position 87）。Python 3.8 及以上版本的 `json.tool` 固定使用 UTF-8，本地和 CI 都碰不到这个问题。
+
+这次失败恰好在真实部署里走通了"监控同步失败时保留 OryxOS 新版本"的路径：OryxOS 停在 `742fab6` 并保持健康，监控配置链接仍为 `08bbb76ae99dbdcc`，Grafana 没有重启，部署工作流以非零码失败并给出原因。
+
+修复（分支 `004-fix-dashboard-utf8`）：改为 `json.load(open(path, encoding="utf-8"))`。在 Python 3.6 容器中，旧脚本退出码为 1、报 ASCII 解码错误，新脚本退出码为 0。`test_sync_server_config.py` 新增 ASCII 语言环境用例，覆盖"非 ASCII 但合法的看板放行、非法 JSON 被拒且链接不变"；本地使用的 Python 3.9 无论新旧脚本都会通过这个用例，因此它防的是"按语言环境默认编码读取"这一类回归，3.6 上的行为以容器对照结果为准。
+
 ## 尚未完成
 
-- quickstart 5.7：等 `004-deploy-guard` 合入并部署后，查看部署日志中是否有 `monitoring: grafana changed, restarted`，且没有 Prometheus 重启的记录。
+- quickstart 5.7：`004-fix-dashboard-utf8` 合入并部署后，查看部署日志中是否有 `monitoring: grafana changed, restarted`，且没有 Prometheus 重启的记录。

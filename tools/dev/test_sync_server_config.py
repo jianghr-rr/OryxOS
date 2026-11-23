@@ -92,6 +92,26 @@ class SyncServerConfigTest(Harness):
         self.assertIn('monitoring: grafana changed, restarted', result.stdout)
         self.assertEqual(['systemctl restart grafana'], self.restarts())
 
+    def test_dashboard_json_is_validated_as_utf8_under_ascii_locale(self):
+        self.install_monitoring()
+        self.sync('monitoring', self.release('r1'))
+        link = self.root / 'opt/oryxos/monitoring-config/current'
+        ascii_locale = {'LC_ALL': 'C', 'LANG': 'C', 'PYTHONUTF8': '0'}
+        source = self.release('r2')
+        dashboard = source / 'monitoring/grafana/dashboards/oryxos-jvm-http.json'
+        text = dashboard.read_text(encoding='utf-8')
+        self.assertFalse(text.isascii(), 'fixture must carry non-ASCII text')
+        dashboard.write_text(text.replace('"version": 1', '"version": 2'), encoding='utf-8')
+        result = self.sync('monitoring', source, **ascii_locale)
+        self.assertEqual(0, result.returncode, result.stderr)
+        before = os.readlink(link)
+        broken = self.release('r3')
+        (broken / 'monitoring/grafana/dashboards/oryxos-jvm-http.json').write_text('{"title": "中文",', encoding='utf-8')
+        result = self.sync('monitoring', broken, **ascii_locale)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('invalid dashboard JSON', result.stderr)
+        self.assertEqual(before, os.readlink(link))
+
     def test_promtool_failure_keeps_previous_link(self):
         self.install_monitoring()
         self.sync('monitoring', self.release('r1'))
