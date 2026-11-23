@@ -66,7 +66,31 @@
 
 分支 `004-deploy-guard` 给 `quality` 与 `build-and-deploy` 两个 job 都加了 `if: github.ref == 'refs/heads/main'`，并发组固定为 `deploy-tencent-cloud`。同一提交给看板 JSON 补了 `description` 字段，用作 quickstart 5.7 的验证改动。
 
+## quickstart 5.9：`prometheus.yml` 写错时监控配置不切换
+
+2026-11-23 17:58 前后由维护者在服务器（主机名已脱敏）上以 root 执行，当时运行的是 `5626ac4` 发布。步骤：把当前发布的 `server-config` 复制到 `mktemp -d` 临时目录，在其中的 `prometheus.yml` 末尾追加 `scrape_configs: [ {job_name: broken`，然后执行 `/opt/oryxos/bin/sync-server-config.sh monitoring <临时目录>/server-config`。
+
+```text
+Checking /opt/oryxos/monitoring-config/ee134d8f63b5a894/prometheus/prometheus.yml
+  FAILED: parsing YAML file .../prometheus.yml: yaml: line 16: did not find expected ',' or '}'
+[sync-server-config] ERROR: monitoring: promtool rejected prometheus.yml; keeping 08bbb76ae99dbdcc
+exit=1
+link-same
+manifest-same
+no-restart
+{"status":"UP","groups":["liveness","readiness"]}
+```
+
+| 预期 | 结果 |
+| --- | --- |
+| 脚本非零退出并指出 `promtool` 错误 | 退出码 1，错误指向第 16 行 YAML |
+| `monitoring-config/current` 链接不变 | `link-same`，仍为 `08bbb76ae99dbdcc` |
+| 清单 `server-config.sha256` 不变 | `manifest-same` |
+| Prometheus、Grafana 未重启 | 两者的 `ActiveEnterTimestamp` 前后一致 |
+| OryxOS 保持健康 | `UP` |
+
+"监控同步排在 OryxOS 健康检查之后、失败时保留新版本"没有在真实部署中触发，由 `deploy-release.sh` 的执行顺序和 `tools/dev/test_sync_server_config.py` 覆盖。
+
 ## 尚未完成
 
 - quickstart 5.7：等 `004-deploy-guard` 合入并部署后，查看部署日志中是否有 `monitoring: grafana changed, restarted`，且没有 Prometheus 重启的记录。
-- quickstart 5.9：按改写后的步骤在服务器上用临时目录执行，未执行。
