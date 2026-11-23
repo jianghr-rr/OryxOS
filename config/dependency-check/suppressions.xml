@@ -13,7 +13,7 @@
 
   <suppress>
     <notes>reason: false positive, NVD lists httpcomponents_core 5.0 through 5.4.2 plus the 5.5 pre-releases alpha1 and beta1 as affected; the CPE entries for 5.5:alpha1 and 5.5:beta1 are matched against the 5.5 GA release, which is not affected. Pinned to 5.5; registered: 2026-11-23</notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5@5\.5$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5(-h2)?@5\.5$</packageUrl>
     <cve>CVE-2026-54399</cve>
     <cve>CVE-2026-54428</cve>
   </suppress>
