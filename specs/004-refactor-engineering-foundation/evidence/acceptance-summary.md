@@ -2,30 +2,28 @@
 
 日期 2026-11-23，分支 `004-refactor-engineering-foundation`。已提交：`78b3540`（门禁与配置）、`5b288ba`（纯格式化）；其余改动按授权保持未提交。
 
+更新（2026-11-23 晚）：功能分支已经 PR #2 合入 main，后续修复经 PR #3–#5 合入；第 1、2 节按合入与部署后的结果更新。
+
 ## 1. 成功标准逐条核对
 
 | SC | 结论 | 依据 / 未验证原因 |
 | --- | --- | --- |
 | SC-001 统一命令，额外耗时 ≤ 3 分钟 | **已验证** | 干净检出 `clean verify` 640.6 秒，T0 = 594 秒，多 47 秒（[final-verify.md](./final-verify.md)） |
 | SC-002 格式 100%、新代码阻断违规 0、存量有记录与计划 | **已验证** | `spotless:check` 全仓通过；`Quality gate PASS: 460 baseline entries`；存量与清零计划见 `docs/EngineeringBaseline.md` §3 |
-| SC-003 100 行 JSON、10/10 traceId 命中 | **本地已验证，服务器未验证** | 本地 prod 形态 2.1、2.2 通过（[US2-local.md](./US2-local.md)）；服务器 `/var/log/oryxos/oryxos.json` 需要合入并部署后才能看到（T063） |
-| SC-004 本机探针 UP、指标可读、公网未认证被拒 | **本机与公网屏蔽已验证，服务器本机探针待部署** | 本地 2.4、2.5 与 `ActuatorEndpointsTest`；`env`、`beans`、`heapdump`、`metrics` 返回 404。公网未认证访问 `/actuator/health`、`/actuator/prometheus` 已返回 403（[US2-server.md](./US2-server.md)）；服务器本机探针需新版本部署后验证（T063） |
+| SC-003 100 行 JSON、10/10 traceId 命中 | **已验证** | 本地 prod 形态 2.1、2.2 通过（[US2-local.md](./US2-local.md)）；服务器 `/var/log/oryxos/oryxos.json` 已写入，10/10 traceId 命中（[US2-server.md](./US2-server.md)） |
+| SC-004 本机探针 UP、指标可读、公网未认证被拒 | **已验证** | 本地 2.4、2.5 与 `ActuatorEndpointsTest`；`env`、`beans`、`heapdump`、`metrics` 返回 404。公网未认证访问 `/actuator/health`、`/actuator/prometheus` 返回 403；服务器本机探针 `UP`，Prometheus 的 `oryxos` 目标为 `up`（[US2-server.md](./US2-server.md)） |
 | SC-005 OpenAPI 零差异、分组不减少且全部通过 | **已验证** | `PublishedOpenApiTest` 2/2；分组 50 → 51；334 例全部通过 |
-| SC-006 四类注入 4/4 被拦截、钩子拦截、CI 标红 | **部分验证** | 格式、规约、静态安全注入均被拦截且定位到行（[US1-gates.md](./US1-gates.md)）；钩子拦截格式与 PMD/Checkstyle（[US3-hook.md](./US3-hook.md)）。高危 CVE 依赖（T068）与 CI 标红（T062）需要推送与开 PR，待授权 |
-| SC-007 推送 main 后部署成功、服务器配置逐文件一致 | **未验证** | 需要分支保护、合入与部署（T062、T063）。同步脚本的本地单元测试 `tools/dev/test_sync_server_config.py` 通过 |
+| SC-006 四类注入 4/4 被拦截、钩子拦截、CI 标红 | **已验证** | 格式、规约、静态安全注入均被拦截且定位到行（[US1-gates.md](./US1-gates.md)）；钩子拦截格式与 PMD/Checkstyle（[US3-hook.md](./US3-hook.md)）；高危 CVE 依赖被 `Dependency Scan` 拦截（[US4-scan.md](./US4-scan.md)）；不合规提交使 CI 标红（[US3-ci.md](./US3-ci.md)） |
+| SC-007 推送 main 后部署成功、服务器配置逐文件一致 | **已验证** | 合入 main 后部署成功；服务器配置 8/8 与仓库一致；只改看板时只重启 Grafana；`prometheus.yml` 写错时监控配置不切换（[US3-deploy.md](./US3-deploy.md)）。首次合入的部署因 sudo 白名单失败，已由 PR #3 修复 |
 | SC-008 新开发者 30 分钟内完成上手 | **已验证** | 约 11 分钟（[US5-walkthrough.md](./US5-walkthrough.md)）；依赖缓存已就绪，首次下载不在内 |
-| SC-009 Grafana 看板、监控内存 ≤ 768MB（原 512MB，见 plan D-7）、公网未认证被拒 | **部分验证** | 监控栈已安装，公网未认证访问 Grafana/Prometheus 返回 401；首次读数 `total_rss` 合计约 260MB（[US2-server.md](./US2-server.md)）。看板 24 小时曲线与 24 小时后内存复测待新版本部署后观察 |
+| SC-009 Grafana 看板、监控内存 ≤ 768MB（原 512MB，见 plan D-7）、公网未认证被拒 | **部分验证** | 监控栈已安装，公网未认证访问 Grafana/Prometheus 返回 401；新版本部署后 Prometheus 与 Grafana 的 `total_rss` 合计 260.2MB（[US2-server.md](./US2-server.md)）；看板已存在。看板数据与 24 小时曲线、24 小时后内存复测待观察（T055） |
 
 ## 2. 未完成任务
 
 | 任务 | 状态 | 需要什么 |
 | --- | --- | --- |
-| T055 服务器首次安装监控栈 | 待维护者 | 下载并核对两个 tar 包、填写 `monitoring.env`、执行安装脚本、配置 nginx |
-| T062 推送功能分支并验证 CI 标红/变绿 | 待授权 | 推送权限；同时记录 CI 总时长 |
-| T063 开启 main 分支保护、合入、部署验证 | 文档部分已完成，其余待授权 | 按 `docs/EngineeringBaseline.md` §8 修改仓库设置；两个检查需先在 GitHub 上运行过一次 |
-| T067 漏洞库不可达时的行为 | 待执行 | 需要在已有漏洞库缓存的前提下模拟不可达，本地没有 `NVD_API_KEY` 与缓存；建议用 `workflow_dispatch` 加一个无效 Key 的仓库副本运行 |
-| T068 高危 CVE 依赖注入 | 待授权 | 开验证分支与 PR |
-| T076 服务器 OryxOS 内存增量 | 待维护者 | 部署后执行 `systemctl show oryxos -p MemoryCurrent`，与 417MB 对比 |
+| T055 服务器监控栈 | 已安装，5.1、5.3、5.4、5.6 通过 | 认证后确认看板有数据（5.5）；运行 24 小时后复测 `total_rss` 与看板曲线（5.2）；重启主机后确认旧日志仍在（5.6） |
+| T067 漏洞库不可达时的行为 | 部分验证 | 无缓存时 NVD 返回 503 会使作业失败（[US4-cve-triage.md](./US4-cve-triage.md)）；“已有旧缓存且更新失败”的情况尚未实测 |
 
 ## 3. 敏感信息扫描（T075）
 
@@ -53,4 +51,4 @@
 | A6 | tasks.md | 两处任务外修复：`tools/dev/build.py` 创建 `.oryxos-dev/evidence`（否则全新检出上 `WriterIsolationTest` 必败，CI 首跑会红）；`quality-gate.py --prune` 保留 `createdAt`/`baseCommit` 且不做无变化改写 | 已记录在 final-verify.md 与 US5-walkthrough.md |
 | A7 | US2 实现细节 | 日志参数使用 `springProperty`、`AgentService` 新增 DEBUG 行 `execution_finished`、`validate-group-membership: false`、健康指示器由 `@Bean("oryxRuntime")` 注册 | 已在 US2-local.md“与任务描述的差异”中说明 |
 
-覆盖检查：tasks.md 共 77 个任务，已完成 71 个；未完成 6 个（T055、T062、T063、T067、T068、T076），全部需要服务器、推送、仓库设置或 NVD Key 等本地不具备的权限或条件。偏差 D-1 至 D-6 的处理与 plan 一致，D-1、D-6 已获维护者确认。
+覆盖检查：tasks.md 共 77 个任务，已完成 75 个；未完成 2 个（T055、T067），分别等待 24 小时观察与旧缓存场景实测。偏差 D-1 至 D-6 的处理与 plan 一致，D-1、D-6 已获维护者确认。
