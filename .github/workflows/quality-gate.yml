@@ -40,7 +40,9 @@ jobs:
       - name: Cache project Maven repository
         uses: actions/cache@v4
         with:
-          path: .oryxos-dev/repository
+          path: |
+            .oryxos-dev/repository
+            .oryxos-dev/maven
           key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
           restore-keys: maven-${{ runner.os }}-
 
