@@ -10,6 +10,14 @@ providers:
     completions_path: /chat/completions
     api_key: '${DEEPSEEK_API_KEY}'
     connect_timeout_seconds: 5
+  kimi:
+    protocol: openai_chat_completions
+    endpoint: https://api.moonshot.cn
+    completions_path: /v1/chat/completions
+    api_key: '${KIMI_API_KEY}'
+    connect_timeout_seconds: 5
+    options:
+      reasoning_effort: low
 
 memory:
   backend: md
