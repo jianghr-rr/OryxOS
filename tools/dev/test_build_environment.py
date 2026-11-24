@@ -47,6 +47,19 @@ class EnvironmentIsolationTest(unittest.TestCase):
         self.assertEqual('fixture-kimi', env['KIMI_API_KEY'])
         self.assertNotIn('ACSP_TOKEN', env)
 
+    def test_real_kimi_groups_forward_only_kimi_key(self):
+        for group in ('real-provider-kimi', 'real-provider-tools-kimi'):
+            env = self.captured(['validate', '-Doryxos.tests.mode=real', '-Dgroups=' + group])
+            self.assertEqual('fixture-kimi', env['KIMI_API_KEY'])
+            self.assertNotIn('DEEPSEEK_API_KEY', env)
+            self.assertNotIn('ACSP_TOKEN', env)
+            self.assertNotIn('MEM0_API_KEY', env)
+            self.assertNotIn('MEM0_MODEL_API_KEY', env)
+
+    def test_local_mode_with_kimi_group_name_forwards_nothing(self):
+        with self.assertRaises(ValueError):
+            self.captured(['validate', '-Dgroups=real-provider-kimi'])
+
     def test_real_mem0_forwards_only_its_client_key(self):
         env = self.captured(['validate', '-Doryxos.tests.mode=real', '-Dgroups=real-mem0'])
         self.assertEqual('fixture-mem0', env['MEM0_API_KEY'])

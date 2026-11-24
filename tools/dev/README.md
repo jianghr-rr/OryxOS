@@ -140,6 +140,26 @@ cp -R "$ORYXOS_REPO/tools/dev/examples/real-provider/." "$ORYXOS_REAL_WS/"
 [真实前提](../../specs/001-single-node-agent-runtime/evidence/US1-real-models.md)和
 [核对记录](../../specs/001-single-node-agent-runtime/evidence/US1-review.md)。
 
+### 仅 Kimi 的真实验收（spec 007）
+
+只持有 Kimi 中国站密钥时，用两个专用分组单独验收，不需要 DeepSeek 配置；上面的双家入口保持不变。
+
+```bash
+ORYXOS_REAL_WS=$(mktemp -d "$ORYXOS_REPO/.oryxos-dev/real-provider-kimi.XXXXXX")
+cp -R "$ORYXOS_REPO/tools/dev/examples/real-provider-kimi/." "$ORYXOS_REAL_WS/"
+# 编辑agents/real-kimi与agents/real-tools-kimi的AGENT.md，把REPLACE_*换成账号可用模型（推荐kimi-k3.1-pro）。
+read -rs KIMI_API_KEY && export KIMI_API_KEY   # 或写入该工作区secrets.local.yaml并chmod 600
+"$ORYXOS_REPO/tools/dev/mvnw" -B -ntp -pl oryxos-boot -am verify \
+  -Doryxos.tests.mode=real -Dgroups=real-provider-kimi,real-provider-tools-kimi \
+  -Doryxos.real.workspace="$ORYXOS_REAL_WS" 2>&1 | tee "$ORYXOS_REPO/.oryxos-dev/evidence/kimi-real-$(date +%Y%m%d%H%M%S).log"
+```
+
+`real-provider-kimi`、`real-provider-tools-kimi`只向构建子进程转发`KIMI_API_KEY`，不转发`DEEPSEEK_API_KEY`或其他变量。
+reactor先跑provider模块，普通请求失败即停止。工具回填用回环`127.0.0.1:18473`提供已知天气，要求恰好一次`http_get`、
+reasoning_content跨轮回传、最终回复包含城市与温度；模型不调用工具记为`NO_TOOL_CALL`失败，不自动重跑。
+证据位于`.oryxos-dev/evidence/us1-real/<runId>/kimi.json`与`us2-real/<runId>/kimi.json`；核对后的摘要写入
+[007 Kimi 真实验收摘要](../../specs/007-kimi-provider-onboarding/evidence/kimi-real.md)，对应spec 001的`T027-K`、`T042-K`。
+
 ## US2 ReAct 验证
 
 ```bash

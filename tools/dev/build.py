@@ -84,10 +84,14 @@ def run(repo, java, args):
                MAVEN_OPTS=f'-Duser.home={dev / "home"} -Djava.io.tmpdir={dev / "tmp"}',
                JAVA_TOOL_OPTIONS=f'-Duser.home={dev / "home"} -Djava.io.tmpdir={dev / "tmp"}',
                TMPDIR=str(dev / 'tmp') + '/', LANG='en_US.UTF-8', TZ='UTC')
-    if mode == 'real' and {'real-provider', 'real-provider-tools'}.intersection(groups):
-        # Explicit opt-in: only the two names documented for this acceptance group.
+    if mode == 'real':
+        # Explicit opt-in per group: Kimi-only groups never receive the DeepSeek key.
         # Alternatively use the real workspace's permission-checked secrets.local.yaml.
-        for key in ('DEEPSEEK_API_KEY', 'KIMI_API_KEY'):
+        provider_keys = {'real-provider': ('DEEPSEEK_API_KEY', 'KIMI_API_KEY'),
+                         'real-provider-tools': ('DEEPSEEK_API_KEY', 'KIMI_API_KEY'),
+                         'real-provider-kimi': ('KIMI_API_KEY',),
+                         'real-provider-tools-kimi': ('KIMI_API_KEY',)}
+        for key in sorted({k for g in groups for k in provider_keys.get(g, ())}):
             if key in os.environ:
                 env[key] = os.environ[key]
     if mode == 'real' and 'real-mem0' in groups:

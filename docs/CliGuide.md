@@ -59,7 +59,19 @@ $WS/
 ```
 
 - **密钥隔离**：`runtime.yaml` 中用 `${VAR_NAME}` 引用环境变量或 `secrets.local.yaml`（权限 `0600`），严禁将明文密钥写入 `AGENT.md`、`runtime.yaml` 或日志。
-- **真实模型联调前提**（当前仓库尚未执行真实公网联调）：需自备有效的 DeepSeek / Kimi API Key、账号可用模型名、直连 HTTPS 网络及明确批准的测试 Webhook / 可信 MCP Server。
+- **真实模型联调前提**（当前仓库尚未执行真实公网联调）：需自备有效的 DeepSeek / Kimi API Key、账号可用模型名、直连 HTTPS 网络及明确批准的测试 Webhook / 可信 MCP Server。Kimi 可单家验收（`real-provider-kimi`、`real-provider-tools-kimi`），DeepSeek 子项仍待凭证。
+
+### 启用 Kimi
+
+Kimi 走已有的 `openai_chat_completions` 协议，不需要改代码，只需改配置。`init` 生成的 `runtime.yaml` 里已带一段注释掉的 Kimi 配置（中国站 `platform.kimi.com`，入口 `https://api.moonshot.cn` + `/v1/chat/completions`）：
+
+1. 把 `providers: {}` 改为 `providers:`，再删除 `#   kimi:` 及其下各行开头的 `# `。
+2. 提供密钥，二选一：当前终端 `read -rs KIMI_API_KEY && export KIMI_API_KEY`；或在工作区写 `secrets.local.yaml`，内容为 `KIMI_API_KEY: <key>`，然后 `chmod 600 secrets.local.yaml`。
+3. 让 Agent 引用它：在 `agents/<name>/AGENT.md` 的 frontmatter 写 `provider: {name: kimi, model: kimi-k3.1-pro}`（模型以控制台可见为准）。
+4. 重启 `chat` / `serve` 生效；配置不热加载。
+5. `oryxos --root <ws> provider list` 只显示 `configured` 与 `connectivity: NOT_PROBED`，不探测账号、不显示密钥。
+
+选项限制：`options.reasoning_effort` 只用 `low` 或 `high`（模板为 `low`；不设置时 Kimi 默认 `max`，可能超时）；`medium` 能通过本地配置校验，但会被 Kimi 拒绝；不要配置 `temperature` 或 `thinking`。密钥不得写进 `-D` 参数、Agent 正文、`runtime.yaml` 明文或仓库。
 
 ---
 
@@ -87,4 +99,4 @@ $WS/
 - **单机内核**：仅支持单节点 SQLite（WAL + `synchronous=FULL`）与单机进程互斥，未实现多节点分布式集群或跨机同步。
 - **无内置登录认证**：默认面向回环/受控本地使用，`X-Oryx-User-Id` 仅用于会话身份隔离标识，不提供账号认证或 RBAC 鉴权。
 - **应用层沙箱**：文件/Shell/HTTP 白名单校验在 JVM 应用层执行，不提供操作系统级容器或强沙箱隔离。
-- **真实外部与性能缺口**：真实 DeepSeek/Kimi、自托管 Mem0、真实 Webhook/MCP 验收（`T027`、`T042`、`T057`、`T070`、`T071`、`T098–T100`）尚未在真实凭证下执行；`T101`（100 并发 `<= 50ms` 内部开销）尚未达标（当前本地短程最大 `112.14ms`）。
+- **真实外部与性能缺口**：真实 DeepSeek/Kimi、自托管 Mem0、真实 Webhook/MCP 验收（`T027`、`T042`、`T057`、`T070`、`T071`、`T098–T100`）尚未在真实凭证下执行；Kimi 可单家验收（`real-provider-kimi`、`real-provider-tools-kimi`，对应 `T027-K`、`T042-K`），DeepSeek 子项仍待凭证；`T101`（100 并发 `<= 50ms` 内部开销）尚未达标（当前本地短程最大 `112.14ms`）。

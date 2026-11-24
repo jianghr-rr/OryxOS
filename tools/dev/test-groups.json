@@ -1244,6 +1244,46 @@
           ]
         }
       ]
+    },
+    "real-provider-kimi": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-provider",
+          "class": "io.github.oryxlabs.oryxos.provider.RealKimiProviderIT",
+          "methods": [
+            "kimiOrdinaryRequest"
+          ]
+        }
+      ]
+    },
+    "real-provider-tools-kimi": {
+      "mode": "real",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.RealKimiToolLoopIT",
+          "methods": [
+            "kimiToolResultRoundTrip"
+          ]
+        }
+      ]
+    },
+    "kimi-onboarding": {
+      "mode": "local",
+      "tests": [
+        {
+          "module": "oryxos-boot",
+          "class": "io.github.oryxlabs.oryxos.boot.KimiOnboardingLocalIT",
+          "methods": [
+            "initTemplateListsNoKimiProvider",
+            "commentedKimiBlocksAreIdentical",
+            "uncommentedKimiChatReachesKimiPathOnly",
+            "twoProvidersNeverCrossRoute",
+            "misconfiguredKimiIsolatedAndRedacted"
+          ]
+        }
+      ]
     }
   }
 }
