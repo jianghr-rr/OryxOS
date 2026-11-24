@@ -1,20 +1,38 @@
 package io.github.oryxlabs.oryxos.core.agent;
 
 import io.github.oryxlabs.oryxos.core.error.OryxError;
-import io.github.oryxlabs.oryxos.core.execution.*;
-import io.github.oryxlabs.oryxos.core.model.*;
+import io.github.oryxlabs.oryxos.core.execution.Execution;
+import io.github.oryxlabs.oryxos.core.execution.ExecutionContext;
+import io.github.oryxlabs.oryxos.core.execution.ExecutionStore;
+import io.github.oryxlabs.oryxos.core.execution.ProcessRequest;
+import io.github.oryxlabs.oryxos.core.execution.RecordingScope;
+import io.github.oryxlabs.oryxos.core.model.ToolNameMap;
 import io.github.oryxlabs.oryxos.core.observability.MdcContext;
 import io.github.oryxlabs.oryxos.core.react.ReActLoop;
-import io.github.oryxlabs.oryxos.core.runtime.*;
+import io.github.oryxlabs.oryxos.core.runtime.ActionDispatcher;
+import io.github.oryxlabs.oryxos.core.runtime.Deadline;
+import io.github.oryxlabs.oryxos.core.runtime.RuntimeGate;
 import io.github.oryxlabs.oryxos.core.runtime.RuntimeTiming;
+import io.github.oryxlabs.oryxos.core.runtime.TimeSource;
+import io.github.oryxlabs.oryxos.core.runtime.Uuids;
 import io.github.oryxlabs.oryxos.core.security.Redactor;
-import io.github.oryxlabs.oryxos.core.session.*;
+import io.github.oryxlabs.oryxos.core.session.Session;
+import io.github.oryxlabs.oryxos.core.session.SessionManager;
 import io.github.oryxlabs.oryxos.core.tool.ToolRegistryPort;
 import io.github.oryxlabs.oryxos.core.workspace.WorkspaceHandle;
 import java.nio.charset.StandardCharsets;
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.slf4j.Logger;
@@ -31,8 +49,11 @@ public final class AgentService implements AutoCloseable {
     try {
       return starter.get();
     } finally {
-      if (previous == null) INLINE_WORKER.remove();
-      else INLINE_WORKER.set(previous);
+      if (previous == null) {
+        INLINE_WORKER.remove();
+      } else {
+        INLINE_WORKER.set(previous);
+      }
     }
   }
 
@@ -48,8 +69,8 @@ public final class AgentService implements AutoCloseable {
   private final Redactor redactor;
   private final ExecutorService workers = Executors.newVirtualThreadPerTaskExecutor();
   private final ScheduledExecutorService deadlines =
-      Executors.newSingleThreadScheduledExecutor(
-          Thread.ofPlatform().daemon(true).name("oryx-execution-deadlines").factory());
+      new ScheduledThreadPoolExecutor(
+          1, Thread.ofPlatform().daemon(true).name("oryx-execution-deadlines").factory());
   private final Set<Handle> active = ConcurrentHashMap.newKeySet();
 
   public AgentService(
@@ -122,10 +143,12 @@ public final class AgentService implements AutoCloseable {
               .filter(s -> (agent.name() + ":" + s.id()).equals(request.scheduleId()))
               .findFirst()
               .orElseThrow(() -> new OryxError("NOT_FOUND", "Schedule is not configured"));
-      if (request.sessionId() != null)
+      if (request.sessionId() != null) {
         throw new OryxError("INVALID_INPUT", "Schedule triggers require a fresh session");
-      if (request.trigger() == ProcessRequest.Trigger.SCHEDULED)
+      }
+      if (request.trigger() == ProcessRequest.Trigger.SCHEDULED) {
         budget = Duration.ofSeconds(schedule.maxDurationSeconds());
+      }
     }
     var deadline = new Deadline(time, budget, enteredNanos, entered);
     var permit = gate.execution(deadline);
@@ -182,7 +205,9 @@ public final class AgentService implements AutoCloseable {
     var handle = new Handle(ctx);
     active.add(handle);
     var inlineObserver = INLINE_WORKER.get();
-    if (inlineObserver != null) INLINE_WORKER.remove();
+    if (inlineObserver != null) {
+      INLINE_WORKER.remove();
+    }
     boolean coalesceBegin = inlineObserver != null && !lease.isPending();
     try (var recording =
         coalesceBegin
@@ -208,6 +233,7 @@ public final class AgentService implements AutoCloseable {
                     : RecordingScope.open(execution.id(), deadline, store.coalescer())) {
               boolean mergeTurnComplete = false;
               try {
+                ProfileContext.set(agent);
                 loop.run(ctx, lease);
                 if (ctx.snapshot().recordingStatus() != Execution.RecordingStatus.INCOMPLETE) {
                   if (RecordingScope.isWindowOpen()
@@ -231,15 +257,18 @@ public final class AgentService implements AutoCloseable {
                 }
                 if (e.code().equals("RECORDING_FAILURE")
                     || e.code().equals("PARTIAL_RECORDING_FAILURE")
-                    || e.code().equals("HISTORY_INCOMPLETE")) ctx.recordingFailed();
-                else if (deadline.expired()) ctx.expire();
-                else
+                    || e.code().equals("HISTORY_INCOMPLETE")) {
+                  ctx.recordingFailed();
+                } else if (deadline.expired()) {
+                  ctx.expire();
+                } else {
                   execution.finish(
                       Execution.Status.FAILED,
                       e.code(),
                       redactor.redact(e.getMessage()),
                       e.code(),
                       time.instant());
+                }
               } catch (RuntimeException e) {
                 mergeTurnComplete = false;
                 lease.invalidateCache();
@@ -252,14 +281,20 @@ public final class AgentService implements AutoCloseable {
                     "EXECUTION_FAILED",
                     time.instant());
               } finally {
+                ProfileContext.clear();
                 ctx.stop();
                 timeout.cancel(false);
                 execution.recordingComplete();
                 try {
-                  if (mergeTurnComplete) store.completeTurn(ctx.snapshot());
-                  else store.save(ctx.snapshot());
+                  if (mergeTurnComplete) {
+                    store.completeTurn(ctx.snapshot());
+                  } else {
+                    store.save(ctx.snapshot());
+                  }
                   RecordingScope.flushCoalesced();
-                  if (mergeTurnComplete) lease.recordTurnCompleted(execution.turnId());
+                  if (mergeTurnComplete) {
+                    lease.recordTurnCompleted(execution.turnId());
+                  }
                 } catch (RuntimeException e) {
                   lease.invalidateCache();
                   RecordingScope.discardCoalesced();
@@ -326,17 +361,22 @@ public final class AgentService implements AutoCloseable {
         || r.userId().isBlank()
         || r.agentName() == null
         || r.agentName().isBlank()
-        || r.trigger() == null)
+        || r.trigger() == null) {
       throw new OryxError("INVALID_INPUT", "Channel, user and Agent are required");
+    }
     if (r.trigger() == ProcessRequest.Trigger.SCHEDULED
-        && (r.scheduleId() == null || !r.channel().equals("scheduler")))
+        && (r.scheduleId() == null || !r.channel().equals("scheduler"))) {
       throw new OryxError("INVALID_INPUT", "Automatic schedule identity and id are required");
-    if (r.oneShot() && r.sessionId() != null)
+    }
+    if (r.oneShot() && r.sessionId() != null) {
       throw new OryxError("INVALID_INPUT", "One-shot execution requires a fresh session");
-    if (r.content() == null || r.content().isBlank())
+    }
+    if (r.content() == null || r.content().isBlank()) {
       throw new OryxError("INVALID_INPUT", "Provide non-blank task content");
-    if (r.content().getBytes(StandardCharsets.UTF_8).length > 32768)
+    }
+    if (r.content().getBytes(StandardCharsets.UTF_8).length > 32768) {
       throw new OryxError("MESSAGE_TOO_LARGE", "Task content exceeds 32768 UTF-8 bytes");
+    }
   }
 
   public final class Handle {
@@ -367,7 +407,9 @@ public final class AgentService implements AutoCloseable {
         java.util.function.BiConsumer<Execution.Snapshot, Boolean> onResult, Runnable onSettled) {
       settled.whenComplete((snapshot, error) -> onSettled.run());
       result.whenComplete((snapshot, error) -> {
-        if (error == null) onResult.accept(snapshot, waitExpired);
+        if (error == null) {
+          onResult.accept(snapshot, waitExpired);
+        }
       });
       return true;
     }
@@ -395,7 +437,9 @@ public final class AgentService implements AutoCloseable {
             if (context.deadline().expired() && !result.isDone()) {
               waitExpired = true;
               context.stop();
-              if (context.execution().status() == Execution.Status.RUNNING) context.expire();
+              if (context.execution().status() == Execution.Status.RUNNING) {
+                context.expire();
+              }
               context.execution().recordingPending();
               // No storage IO on this callback: a slow store must not postpone the caller's
               // timeout.
@@ -418,11 +462,15 @@ public final class AgentService implements AutoCloseable {
   }
 
   public void close() {
-    for (var handle : active) handle.context.stop();
+    for (var handle : active) {
+      handle.context.stop();
+    }
     deadlines.shutdownNow();
     workers.shutdown();
     try {
-      if (!workers.awaitTermination(5, TimeUnit.SECONDS)) workers.shutdownNow();
+      if (!workers.awaitTermination(5, TimeUnit.SECONDS)) {
+        workers.shutdownNow();
+      }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
       workers.shutdownNow();

@@ -290,16 +290,6 @@
     },
     {
       "tool": "checkstyle",
-      "rule": "AvoidStarImportCheck",
-      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
-    },
-    {
-      "tool": "checkstyle",
-      "rule": "NeedBracesCheck",
-      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
-    },
-    {
-      "tool": "checkstyle",
       "rule": "MultipleVariableDeclarationsCheck",
       "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/CronSyntax.java"
     },
@@ -1492,16 +1482,6 @@
       "tool": "pmd",
       "rule": "PreserveStackTrace",
       "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentDefinitionReader.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "ControlStatementBraces",
-      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
-    },
-    {
-      "tool": "pmd",
-      "rule": "OryxThreadPoolCreation",
-      "file": "oryxos-core/src/main/java/io/github/oryxlabs/oryxos/core/agent/AgentService.java"
     },
     {
       "tool": "pmd",

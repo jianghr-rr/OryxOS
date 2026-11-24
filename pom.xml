@@ -170,6 +170,8 @@
           <systemPropertyVariables>
             <oryxos.test.runId>${oryxos.test.runId}</oryxos.test.runId>
             <oryxos.tests.mode>${oryxos.tests.mode}</oryxos.tests.mode>
+            <!-- JDK HttpServer closes returned connections beyond 200 idle ones while clients may still reuse them; the runtime never retries implicitly. -->
+            <sun.net.httpserver.maxIdleConnections>2048</sun.net.httpserver.maxIdleConnections>
           </systemPropertyVariables>
         </configuration>
       </plugin>

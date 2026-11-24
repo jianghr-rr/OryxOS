@@ -148,7 +148,7 @@ export ORYXOS_JAVA_HOME=/Users/jianghaoran/jikeshijian/.oryxos-course/tools/jdk-
 /Users/jianghaoran/github/OryxOS/tools/dev/mvnw -B -ntp test -Dgroups=deadline-boundary
 ```
 
-us2-loop登记28项：顺序工具/直答/上限、完整会话历史、身份与创建模型快照、离线Schema、HTTP权限/重定向/读取边界、安全重试、未知副作用、受控纠正、截止竞争及真实CLI主入口集成。
+us2-loop登记44项：顺序工具/直答/上限（含恰好转满10轮）、逐轮累积与完整会话历史、Prompt顺序与历史截断、ToolExecutor成功/失败/异常/审计写失败、AgentService的ProfileContext设置与清理及会话落库、ContextLoader热读取与Bootstrap校验、身份与创建模型快照、离线Schema、HTTP权限/重定向/读取边界、安全重试、未知副作用、受控纠正、截止竞争及真实CLI主入口集成。第17节课件五个测试类（ReActLoopTest、PromptBuilderTest、ToolExecutorTest、AgentServiceTest、ContextLoaderTest）均在此组。
 deadline-boundary的12项是上述集合的子集；US2批次全量回归实际61项；加入US3后全量81项，各执行一次。
 
 CLI集成用例通过`OryxOsApplication.execute`进入真实解析器、Boot和AgentService，真实Provider适配连接回环模型，真实http_get查询回环天气；续聊复用同一Session。

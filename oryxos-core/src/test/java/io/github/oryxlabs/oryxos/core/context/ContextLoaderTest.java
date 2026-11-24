@@ -1,66 +1,17 @@
-package io.github.oryxlabs.oryxos.core.react;
+package io.github.oryxlabs.oryxos.core.context;
 
 import static io.github.oryxlabs.oryxos.core.react.LoopFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.oryxlabs.oryxos.core.execution.Execution;
-import io.github.oryxlabs.oryxos.core.model.ChatMessage;
+import io.github.oryxlabs.oryxos.core.react.LoopFixture;
 import java.nio.file.*;
-import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 
 @Tag("us2-loop")
-class ReActContractTest {
+class ContextLoaderTest {
   @TempDir Path root;
-
-  @Test
-  void directReplyStopsWithoutToolIo() throws Exception {
-    try (var f = new LoopFixture(root, 10)) {
-      f.script.add(reply("hello"));
-      var result = assertDoesNotThrow(f::run);
-      assertEquals(Execution.Status.SUCCEEDED, result.status());
-      assertEquals(1, f.requests.size());
-      assertTrue(f.effects.isEmpty());
-    }
-  }
-
-  @Test
-  void toolsRunSequentiallyAndHistoryContainsPairedMessagesOnce() throws Exception {
-    try (var f = new LoopFixture(root, 10)) {
-      f.script.add(
-          reply(
-              null, call("one", "first", "{\"value\":1}"), call("two", "second", "{\"value\":2}")));
-      f.script.add(reply("sunny and warm"));
-      var result = assertDoesNotThrow(f::run);
-      assertEquals(Execution.Status.SUCCEEDED, result.status());
-      assertEquals(List.of("first", "second"), f.effects);
-      var messages = f.requests.get(1).orderedMessages();
-      assertEquals(4, messages.size());
-      assertEquals(1, messages.stream().filter(m -> m.role() == ChatMessage.Role.USER).count());
-      assertEquals(
-          List.of("one", "two"),
-          messages.stream()
-              .filter(m -> m.role() == ChatMessage.Role.TOOL)
-              .map(ChatMessage::toolCallId)
-              .toList());
-      assertEquals(2, f.memoryReads);
-      assertEquals(4, f.audit.size());
-    }
-  }
-
-  @Test
-  void iterationLimitPairsUnexecutedProposalsAndStopsNewIo() throws Exception {
-    try (var f = new LoopFixture(root, 1)) {
-      f.script.add(reply(null, call("one", "first", "{\"value\":1}")));
-      var result = assertDoesNotThrow(f::run);
-      assertEquals("ITERATION_LIMIT", result.stopReason());
-      assertNotEquals(Execution.Status.SUCCEEDED, result.status());
-      assertTrue(f.effects.isEmpty());
-      assertEquals(1, f.requests.size());
-      assertEquals("one", f.store.messages.getLast().message().toolCallId());
-    }
-  }
 
   @Test
   void bodyAndBootstrapAreReloadedWithoutChangingStartupConfiguration() throws Exception {
@@ -88,6 +39,20 @@ class ReActContractTest {
       assertTrue(f.requests.get(1).systemPrompt().contains("2026-11-13"));
       assertEquals("fixture", f.requests.get(1).providerName());
       assertFalse(f.requests.get(1).systemPrompt().contains("malicious override"));
+    }
+  }
+
+  @Test
+  void loadRereadsFilesOnEveryCall() throws Exception {
+    try (var f = new LoopFixture(root, 10)) {
+      var loader = new ContextLoader();
+      String first = loader.load(f.context);
+      Files.writeString(f.profile.definition(), "---\nname: demo\n---\nsecond body\n");
+      Files.writeString(root.resolve("USER.md"), "second bootstrap");
+      String second = loader.load(f.context);
+      assertTrue(first.contains("initial instructions") && first.contains("initial bootstrap"));
+      assertTrue(second.contains("second body") && second.contains("second bootstrap"));
+      assertFalse(second.contains("initial instructions") || second.contains("initial bootstrap"));
     }
   }
 
