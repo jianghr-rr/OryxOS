@@ -51,6 +51,8 @@
 | kernel-local | KernelLocalIT（9项，实际CLI/HTTP/SQLite/MCP子进程/脚本/回环服务） | T096先准备测试；T097本地出口已通过 |
 | real-provider | RealProviderIT | T027 |
 | real-provider-tools | RealProviderToolLoopIT | T042 |
+| real-provider-kimi | RealKimiProviderIT | T027-K |
+| real-provider-tools-kimi | RealKimiToolLoopIT | T042-K |
 | real-mem0 | RealMem0IT | T057 |
 | real-notify | RealNotificationIT | T070 |
 | real-mcp | ConfiguredMcpIT | T071 |

@@ -245,6 +245,11 @@ description: "OryxOS 单机 Agent 运行内核的完整实施任务、依赖与�
 
   **完成条件**：显式real模式、groups=real-provider运行DeepSeek/Kimi各一普通请求；核对实际model/Provider、响应和脱敏失败信息，记录版本/时间。有效凭证与额度是外部前提；缺任一家保持本任务未勾选，不能用假服务替代，工具多轮由US2另测。
 
+  **拆分（spec 007）**：T027 为父项，下列两个子项都完成才可勾选；T028 前置仍指父项。
+
+  - [X] T027-K Kimi 普通请求：分组 `real-provider-kimi`（`RealKimiProviderIT`），依据 [007 Kimi 真实验收摘要](../007-kimi-provider-onboarding/evidence/kimi-real.md)（runId `8ed7f0ca-a2c5-4821-8d87-017af0c124fb`）。
+  - [ ] T027-D DeepSeek 普通请求：分组 `real-provider`（双入口，仍要求两家同时就绪）或后续 DeepSeek 专用分组。
+
 - [ ] T028 [US1] US1｜核对 US1 证据及后续依赖边界。文件：`specs/001-single-node-agent-runtime/evidence/US1-review.md`。
 
   **前置**：T026、T027；**依据**：宪章VI/VII、SC-001、SC-002。
@@ -352,6 +357,11 @@ description: "OryxOS 单机 Agent 运行内核的完整实施任务、依赖与�
   **前置**：T041、T027；**依据**：FR-004、US2-A1、SC-002。
 
   **完成条件**：显式real模式、groups=real-provider-tools，两家各完成至少两轮模型请求加一次已知数据工具；核对实际call id/wire名及reasoning_content回传和工具执行数。真实Provider凭证缺失保持未完成，普通聊天通过不能替代此任务。
+
+  **拆分（spec 007）**：T042 为父项，下列两个子项都完成才可勾选；T044、T098–T100 前置仍指父项。
+
+  - [X] T042-K Kimi 工具回填：分组 `real-provider-tools-kimi`（`RealKimiToolLoopIT`），依据 [007 Kimi 真实验收摘要](../007-kimi-provider-onboarding/evidence/kimi-real.md)，引用 `T027-K` 通过 runId `8ed7f0ca-a2c5-4821-8d87-017af0c124fb`。
+  - [ ] T042-D DeepSeek 工具回填：分组 `real-provider-tools`（双入口）或后续 DeepSeek 专用分组。
 
 - [x] T043 [US2] US2｜验证未知结果、纠正与截止竞争的行为边界。文件：`oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/react/FailurePolicyContractTest.java`、`oryxos-core/src/test/java/io/github/oryxlabs/oryxos/core/runtime/DeadlineRaceTest.java`、`specs/001-single-node-agent-runtime/evidence/RV01-RV06-loop.md`、`tools/dev/test-groups.json`。
 

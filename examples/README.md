@@ -43,6 +43,9 @@ PY
 1. 将 `runtime.yaml` 的 model.example.invalid、completions_path 换为账户已确认的协议入口，
    三个 Agent 的 CONFIGURE_MODEL 换为该账户可用模型。`EXAMPLE_MODEL_KEY` 由显式环境变量或
    本地 `secrets.local.yaml` 提供；文件权限须 `chmod 600`，不能写入 Agent、Git 或截图。
+   也可以改用 `runtime.example.yaml` 中注释掉的 Kimi 配置：删除各行开头的 `# `，三个 Agent 的
+   provider 改为 `kimi`，密钥用 `KIMI_API_KEY`；步骤与选项限制见
+   [CLI 指南“启用 Kimi”](../docs/CliGuide.md#启用-kimi)。
 2. 天气默认城市 Shanghai；作者替换 .invalid 查询地址、明确响应字段并同步 HTTP 白名单。
    目前接口模板要求 city/date/temperature_c/condition/source，不假设任意供应商兼容它。
 3. 安装和审阅你信任的新闻 MCP 服务，按 `mcp_servers.example.yaml` 配置绝对命令和必要 env 引用。

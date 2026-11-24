@@ -2,6 +2,17 @@ schema_version: 1
 timezone: Asia/Shanghai
 # Configure a provider and credential reference before chat. Light commands do not probe accounts.
 providers: {}
+# Kimi（中国站 platform.kimi.com）。启用：把上一行改为 `providers:`，再删除下面各行开头的 "# "。
+# 推荐模型 kimi-k3.1-pro（以控制台可见为准）；reasoning_effort 只用 low/high（不设置为官方默认 max，可能超时）；
+# 不要配置 temperature/thinking；密钥用环境变量 KIMI_API_KEY 或 chmod 600 的 secrets.local.yaml。
+#   kimi:
+#     protocol: openai_chat_completions
+#     endpoint: https://api.moonshot.cn
+#     completions_path: /v1/chat/completions
+#     api_key: "${KIMI_API_KEY}"
+#     connect_timeout_seconds: 5
+#     options:
+#       reasoning_effort: low
 memory:
   backend: md
   archival_context_characters: 4000

@@ -34,3 +34,7 @@ cp -R "$ORYXOS_REPO/tools/dev/examples/real-provider-tools/." "$ORYXOS_REAL_WS/"
 
 本地协议序列化测试已验证wire回传；真实测试在中立请求边界核对模型实际返回的私有数据及工具消息，结合下一次真实模型接受来验证。证据仅写模型标识、ID、计数及reasoning存在/回传布尔值，不写思维正文或密钥。
 成功或执行失败的安全摘要位于`.oryxos-dev/evidence/us2-real/<runId>/`；前检失败没有伪造执行证据。当前该目录没有成功结果可作为T042验收依据。
+
+## Kimi 专用验收（spec 007）
+
+Kimi 已可通过专用分组 `real-provider-tools-kimi` 单独验收，对应 T042-K（须引用一个 T027-K 通过的 runId）；DeepSeek 仍走双入口，对应 T042-D。摘要与执行状态见 [007 Kimi 真实验收摘要](../../007-kimi-provider-onboarding/evidence/kimi-real.md)。

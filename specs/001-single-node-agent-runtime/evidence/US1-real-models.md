@@ -43,3 +43,7 @@ runId=`2162a0cb-c3cc-435d-aa99-e9dcc0a28794`；日志`.oryxos-dev/us1-real-prefl
 `.oryxos-dev/evidence/us1-real/<runId>/deepseek.json`及`kimi.json`。
 失败尝试也写安全结果（通过前检后才生成），不记录opaque或密钥。
 需要两家真实成功才可勾选T027并完成T028；T042的工具回填和SC-002完整验收仍属于US2及后续。
+
+## Kimi 专用验收（spec 007）
+
+Kimi 已可通过专用分组 `real-provider-kimi` 单独验收，对应 T027-K；DeepSeek 仍走双入口，对应 T027-D。摘要与执行状态见 [007 Kimi 真实验收摘要](../../007-kimi-provider-onboarding/evidence/kimi-real.md)。
