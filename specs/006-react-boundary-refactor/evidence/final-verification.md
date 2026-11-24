@@ -15,4 +15,22 @@
 3. `Executors.newSingleThreadScheduledExecutor(f)` 底层就是 `ScheduledThreadPoolExecutor(1, f)`，只是外面多一层不可重配置的包装；
 4. 同一份代码单独跑 2 次、全量再跑 1 次都通过。
 
-它在全量构建中偶发，且历史证据中没有记录过，建议单独立项观察；本规格未修改该测试。
+## 推送后补充：根因与修复
+
+推送后 GitHub Actions（Quality Gate，提交 `18b07e9`）同一断言失败，`expected <0> but was <32>`，说明这不是偶发问题，必须查清根因。
+
+**根因在测试桩，与本规格的改动无关。** 以本地第 1 次失败（证据 `.oryxos-dev/evidence/soak-smoke/ab63e7c2-…/workspace/oryxos.db`）为例：
+- 失败的 llm_calls 为 2 条 `PROVIDER_CONNECTION`，失败的 tool_invocations 为 7 条 `HTTP_CONNECTION`（"HTTP read failed; no implicit retry was made"）。
+- 这 9 条全部发生在 `15:09:13.129–.131` 之间，且两个桩的 handler 都没有记录违规，说明请求根本没到达桩。
+- 桩是 JDK 21 内置 `HttpServer`。`ServerImpl` 会在空闲连接数达到 `sun.net.httpserver.maxIdleConnections`（默认 200）时，直接关闭刚处理完请求的连接。
+- 100 个会话加上 Provider 和 `http_get` 两个客户端，连接数正好在 200 附近。一旦大量连接同时空闲，超出部分会被服务端关闭，而客户端连接池仍会复用它们，于是读失败。
+- 运行时代码按设计不做隐式重试，所以这些失败都被计为违规。
+
+**修复**：在父 POM 的 surefire `systemPropertyVariables` 中设置 `sun.net.httpserver.maxIdleConnections=2048`。该值是 `ServerImpl` 类加载时读入的静态常量，只能在测试 JVM 启动时设置。生产代码未改动。
+
+| 检查 | 结果 |
+| --- | --- |
+| 属性进入测试进程 | surefire 报告中 `sun.net.httpserver.maxIdleConnections=2048` |
+| 修复后 `-Dgroups=kernel-soak-harness` | PASS（5/5） |
+| 反向验证：临时改为 20 | 同一断言失败，`but was <355>`；失败类型同为 `PROVIDER_CONNECTION` / `PROVIDER_UNAVAILABLE` / `HTTP_CONNECTION`；验证后已恢复为 2048 |
+| 修复后全量 `clean verify` | `BUILD SUCCESS`，boot 117 项全部通过 |
