@@ -191,14 +191,52 @@
         },
         {
           "module": "oryxos-core",
-          "class": "io.github.oryxlabs.oryxos.core.react.ReActContractTest",
+          "class": "io.github.oryxlabs.oryxos.core.react.ReActLoopTest",
           "methods": [
             "directReplyStopsWithoutToolIo",
             "toolsRunSequentiallyAndHistoryContainsPairedMessagesOnce",
             "iterationLimitPairsUnexecutedProposalsAndStopsNewIo",
+            "modelAlwaysRequestingToolsStopsAtMaxIterations",
+            "everyRoundAccumulatesReplyAndToolResultsInSession"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.context.ContextLoaderTest",
+          "methods": [
             "bodyAndBootstrapAreReloadedWithoutChangingStartupConfiguration",
             "missingOversizedAndSecretBootstrapFailBeforeModelIo",
-            "referencesAreReadOnDemandAndOnlyScriptOutputEntersHistory"
+            "referencesAreReadOnDemandAndOnlyScriptOutputEntersHistory",
+            "loadRereadsFilesOnEveryCall"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.agent.AgentServiceTest",
+          "methods": [
+            "profileContextIsAvailableDuringToolExecution",
+            "profileContextIsClearedWhenProcessingThrows",
+            "profileContextIsClearedBeforeCompletionOnWorkerThread",
+            "sessionMessagesArePersistedWhenProcessingEnds"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.context.PromptBuilderTest",
+          "methods": [
+            "systemPromptOrdersBodyBootstrapDateTimeThenMemory",
+            "historyPrecedesCurrentTurnAndToolsAreSeparate",
+            "requestHistoryIsBoundedByMaxHistoryTurns"
+          ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.tool.ToolExecutorTest",
+          "methods": [
+            "successfulToolWritesStartedThenSuccessAudit",
+            "failedToolWritesFailureAuditWithErrorCode",
+            "throwingToolIsAuditedNotSwallowed",
+            "auditWriteFailureIsRethrownAsRecordingFailure"
           ]
         },
         {

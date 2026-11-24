@@ -36,7 +36,7 @@
 | f0-discovery | EntryPointContractTest、TestDiscoveryIT、DiscoverySuffixIT | T003、T006 |
 | f0-foundation | OryxOsApplicationTest、RuntimeConfigContractTest、WorkspaceCommandsTest、StorageLifecycleIntegrationTest、DegradedStartupTest | T018 |
 | us1-contract | ProviderRoutingTest、ProviderToolSchemaTest、ProviderAuditTest、ProviderProtocolTest、ProviderAdmissionTest、ProviderArchitectureGuardTest、ProviderSmokeTest、AgentCatalogContractTest、AgentStatusTest、StructuredLogAuditTest | T019、T026 |
-| us2-loop | ReActContractTest、FailurePolicyContractTest、SessionRuntimeContractTest、ToolSafetyContractTest、EarlyCliLoopIntegrationTest、DeadlineRaceTest | T041、T043 |
+| us2-loop | ReActLoopTest、ContextLoaderTest、PromptBuilderTest、ToolExecutorTest、AgentServiceTest（spec 006 由 ReActContractTest 拆分并补齐）、FailurePolicyContractTest、SessionRuntimeContractTest、ToolSafetyContractTest、EarlyCliLoopIntegrationTest、DeadlineRaceTest | T041、T043 |
 | deadline-boundary | DeadlineRaceTest、FailurePolicyContractTest | T043 |
 | us3-memory | MemoryContractTest、SessionContractTest、Mem0ProtocolContractTest、MemoryFacadeIntegrationTest | T045、T056 |
 | us4-tools | ToolsContractTest、NotifyContractTest、McpContractTest、ToolIntegrationTest、AgentCatalogContractTest（US4方法） | T059、T069 |
