@@ -278,7 +278,7 @@ us5-http-api登记15项，其中一个实际HTTP用例等待60秒。隔离入口
 
 ## US5 第四批 CLI（本地）
 
-`tools/dev/mvnw -B -ntp clean test -Dgroups=us5-cli`运行本批文件/查询/退出码、正式SQLite、独立JVM JSON、stdio MCP只读发现及实际60秒CLI截止测试。`clean verify`另回归此前所有本地组，真实模型/Mem0/通知/可信MCP仍需各自前提，不跳过替代。
+`tools/dev/mvnw -B -ntp clean test -Dgroups=us5-cli`运行本批文件/查询/退出码、正式SQLite、独立JVM JSON、stdio MCP只读发现、实际60秒CLI截止测试及第 18 节会话层验收 harness（`SessionManagerTest` 4 项 + `SessionRepositoryTest` 3 项，共 22 项）。`clean verify`另回归此前所有本地组，真实模型/Mem0/通知/可信MCP仍需各自前提，不跳过替代。
 
 完整发行支持init/status/chat/serve/gateway、profile list/create/show/delete、provider list、tool list、session list共十二项。所有命令继承`--root`和`--json`；轻命令不启动Spring、模型或MCP。进程日志写stderr、结果写stdout，chat每轮一个JSON信封。默认无参数仍serve，薄CLI仍仅版本入口。
 

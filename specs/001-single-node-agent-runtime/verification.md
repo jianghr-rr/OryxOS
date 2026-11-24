@@ -40,7 +40,7 @@
 | deadline-boundary | DeadlineRaceTest、FailurePolicyContractTest | T043 |
 | us3-memory | MemoryContractTest、SessionContractTest、Mem0ProtocolContractTest、MemoryFacadeIntegrationTest | T045、T056 |
 | us4-tools | ToolsContractTest、NotifyContractTest、McpContractTest、ToolIntegrationTest、AgentCatalogContractTest（US4方法） | T059、T069 |
-| us5-cli | CliOperationsTest、CliRuntimeContractTest | T073本批子集、T090 |
+| us5-cli | CliOperationsTest、CliRuntimeContractTest、SessionManagerTest、SessionRepositoryTest（spec 008 补齐第 18 节会话验收 harness，共 22 项） | T073本批子集、T090、spec 008 |
 | us5-admin | AdminPageContractTest（本地已登记）；另有实际浏览器测试页 | T091、T092本地子集，非T095整体 |
 | us5-cli-process | CliCommandsIT（独立main/JAR，3项） | T095发行CLI；浏览器另取证 |
 | us5-process | CrossProcessAcceptanceIT（支持独立main/JAR） | T093 |

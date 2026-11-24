@@ -618,6 +618,25 @@
             "mcpToolsComeFromActualRegistrationWithoutRediscoveryOrStaleSnapshots",
             "callerDeadlineIncludesBlockedAdmissionAndFinalRecord"
           ]
+        },
+        {
+          "module": "oryxos-core",
+          "class": "io.github.oryxlabs.oryxos.core.session.SessionManagerTest",
+          "methods": [
+            "sameIdentityTriple_reacquiresSameSessionAcrossTurns",
+            "differentChannelUserOrProfile_rejectedWithIdentityMismatch",
+            "sessionIdGeneratedExclusivelyInsideSessionManager",
+            "busyOrArchivedSessionCannotBeReacquired"
+          ]
+        },
+        {
+          "module": "oryxos-storage",
+          "class": "io.github.oryxlabs.oryxos.storage.SessionRepositoryTest",
+          "methods": [
+            "manualMigrationSchemaPersistsAndReadsSessionMetadata",
+            "structuredMessagesJsonRoundTripPreservesToolPairs",
+            "reopeningStorageContextAfterRestartPreservesSessionHistory"
+          ]
         }
       ]
     },
