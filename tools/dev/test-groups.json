@@ -415,6 +415,26 @@
         },
         {
           "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.notify.WebhookNotifyAdapterTest",
+          "methods": [
+            "send_postsContentToTargetConfiguredUrl",
+            "send_returnsErrorWithoutRetryOnServer5xx",
+            "send_returnsErrorWhenBusinessAckRejected",
+            "send_returnsUnknownWithoutRetryWhenConnectionDrops"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.notify.NotifyToolsTest",
+          "methods": [
+            "notify_failsExplicitlyWhenNotifyChannelsNotConfigured",
+            "notify_usesDefaultChannelWhenTargetNameOmitted",
+            "notify_enforcesAuthorizationStrictlyBeforeSend",
+            "notify_worksWithCustomAdapterAndWritesToolAudit"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
           "class": "io.github.oryxlabs.oryxos.tool.McpContractTest",
           "methods": [
             "actualStdioPaginatesSeparatesNamesAndCallsOnlyRemoteName",

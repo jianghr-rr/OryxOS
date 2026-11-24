@@ -12,6 +12,16 @@ public final class NotificationTargetResolver {
       Map<String, Object> payload,
       Map<String, Object> acknowledgement,
       boolean defaultTarget) {
+    /** Converts this resolved webhook target into a channel-neutral {@link NotifyTarget}. */
+    public NotifyTarget toNotifyTarget() {
+      var config = new LinkedHashMap<String, Object>();
+      config.put("url", url);
+      config.put("headers", headers);
+      config.put("payload", payload);
+      config.put("acknowledgement", acknowledgement);
+      return new NotifyTarget("webhook", config);
+    }
+
     @Override
     public String toString() {
       return "Target[private configuration withheld]";
