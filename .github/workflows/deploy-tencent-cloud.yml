@@ -111,17 +111,19 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
         run: |
           set -euo pipefail
           umask 077
-          if [ -n "${DEEPSEEK_API_KEY:-}" ] || [ -n "${FEISHU_WEBHOOK_URL:-}" ]; then
+          if [ -n "${DEEPSEEK_API_KEY:-}" ] || [ -n "${FEISHU_WEBHOOK_URL:-}" ] || [ -n "${KIMI_API_KEY:-}" ]; then
             {
-              [ -n "${DEEPSEEK_API_KEY:-}" ] && printf 'DEEPSEEK_API_KEY: %s\n' "${DEEPSEEK_API_KEY}"
-              [ -n "${FEISHU_WEBHOOK_URL:-}" ] && printf 'FEISHU_WEBHOOK_URL: %s\n' "${FEISHU_WEBHOOK_URL}"
+              if [ -n "${DEEPSEEK_API_KEY:-}" ]; then printf 'DEEPSEEK_API_KEY: %s\n' "${DEEPSEEK_API_KEY}"; fi
+              if [ -n "${FEISHU_WEBHOOK_URL:-}" ]; then printf 'FEISHU_WEBHOOK_URL: %s\n' "${FEISHU_WEBHOOK_URL}"; fi
+              if [ -n "${KIMI_API_KEY:-}" ]; then printf 'KIMI_API_KEY: %s\n' "${KIMI_API_KEY}"; fi
             } > /tmp/oryxos-release/secrets.local.yaml
             chmod 600 /tmp/oryxos-release/secrets.local.yaml
           else
-            echo "No DEEPSEEK_API_KEY / FEISHU_WEBHOOK_URL secrets set; skipping secrets.local.yaml upload."
+            echo "No DEEPSEEK_API_KEY / FEISHU_WEBHOOK_URL / KIMI_API_KEY secrets set; skipping secrets.local.yaml upload."
           fi
 
       - name: Upload artifact and switch release on server

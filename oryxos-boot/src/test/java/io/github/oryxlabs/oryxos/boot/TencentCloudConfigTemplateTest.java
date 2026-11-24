@@ -34,6 +34,7 @@ import org.springframework.scheduling.support.CronExpression;
 
 class TencentCloudConfigTemplateTest {
   private static final String STUB_DEEPSEEK_KEY = "stub-deepseek-canary-value";
+  private static final String STUB_KIMI_KEY = "stub-kimi-canary-value";
   private static final String STUB_FEISHU_URL =
       "https://open.feishu.cn/open-apis/bot/v2/hook/stub-hook-canary";
 
@@ -81,6 +82,8 @@ class TencentCloudConfigTemplateTest {
     stageTemplates(
         "DEEPSEEK_API_KEY: \""
             + STUB_DEEPSEEK_KEY
+            + "\"\nKIMI_API_KEY: \""
+            + STUB_KIMI_KEY
             + "\"\nFEISHU_WEBHOOK_URL: \""
             + STUB_FEISHU_URL
             + "\"\n");
@@ -95,6 +98,18 @@ class TencentCloudConfigTemplateTest {
     assertTrue(
         config.providers().get("deepseek").available(), "deepseek provider should load cleanly");
     assertEquals("${DEEPSEEK_API_KEY}", config.providers().get("deepseek").apiKeyReference());
+
+    var kimiProvider = config.providers().get("kimi");
+    assertNotNull(kimiProvider);
+    assertTrue(kimiProvider.available(), "kimi provider should load cleanly");
+    assertEquals("openai_chat_completions", kimiProvider.protocol());
+    assertEquals("https://api.moonshot.cn", kimiProvider.endpoint().toString());
+    assertEquals("/v1/chat/completions", kimiProvider.completionsPath());
+    assertEquals("${KIMI_API_KEY}", kimiProvider.apiKeyReference());
+    assertEquals(5, kimiProvider.connectTimeoutSeconds());
+    assertEquals(Map.of("reasoning_effort", "low"), kimiProvider.options());
+    assertFalse(kimiProvider.options().containsKey("temperature"));
+    assertFalse(kimiProvider.options().containsKey("thinking"));
 
     AgentCatalog rawCatalog = AgentCatalog.load(workspace, config, Map.of(), redactor);
     Map<String, Object> httpRules = SafeYaml.map(config.toolRules().get("http"), "tools.http");
@@ -125,9 +140,9 @@ class TencentCloudConfigTemplateTest {
               .validateTools(registry, server -> false)
               .validateSchedules(CronExpression::isValidExpression);
 
-      assertEquals(2, validated.entries().size());
+      assertEquals(3, validated.entries().size());
       assertEquals(
-          List.of("feishu-notify", "weather"),
+          List.of("feishu-notify", "kimi-assistant", "weather"),
           validated.entries().stream().map(AgentCatalog.Entry::name).toList());
       assertTrue(validated.entries().stream().allMatch(AgentCatalog.Entry::available));
 
@@ -151,12 +166,20 @@ class TencentCloudConfigTemplateTest {
       assertEquals(Set.of("feishu"), notify.notifyChannelNames());
       assertTrue(notify.notifications().get("feishu").defaultTarget());
 
+      AgentProfile kimiAssistant = validated.require("kimi-assistant");
+      assertEquals("kimi", kimiAssistant.providerName());
+      assertEquals("kimi-k3.1-pro", kimiAssistant.model());
+      assertTrue(kimiAssistant.tools().isEmpty());
+      assertTrue(kimiAssistant.schedules().isEmpty());
+      assertTrue(kimiAssistant.notifyChannelNames().isEmpty());
+
       NotificationTargetResolver.Target defaultTarget = resolver.resolve(weather, null);
       NotificationTargetResolver.Target explicitTarget = resolver.resolve(notify, "feishu");
       assertEquals(STUB_FEISHU_URL, defaultTarget.url());
       assertEquals(STUB_FEISHU_URL, explicitTarget.url());
       assertFalse(defaultTarget.toString().contains("stub-hook-canary"));
       assertFalse(validated.entries().toString().contains(STUB_DEEPSEEK_KEY));
+      assertFalse(validated.entries().toString().contains(STUB_KIMI_KEY));
       assertFalse(validated.entries().toString().contains("stub-hook-canary"));
     }
   }
@@ -199,11 +222,40 @@ class TencentCloudConfigTemplateTest {
     WorkspaceHandle workspace = new WorkspaceHandle(workspaceRoot);
     RuntimeConfig config = new RuntimeConfigLoader(Map.of(), redactor).load(workspace);
     assertTrue(config.providers().get("deepseek").available());
+    assertFalse(config.providers().get("kimi").available());
 
     AgentCatalog catalog = AgentCatalog.load(workspace, config, Map.of(), redactor);
-    assertEquals(2, catalog.entries().size());
+    assertEquals(3, catalog.entries().size());
     assertTrue(catalog.entries().stream().noneMatch(AgentCatalog.Entry::available));
     assertTrue(catalog.entries().stream().allMatch(e -> e.error() != null));
     assertFalse(catalog.entries().toString().contains(STUB_DEEPSEEK_KEY));
+  }
+
+  @Test
+  void missingKimiSecretDegradesOnlyKimiAssistant() throws Exception {
+    stageTemplates(
+        "DEEPSEEK_API_KEY: \""
+            + STUB_DEEPSEEK_KEY
+            + "\"\nFEISHU_WEBHOOK_URL: \""
+            + STUB_FEISHU_URL
+            + "\"\n");
+
+    Redactor redactor = new Redactor();
+    WorkspaceHandle workspace = new WorkspaceHandle(workspaceRoot);
+    RuntimeConfig config = new RuntimeConfigLoader(Map.of(), redactor).load(workspace);
+    assertTrue(config.providers().get("deepseek").available());
+    assertFalse(config.providers().get("kimi").available());
+
+    AgentCatalog catalog = AgentCatalog.load(workspace, config, Map.of(), redactor);
+    assertEquals(3, catalog.entries().size());
+    Map<String, AgentCatalog.Entry> byName =
+        catalog.entries().stream()
+            .collect(java.util.stream.Collectors.toMap(AgentCatalog.Entry::name, e -> e));
+    assertTrue(byName.get("weather").available());
+    assertTrue(byName.get("feishu-notify").available());
+    assertFalse(byName.get("kimi-assistant").available());
+    assertNotNull(byName.get("kimi-assistant").error());
+    assertFalse(catalog.entries().toString().contains(STUB_DEEPSEEK_KEY));
+    assertFalse(catalog.entries().toString().contains("stub-hook-canary"));
   }
 }
