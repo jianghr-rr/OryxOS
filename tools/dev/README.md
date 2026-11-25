@@ -204,7 +204,7 @@ cd /Users/jianghaoran/github/OryxOS
 ./tools/dev/mvnw -B -ntp clean verify
 ```
 
-us4-tools共21项：实际文件/脚本、回环HTTP/Webhook、SDK stdio MCP、九工具CLI合流、原生注解扩展、启动引用校验和子进程CANARY隔离。
+us4-tools共29项（含spec 009补齐的第19节 `WebhookNotifyAdapterTest` 4项与 `NotifyToolsTest` 4项）：实际文件/脚本、回环HTTP/Webhook、渠道中立Notify抽象与白名单前置校验、SDK stdio MCP、九工具CLI合流、原生注解扩展、启动引用校验和子进程CANARY隔离。
 本批最终全量102测试/27类，0失败/错误/跳过；此前各节的61/81为当时批次历史计数。
 默认chat仍缺正式Session/Execution存储，测试专用临时Store不进入主JAR。
 

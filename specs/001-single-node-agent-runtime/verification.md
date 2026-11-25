@@ -39,7 +39,7 @@
 | us2-loop | ReActLoopTest、ContextLoaderTest、PromptBuilderTest、ToolExecutorTest、AgentServiceTest（spec 006 由 ReActContractTest 拆分并补齐）、FailurePolicyContractTest、SessionRuntimeContractTest、ToolSafetyContractTest、EarlyCliLoopIntegrationTest、DeadlineRaceTest | T041、T043 |
 | deadline-boundary | DeadlineRaceTest、FailurePolicyContractTest | T043 |
 | us3-memory | MemoryContractTest、SessionContractTest、Mem0ProtocolContractTest、MemoryFacadeIntegrationTest | T045、T056 |
-| us4-tools | ToolsContractTest、NotifyContractTest、McpContractTest、ToolIntegrationTest、AgentCatalogContractTest（US4方法） | T059、T069 |
+| us4-tools | ToolsContractTest、NotifyContractTest、WebhookNotifyAdapterTest、NotifyToolsTest（spec 009 补齐第 19 节 Notify 验收 harness，共 29 项）、McpContractTest、ToolIntegrationTest、AgentCatalogContractTest（US4方法） | T059、T069、spec 009 |
 | us5-cli | CliOperationsTest、CliRuntimeContractTest、SessionManagerTest、SessionRepositoryTest（spec 008 补齐第 18 节会话验收 harness，共 22 项） | T073本批子集、T090、spec 008 |
 | us5-admin | AdminPageContractTest（本地已登记）；另有实际浏览器测试页 | T091、T092本地子集，非T095整体 |
 | us5-cli-process | CliCommandsIT（独立main/JAR，3项） | T095发行CLI；浏览器另取证 |
