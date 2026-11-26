@@ -445,6 +445,72 @@
           ]
         },
         {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.OryxToolContractTest",
+          "methods": [
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[1]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[2]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[3]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[4]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[5]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[6]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[7]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[8]",
+            "everyRegisteredTool_hasCompleteContract(OryxTool)[9]",
+            "registry_rejectsToolWithMissingOrInvalidInputSchema"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.ToolRegistryTest",
+          "methods": [
+            "registersAllThreeSourcesAsUnifiedOryxTool",
+            "filtersByProfileToolsExactlyWithoutExtraOrMissing",
+            "rejectsDuplicateToolNamesAtRegistration"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.file.FileToolsTest",
+          "methods": [
+            "fileTools_readWriteAndListWithinAllowedPaths",
+            "fileTools_rejectOutOfBoundsPathsTraversalAndSymlinks"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.shell.ShellToolsTest",
+          "methods": [
+            "shell_executesAllowedCommandAndTrustedScript",
+            "shell_rejectsDisallowedCommandAndInlineFlag"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.http.HttpToolsTest",
+          "methods": [
+            "httpGet_fetchesResponseFromAllowedTarget",
+            "httpGet_blocksDisallowedDomainWithoutNetworkIo",
+            "httpPost_sendsJsonToAllowedTargetAndBlocksDisallowedDomain"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.mcp.McpClientServiceTest",
+          "methods": [
+            "disconnectedMcpServer_doesNotBreakStartupOrOtherServers",
+            "loadsMcpServersYamlAndResolvesEnvSecrets"
+          ]
+        },
+        {
+          "module": "oryxos-tool",
+          "class": "io.github.oryxlabs.oryxos.tool.mcp.McpToolAdapterTest",
+          "methods": [
+            "adapter_mapsMetadataAndForwardsArgumentsToRemoteTool",
+            "adapter_rejectsUnauthorizedServerAndWrapsRemoteError"
+          ]
+        },
+        {
           "module": "oryxos-boot",
           "class": "io.github.oryxlabs.oryxos.boot.ToolIntegrationTest",
           "methods": [
