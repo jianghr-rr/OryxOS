@@ -16,9 +16,13 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.locks.ReentrantLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** One explicitly configured process per server, no reconnect/replay after an uncertain call. */
 public final class McpClientManager implements AutoCloseable {
+  private static final Logger LOG = LoggerFactory.getLogger(McpClientManager.class);
+
   public record Definition(
       String id,
       String command,
@@ -134,11 +138,20 @@ public final class McpClientManager implements AutoCloseable {
         connection.tools = List.copyOf(tools);
         states.put(d.id(), new State(d.id(), true, "AVAILABLE", true));
       } catch (Exception e) {
+        String safeId = sanitizeServerId(d.id());
         if (connection != null) {
           connection.disabled = true;
           boolean closed = close(connection);
           states.put(d.id(), new State(d.id(), false, "MCP_INITIALIZATION_FAILED", closed));
-        } else states.put(d.id(), new State(d.id(), false, "MCP_CONFIGURATION_ERROR", true));
+          LOG.warn(
+              "MCP server {} failed to initialize (MCP_INITIALIZATION_FAILED); skipping its tools",
+              safeId);
+        } else {
+          states.put(d.id(), new State(d.id(), false, "MCP_CONFIGURATION_ERROR", true));
+          LOG.warn(
+              "MCP server {} configuration invalid (MCP_CONFIGURATION_ERROR); skipping its tools",
+              safeId);
+        }
       }
     }
   }
@@ -310,5 +323,12 @@ public final class McpClientManager implements AutoCloseable {
           new State(c.definition.id(), false, closed ? "CLOSED" : "MCP_CLOSE_FAILED", closed));
     }
     timer.shutdownNow();
+  }
+
+  private static String sanitizeServerId(String id) {
+    if (id == null || id.isBlank()) {
+      return "unknown";
+    }
+    return id.replaceAll("[^A-Za-z0-9._-]", "_");
   }
 }
